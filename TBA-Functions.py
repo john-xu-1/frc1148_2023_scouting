@@ -146,34 +146,68 @@ def GetBlueAutoPoints:(MatchKey)
     return GetMatchData(MatchKey)['score_breakdown']['blue']['autoPoints']
 def GetRedAutoPoints:(MatchKey)
     return GetMatchData(MatchKey)['score_breakdown']['red']['autoPoints']
+def GetBlueAutoChargeStationPoints:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['autoChargeStationPoints']
+def GetBlueAutoBridgeState:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['autoBridgeState']
+def GetBlueAutoChargeStationRobot1:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['autoChargeStationRobot1']
+def GetBlueAutoChargeStationRobot2:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['autoChargeStationRobot2']
+def GetBlueAutoChargeStationRobot3:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['autoChargeStationRobot3']
+def GetBlueTotalChargeStationPoints:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['totalChargeStationPoints']
+def GetBlueEndGameChargeStationPoints:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameChargeStationPoints']
+def GetBlueEndGameBridgeState:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameBridgeState']
+def GetBlueEndGameChargeStationRobot1:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameChargeStationRobot1']
+def GetBlueEndGameChargeStationRobot2:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameChargeStationRobot2']
+def GetBlueEndGameChargeStationRobot3:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameChargeStationRobot3']
+def GetRedAutoChargeStationPoints:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['autoChargeStationPoints']
+def GetRedAutoBridgeState:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['autoBridgeState']
+def GetRedAutoChargeStationRobot1:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['autoChargeStationRobot1']
+def GetRedAutoChargeStationRobot2:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['autoChargeStationRobot2']
+def GetRedAutoChargeStationRobot3:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['autoChargeStationRobot3']
+def GetRedTotalChargeStationPoints:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['totalChargeStationPoints']
+def GetRedEndGameChargeStationPoints:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['endGameChargeStationPoints']
+def GetRedEndGameBridgeState:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['endGameBridgeState']
+def GetRedEndGameChargeStationRobot1:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['endGameChargeStationRobot1']
+def GetRedEndGameChargeStationRobot2:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['endGameChargeStationRobot2']
+def GetRedEndGameChargeStationRobot3:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['endGameChargeStationRobot3']
 
-return GetMatchData(MatchKey)['score_breakdown']['blue']['autoChargeStationPoints']
-return GetMatchData(MatchKey)['score_breakdown']['blue']['autoBridgeState']
-return GetMatchData(MatchKey)['score_breakdown']['blue']['autoChargeStationRobot1']
-return GetMatchData(MatchKey)['score_breakdown']['blue']['autoChargeStationRobot2']
-return GetMatchData(MatchKey)['score_breakdown']['blue']['autoChargeStationRobot3']
-return GetMatchData(MatchKey)['score_breakdown']['blue']['totalChargeStationPoints']
-return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameChargeStationPoints']
-return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameBridgeState']
-return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameChargeStationRobot1']
-return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameChargeStationRobot2']
-return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameChargeStationRobot3']
-
-return GetMatchData(MatchKey)['score_breakdown']['red']['autoChargeStationPoints']
-return GetMatchData(MatchKey)['score_breakdown']['red']['autoBridgeState']
-return GetMatchData(MatchKey)['score_breakdown']['red']['autoChargeStationRobot1']
-return GetMatchData(MatchKey)['score_breakdown']['red']['autoChargeStationRobot2']
-return GetMatchData(MatchKey)['score_breakdown']['red']['autoChargeStationRobot3']
-return GetMatchData(MatchKey)['score_breakdown']['red']['totalChargeStationPoints']
-return GetMatchData(MatchKey)['score_breakdown']['red']['endGameChargeStationPoints']
-return GetMatchData(MatchKey)['score_breakdown']['red']['endGameBridgeState']
-return GetMatchData(MatchKey)['score_breakdown']['red']['endGameChargeStationRobot1']
-return GetMatchData(MatchKey)['score_breakdown']['red']['endGameChargeStationRobot2']
-return GetMatchData(MatchKey)['score_breakdown']['red']['endGameChargeStationRobot3']
-
-['teleopGamePiecePoints']
-have method the reads ['teleopCommunity']['B'], ['teleopCommunity']['M'], ['teleopCommunity']['T']
-
+def GetBlueTeleopGamePiecePoints:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['teleopGamePiecePoints']
+def GetRedTeleopGamePiecePoints:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['teleopGamePiecePoints']
+def GetBlueTeleopGamePieceB:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['teleopCommunity']['B']
+def GetRedTeleopGamePieceB:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['teleopCommunity']['B']
+def GetBlueTeleopGamePieceM:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['teleopCommunity']['M']
+def GetRedTeleopGamePieceM:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['teleopCommunity']['M']
+def GetBlueTeleopGamePieceT:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['teleopCommunity']['T']
+def GetRedTeleopGamePieceT:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['teleopCommunity']['T']
+#we need to use the bottom middle and top rows to find the specific amount of cube points scord, and telopgamepeicepoint-cube = cone
 
 #Code not transferred over starting line 412 of app script, if you want to work on it, please start converting methods over there first
 
