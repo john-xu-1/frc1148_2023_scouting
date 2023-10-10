@@ -121,7 +121,49 @@ def TBA_GetCurMatch(match):
 
 def TBA_MatchWinner(match):
     return TBA_GetCurMatch(match)["winning_alliance"]
-    
+
+def OPR(team):
+    return TBA_EventOPRs(event)['oprs']['frc'+team]
+def DPR(team):
+    return TBA_EventOPRs(event)['dprs']['frc'+team]
+def CCWM(team):
+    return TBA_EventOPRs(event)['ccwms']['frc'+team]
+def GetMatchData(MatchKey)
+    return TBA_EventMatchKeys(event)[MatchKey]
+def GetBlueRP:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['rp']
+def GetRedRP:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['rp']
+def GetBlueScore:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['totalPoints']
+def GetRedRP:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['totalPoints']
+def GetBlueTeams #is this wrong casue returns 3 teams, how to split
+    return GetMatchData(MatchKey)['alliances']['blue']['team_keys']
+def GetRedTeams #is this wrong casue returns 3 teams, how to split
+    return GetMatchData(MatchKey)['alliances']['red']['team_keys']
+def GetBlueAutoPoints:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['blue']['autoPoints']
+def GetRedAutoPoints:(MatchKey)
+    return GetMatchData(MatchKey)['score_breakdown']['red']['autoPoints']
+
+all the below need:
+returnGetMatchData(MatchKey)['score_breakdown'][red or blue] [the other stuff]
+['autoChargeStationPoints']
+['autoBridgeState']
+['autoChargeStationRobot1']
+['autoChargeStationRobot2']
+['autoChargeStationRobot3']
+['totalChargeStationPoints']
+['endGameChargeStationPoints']
+['endGameBridgeState']
+['endGameChargeStationRobot1']
+['endGameChargeStationRobot2']
+['endGameChargeStationRobot3']
+
+[teleopGamePiecePoints]
+have method the reads ['teleopCommunity']['B'], ['teleopCommunity']['M'], ['teleopCommunity']['T']
+
 
 #Code not transferred over starting line 412 of app script, if you want to work on it, please start converting methods over there first
 
