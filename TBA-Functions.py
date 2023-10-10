@@ -91,6 +91,14 @@ def TBA_TeamEventMatchesYear(team,year):
 def TBA_TeamEventMatchKeysYear(team,year):
     return TBA_AddressFetcher("team/frc"+team+"/events/"+year+"/keys")
 
+
+def OPR(team):
+    return TBA_EventOPRs(curEvent)['oprs']['frc'+team]
+def DPR(team):
+    return TBA_EventOPRs(curEvent)['dprs']['frc'+team]
+def CCWM(team):
+    return TBA_EventOPRs(curEvent)['ccwms']['frc'+team]
+
 #================================================================================================  
     
 
@@ -122,98 +130,133 @@ def TBA_GetCurMatch(match):
 def TBA_MatchWinner(match):
     return TBA_GetCurMatch(match)["winning_alliance"]
 
-def OPR(team):
-    return TBA_EventOPRs(event)['oprs']['frc'+team]
-def DPR(team):
-    return TBA_EventOPRs(event)['dprs']['frc'+team]
-def CCWM(team):
-    return TBA_EventOPRs(event)['ccwms']['frc'+team]
-def GetMatchData(MatchKey)
-    return TBA_EventMatchKeys(event)[MatchKey]
-def GetBlueRP:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['rp']
-def GetRedRP:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['rp']
-def GetBlueScore:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['totalPoints']
-def GetRedRP:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['totalPoints']
-def GetBlueTeams #is this wrong casue returns 3 teams, how to split
-    return GetMatchData(MatchKey)['alliances']['blue']['team_keys']
-def GetRedTeams #is this wrong casue returns 3 teams, how to split
-    return GetMatchData(MatchKey)['alliances']['red']['team_keys']
-def GetBlueAutoPoints:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['autoPoints']
-def GetRedAutoPoints:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['autoPoints']
-def GetBlueAutoChargeStationPoints:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['autoChargeStationPoints']
-def GetBlueAutoBridgeState:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['autoBridgeState']
-def GetBlueAutoChargeStationRobot1:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['autoChargeStationRobot1']
-def GetBlueAutoChargeStationRobot2:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['autoChargeStationRobot2']
-def GetBlueAutoChargeStationRobot3:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['autoChargeStationRobot3']
-def GetBlueTotalChargeStationPoints:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['totalChargeStationPoints']
-def GetBlueEndGameChargeStationPoints:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameChargeStationPoints']
-def GetBlueEndGameBridgeState:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameBridgeState']
-def GetBlueEndGameChargeStationRobot1:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameChargeStationRobot1']
-def GetBlueEndGameChargeStationRobot2:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameChargeStationRobot2']
-def GetBlueEndGameChargeStationRobot3:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['endGameChargeStationRobot3']
-def GetRedAutoChargeStationPoints:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['autoChargeStationPoints']
-def GetRedAutoBridgeState:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['autoBridgeState']
-def GetRedAutoChargeStationRobot1:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['autoChargeStationRobot1']
-def GetRedAutoChargeStationRobot2:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['autoChargeStationRobot2']
-def GetRedAutoChargeStationRobot3:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['autoChargeStationRobot3']
-def GetRedTotalChargeStationPoints:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['totalChargeStationPoints']
-def GetRedEndGameChargeStationPoints:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['endGameChargeStationPoints']
-def GetRedEndGameBridgeState:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['endGameBridgeState']
-def GetRedEndGameChargeStationRobot1:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['endGameChargeStationRobot1']
-def GetRedEndGameChargeStationRobot2:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['endGameChargeStationRobot2']
-def GetRedEndGameChargeStationRobot3:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['endGameChargeStationRobot3']
+# def GetMatchData(MatchKey):
+#     return TBA_EventMatchKeys(curEvent)[MatchKey]
 
-def GetBlueTeleopGamePiecePoints:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['teleopGamePiecePoints']
-def GetRedTeleopGamePiecePoints:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['teleopGamePiecePoints']
-def GetBlueTeleopGamePieceB:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['teleopCommunity']['B']
-def GetRedTeleopGamePieceB:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['teleopCommunity']['B']
-def GetBlueTeleopGamePieceM:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['teleopCommunity']['M']
-def GetRedTeleopGamePieceM:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['teleopCommunity']['M']
-def GetBlueTeleopGamePieceT:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['blue']['teleopCommunity']['T']
-def GetRedTeleopGamePieceT:(MatchKey)
-    return GetMatchData(MatchKey)['score_breakdown']['red']['teleopCommunity']['T']
+
+
+    
+def GetBlueRP(match):
+    return match['score_breakdown']['blue']['rp']
+
+def GetRedRP(match):
+    return match['score_breakdown']['red']['rp']
+
+def GetBlueScore(match):
+    return match['score_breakdown']['blue']['totalPoints']
+
+def GetRedScore(match):
+    return match['score_breakdown']['red']['totalPoints']
+
+def GetBlueTeams(match): 
+    return match['alliances']['blue']['team_keys']
+
+def GetRedTeams(match): 
+    return match['alliances']['red']['team_keys']
+
+def GetBlueAutoPoints(match):
+    return match['score_breakdown']['blue']['autoPoints']
+
+def GetRedAutoPoints(match):
+    return match['score_breakdown']['red']['autoPoints']
+
+def GetBlueAutoChargeStationPoints(match):
+    return match['score_breakdown']['blue']['autoChargeStationPoints']
+
+def GetBlueAutoBridgeState(match):
+    return match['score_breakdown']['blue']['autoBridgeState']
+
+def GetBlueAutoChargeStationRobot1(match):
+    return match['score_breakdown']['blue']['autoChargeStationRobot1']
+
+def GetBlueAutoChargeStationRobot2(match):
+    return match['score_breakdown']['blue']['autoChargeStationRobot2']
+
+def GetBlueAutoChargeStationRobot3(match):
+    return match['score_breakdown']['blue']['autoChargeStationRobot3']
+
+def GetBlueTotalChargeStationPoints(match):
+    return match['score_breakdown']['blue']['totalChargeStationPoints']
+
+def GetBlueEndGameChargeStationPoints(match):
+    return match['score_breakdown']['blue']['endGameChargeStationPoints']
+
+def GetBlueEndGameBridgeState(match):
+    return match['score_breakdown']['blue']['endGameBridgeState']
+
+def GetBlueEndGameChargeStationRobot1(match):
+    return match['score_breakdown']['blue']['endGameChargeStationRobot1']
+
+def GetBlueEndGameChargeStationRobot2(match):
+    return match['score_breakdown']['blue']['endGameChargeStationRobot2']
+
+def GetBlueEndGameChargeStationRobot3(match):
+    return match['score_breakdown']['blue']['endGameChargeStationRobot3']
+
+def GetRedAutoChargeStationPoints(match):
+    return match['score_breakdown']['red']['autoChargeStationPoints']
+
+def GetRedAutoBridgeState(match):
+    return match['score_breakdown']['red']['autoBridgeState']
+
+def GetRedAutoChargeStationRobot1(match):
+    return match['score_breakdown']['red']['autoChargeStationRobot1']
+
+def GetRedAutoChargeStationRobot2(match):
+    return match['score_breakdown']['red']['autoChargeStationRobot2']
+
+def GetRedAutoChargeStationRobot3(match):
+    return match['score_breakdown']['red']['autoChargeStationRobot3']
+
+def GetRedTotalChargeStationPoints(match):
+    return match['score_breakdown']['red']['totalChargeStationPoints']
+
+def GetRedEndGameChargeStationPoints(match):
+    return match['score_breakdown']['red']['endGameChargeStationPoints']
+
+def GetRedEndGameBridgeState(match):
+    return match['score_breakdown']['red']['endGameBridgeState']
+
+def GetRedEndGameChargeStationRobot1(match):
+    return match['score_breakdown']['red']['endGameChargeStationRobot1']
+
+def GetRedEndGameChargeStationRobot2(match):
+    return match['score_breakdown']['red']['endGameChargeStationRobot2']
+
+def GetRedEndGameChargeStationRobot3(match):
+    return match['score_breakdown']['red']['endGameChargeStationRobot3']
+
+def GetBlueTeleopGamePiecePoints(match):
+    return match['score_breakdown']['blue']['teleopGamePiecePoints']
+
+def GetRedTeleopGamePiecePoints(match):
+    return match['score_breakdown']['red']['teleopGamePiecePoints']
+
+def GetBlueTeleopGamePieceB(match):
+    return match['score_breakdown']['blue']['teleopCommunity']['B']
+
+def GetRedTeleopGamePieceB(match):
+    return match['score_breakdown']['red']['teleopCommunity']['B']
+
+def GetBlueTeleopGamePieceM(match):
+    return match['score_breakdown']['blue']['teleopCommunity']['M']
+
+def GetRedTeleopGamePieceM(match):
+    return match['score_breakdown']['red']['teleopCommunity']['M']
+
+def GetBlueTeleopGamePieceT(match):
+    return match['score_breakdown']['blue']['teleopCommunity']['T']
+
+def GetRedTeleopGamePieceT(match):
+    return match['score_breakdown']['red']['teleopCommunity']['T']
+
 #we need to use the bottom middle and top rows to find the specific amount of cube points scord, and telopgamepeicepoint-cube = cone
 
-#Code not transferred over starting line 412 of app script, if you want to work on it, please start converting methods over there first
-
-#prettyPrint(TBA_TeamEventQualRank(TBA_EventTeamsFormatted(curEvent)[1],curEvent))
 
 
+# BELOW is the "tester" where we print out all the match data for each match in a given event. We also print out the time 
+# it takes for this method to run. 
+# We have NOT written anything to actually write the prints to the spreadsheet, that is one of our next goals
 
 #fills entire sheet
 def fill_matchdata():   
@@ -223,6 +266,64 @@ def fill_matchdata():
 
     for match in matches:
         cur_match_data= TBA_GetCurMatch(match)
+        
+        print ("====== Printing match data for " + str(match) + " ======")
+        
+        prettyPrint(GetBlueRP(cur_match_data))
+        prettyPrint(GetRedRP(cur_match_data))
+        prettyPrint(GetBlueScore(cur_match_data))
+        prettyPrint(GetRedScore(cur_match_data))
+        
+        print()
+        
+        prettyPrint(GetBlueTeams(cur_match_data))
+        prettyPrint(GetRedTeams(cur_match_data))
+        
+        print()
+        
+        prettyPrint(GetBlueAutoPoints(cur_match_data))
+        prettyPrint(GetRedAutoPoints(cur_match_data))
+        prettyPrint(GetBlueAutoChargeStationPoints(cur_match_data))
+        prettyPrint(GetBlueAutoBridgeState(cur_match_data))
+        prettyPrint(GetBlueAutoChargeStationRobot1(cur_match_data))
+        prettyPrint(GetBlueAutoChargeStationRobot2(cur_match_data))
+        prettyPrint(GetBlueAutoChargeStationRobot3(cur_match_data))
+        prettyPrint(GetBlueTotalChargeStationPoints(cur_match_data))
+        prettyPrint(GetBlueEndGameChargeStationPoints(cur_match_data))
+        prettyPrint(GetBlueEndGameBridgeState(cur_match_data))
+        prettyPrint(GetBlueEndGameChargeStationRobot1(cur_match_data))
+        prettyPrint(GetBlueEndGameChargeStationRobot2(cur_match_data))
+        prettyPrint(GetBlueEndGameChargeStationRobot3(cur_match_data))
+        
+        print()
+        
+        prettyPrint(GetRedAutoChargeStationPoints(cur_match_data))
+        prettyPrint(GetRedAutoBridgeState(cur_match_data))
+        prettyPrint(GetRedAutoChargeStationRobot1(cur_match_data))
+        prettyPrint(GetRedAutoChargeStationRobot2(cur_match_data))
+        prettyPrint(GetRedAutoChargeStationRobot3(cur_match_data))
+        prettyPrint(GetRedTotalChargeStationPoints(cur_match_data))
+        prettyPrint(GetRedEndGameChargeStationPoints(cur_match_data))
+        prettyPrint(GetRedEndGameBridgeState(cur_match_data))
+        prettyPrint(GetRedEndGameChargeStationRobot1(cur_match_data))
+        prettyPrint(GetRedEndGameChargeStationRobot2(cur_match_data))
+        prettyPrint(GetRedEndGameChargeStationRobot3(cur_match_data))
+        
+        print()
+        
+        prettyPrint(GetBlueTeleopGamePiecePoints(cur_match_data))
+        prettyPrint(GetRedTeleopGamePiecePoints(cur_match_data))
+        prettyPrint(GetBlueTeleopGamePieceB(cur_match_data))
+        prettyPrint(GetRedTeleopGamePieceB(cur_match_data))
+        prettyPrint(GetBlueTeleopGamePieceM(cur_match_data))
+        prettyPrint(GetRedTeleopGamePieceM(cur_match_data))
+        prettyPrint(GetBlueTeleopGamePieceT(cur_match_data))
+        prettyPrint(GetRedTeleopGamePieceT(cur_match_data))
+        
+        print()
+        print()
+        print()
+        
         #prettyPrint( TBA_MatchWinner(match))
         #we have the mathc data now, we fill in each match with the data, code not implemented yet
         
@@ -231,11 +332,5 @@ def fill_matchdata():
     print (finished_time - current_time)
 
 
-#fill_matchdata()
+fill_matchdata()
 
-#print (json.dumps(req, indent=2))
-# red_score = req['score_breakdown']['red']['autoPoints']
-# print (red_score)
-
-
-#print (TBANewCustom(req,'score_breakdown','red','autoPoints'))

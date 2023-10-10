@@ -1,7 +1,0 @@
-the purpose of TBANewCustom is to record the json file, so we don't have to fetch every time and is nto useless, but very usefull in google sheets
-in order to replicate the use in code, instead of having TBATeamInfo(), TBAEventStatus, TBA_TeamFullInfo(team),TBA_GetCurMatch(match) return the fetch every time:
-it should be a var recording to json file to prevent having to fetch over and over
-
-def GetBlueTeams #is this wrong casue returns 3 teams, how to split
-def GetRedTeams #is this wrong casue returns 3 teams, how to split
-#we need to use the bottom middle and top rows to find the specific amount of cube points scord, and telopgamepeicepoint-cube = cone
