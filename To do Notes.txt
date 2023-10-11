@@ -26,3 +26,5 @@ As for goals for next time, there are listed below as such in no particular orde
 2. We have NOT done OPR & cube/cone points yet 
 
 Perhpas it's a good idea to split up and each person focuses on one thing 
+== 10/11 Matthew :pm ==
+I will write the time when I am done, but I changed the TBA-Functions to TBA_Functions, I added a TBA_EventOPRsFormatted(event), and am working on inserting into google sheets
