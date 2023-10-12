@@ -12,6 +12,7 @@ import pickle
 
 import pandas as pd;
 
+curEvent = "2023cala"
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
@@ -104,23 +105,61 @@ def Create_Service(client_secret_file, api_service_name, api_version, *scopes):
 
 
 
-balls = [5,6,1,2
-         ]
+# balls = [5,6,1,2
+#          ]
 
-balls_pd = pd.DataFrame(balls)
+# balls_pd = pd.DataFrame(balls)
         
 # change 'my_json_file.json' by your downloaded JSON file.
 Create_Service('credentials.json', 'sheets', 'v4',['https://www.googleapis.com/auth/spreadsheets'])      
     
-def Export_Data_To_Sheets():
-    response_date = service.spreadsheets().values().update(
-        spreadsheetId=SAMPLE_SPREADSHEET_ID,
-        valueInputOption='RAW',
-        range=SAMPLE_RANGE_NAME,
-        body=dict(
-            majorDimension='ROWS',
-            values=balls_pd.values.tolist())
-    ).execute()
-    print('Sheet successfully Updated')
+# def Export_Data_To_Sheets():
+#     response_date = service.spreadsheets().values().update(
+#         spreadsheetId=SAMPLE_SPREADSHEET_ID,
+#         valueInputOption='RAW',
+#         range=SAMPLE_RANGE_NAME,
+#         body=dict(
+#             majorDimension='ROWS',
+#             values=balls_pd.values.tolist())
+#     ).execute()
+#     print('Sheet successfully Updated')
 
-Export_Data_To_Sheets()
+# Export_Data_To_Sheets()
+
+#--------------------------------------
+# from TBA_Functions import TBA_EventTeamsFormatted
+# data = TBA_EventTeamsFormatted(curEvent)
+# data_pd = pd.DataFrame(data)
+# SAMPLE_RANGE_NAME = 'PowerRatings.py!A2:A'
+
+# def Export_Data_To_Sheets():
+#     response_date = service.spreadsheets().values().update(
+#         spreadsheetId=SAMPLE_SPREADSHEET_ID,
+#         valueInputOption='RAW',
+#         range=SAMPLE_RANGE_NAME,
+#         body=dict(
+#             majorDimension='ROWS',
+#             values=data_pd.values.tolist())
+#     ).execute()
+#     print('Sheet successfully Updated')
+
+
+# Export_Data_To_Sheets()
+
+# from TBA_Functions import TBA_EventOPR
+# data = TBA_EventOPR(curEvent)
+# data_pd = pd.DataFrame(data)
+# SAMPLE_RANGE_NAME = 'PowerRatings.py!C2:C'
+# Export_Data_To_Sheets()
+
+# from TBA_Functions import TBA_EventDPR
+# data = TBA_EventDPR(curEvent)
+# data_pd = pd.DataFrame(data)
+# SAMPLE_RANGE_NAME = 'PowerRatings.py!I2:I'
+# Export_Data_To_Sheets()
+
+# from TBA_Functions import TBA_EventCCWM
+# data = TBA_EventCCWM(curEvent)
+# data_pd = pd.DataFrame(data)
+# SAMPLE_RANGE_NAME = 'PowerRatings.py!J2:J'
+# Export_Data_To_Sheets()
