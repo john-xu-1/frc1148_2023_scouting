@@ -26,9 +26,11 @@ As for goals for next time, there are listed below as such in no particular orde
 2. We have NOT done OPR & cube/cone points yet 
 
 Perhpas it's a good idea to split up and each person focuses on one thing 
-== 10/11 Matthew :pm ==
+
+== 10/11 Matthew 7:03pm ==
 I added
 TBA_EventOPR
 TBA_EventDPR
 TBA_EventCCWM
 and changed the name of TBA-Functions to TBA_Functions
+There is # code in quickstart.py which should work? but it doesn't hence the #
