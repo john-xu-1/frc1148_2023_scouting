@@ -38,6 +38,8 @@ There is # code in quickstart.py which should work? but it doesn't hence the #
 == 10/14 Matthew 1:13pm ==
 We downloaded java, and now can insert data into the google sheets
 John needs to calculate OPR for cone and Cube
-Will need to calculate cone and cube points per match per alliance by finding total points for an alliance in a match, then looking for the cones or cubes scored in which position to caluculate cone or cube points. then find the other by using totalpoints-cube or cone points
+Will need to calculate cone and cube points per match per alliance by finding total points for an alliance in a match
+then looking for the cones or cubes scored in which position to caluculate cone or cube points.
+then find the other by using totalpoints-cube or cone points
 
 then Calculate OPR using the values
