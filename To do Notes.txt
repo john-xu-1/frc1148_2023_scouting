@@ -43,3 +43,6 @@ then looking for the cones or cubes scored in which position to caluculate cone 
 then find the other by using totalpoints-cube or cone points
 
 then Calculate OPR using the values
+
+== 10/15 Matthew 1:00pm==
+I finished recreating the google spreadsheets
