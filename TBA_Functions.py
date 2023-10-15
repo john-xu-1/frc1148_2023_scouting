@@ -53,6 +53,8 @@ def TBA_WinRate(team,event):
     status = TBA_TeamEventStatus(team,event)
     return (status["qual"]["ranking"]["record"]["wins"] + 0.5*status["qual"]["ranking"]["record"]["ties"]) / (status["qual"]["ranking"]["matches_played"]) * 100
 
+def TBA_MatchesPlayed(team,event):
+    return TBA_TeamEventStatus(team,event)["qual"]["ranking"]["matches_played"]
 #print (json.dumps( TBA_WinRate( TBA_EventTeamsFormatted(curEvent)[0],curEvent),indent=2))
 
 def TBA_TeamInfo(team):
