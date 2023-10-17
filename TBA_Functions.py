@@ -346,7 +346,6 @@ def fill_matchdata():
         # print()
         
         #prettyPrint( TBA_MatchWinner(match))
-        #we have the mathc data now, we fill in each match with the data, code not implemented yet
         
     now = datetime.now().time()
     finished_time = timedelta(hours=float(now.hour),minutes=float(now.minute),seconds=float(now.second))

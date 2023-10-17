@@ -34,3 +34,7 @@ Fixed token expiring issue, no need to publish / make google review app
 just need service client 
 
 CHECK quickstart.py not quickstartOUTDATE.py, the latter would be the old code
+
+== 10/17 John 4:40 pm ==
+
+Finished cube and cone OPR. Preparing for merge

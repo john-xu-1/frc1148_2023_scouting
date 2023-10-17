@@ -18,23 +18,6 @@ def coneNcubeOPR():
          
         blueTeams = tba.GetBlueTeams(cur_match_data)
         
-        # isTeamsArray = [0]*len(allTeam)
-        
-        
-        # for blueTeam in blueTeams:
-        #     count = 0
-        #     for team in allTeam:
-        #         if (blueTeam == team):
-        #             isTeamsArray[count] = 1
-        #         else: isTeamsArray[count] += 0
-        #         count += 1
-        
-        # print (isTeamsArray)
-        
-        # teamMatrix.append(isTeamsArray)
-        
-        
-        
         
         redTeams = tba.GetRedTeams(cur_match_data)
         
