@@ -53,6 +53,8 @@ def TBA_WinRate(team,event):
     status = TBA_TeamEventStatus(team,event)
     return (status["qual"]["ranking"]["record"]["wins"] + 0.5*status["qual"]["ranking"]["record"]["ties"]) / (status["qual"]["ranking"]["matches_played"]) * 100
 
+def TBA_MatchesPlayed(team,event):
+    return TBA_TeamEventStatus(team,event)["qual"]["ranking"]["matches_played"]
 #print (json.dumps( TBA_WinRate( TBA_EventTeamsFormatted(curEvent)[0],curEvent),indent=2))
 
 def TBA_TeamInfo(team):
@@ -61,8 +63,11 @@ def TBA_TeamInfo(team):
 def TBA_TeamFullInfo(team):
     return TBA_AddressFetcher('team/frc'+team)
 
-def TBA_TeamNicknname(team):
+def TBA_TeamNickname(team):
     return TBA_TeamInfo(team)['nickname']
+
+
+
 
 def TBA_TeamName(team):
     return TBA_TeamInfo(team)['name']
@@ -105,6 +110,21 @@ def CCWM(team):
 #======================================Event Specific Methods======================================
 def TBA_EventOPRs(event):
     return TBA_AddressFetcher("event/"+event+"/oprs")
+
+def TBA_EventOPR(event):
+    OPRs = TBA_AddressFetcher("event/" + event + "/oprs")['oprs']
+    OPR_values = list(OPRs.values())
+    return OPR_values
+
+def TBA_EventDPR(event):
+    OPRs = TBA_AddressFetcher("event/" + event + "/oprs")['dprs']
+    OPR_values = list(OPRs.values())
+    return OPR_values
+
+def TBA_EventCCWM(event):
+    OPRs = TBA_AddressFetcher("event/" + event + "/oprs")['ccwms']
+    OPR_values = list(OPRs.values())
+    return OPR_values
 
 #Get all the matches in an event
 def TBA_EventMatchKeys(event):
@@ -258,79 +278,81 @@ def GetRedTeleopGamePieceT(match):
 # it takes for this method to run. 
 # We have NOT written anything to actually write the prints to the spreadsheet, that is one of our next goals
 
+
+
 #fills entire sheet
 def fill_matchdata():   
     matches = TBA_EventMatchKeys(curEvent) 
     now = datetime.now().time()
     current_time = timedelta(hours=float(now.hour),minutes=float(now.minute),seconds=float(now.second))
-
+    
     for match in matches:
+        
         cur_match_data= TBA_GetCurMatch(match)
         
-        print ("====== Printing match data for " + str(match) + " ======")
+        # print ("====== Printing match data for " + str(match) + " ======")
         
-        prettyPrint(GetBlueRP(cur_match_data))
-        prettyPrint(GetRedRP(cur_match_data))
-        prettyPrint(GetBlueScore(cur_match_data))
-        prettyPrint(GetRedScore(cur_match_data))
+        # prettyPrint(GetBlueRP(cur_match_data))
+        # prettyPrint(GetRedRP(cur_match_data))
+        # prettyPrint(GetBlueScore(cur_match_data))
+        # prettyPrint(GetRedScore(cur_match_data))
         
-        print()
+        # print()
         
-        prettyPrint(GetBlueTeams(cur_match_data))
-        prettyPrint(GetRedTeams(cur_match_data))
+        # prettyPrint(GetBlueTeams(cur_match_data))
+        # prettyPrint(GetRedTeams(cur_match_data))
         
-        print()
+        # print()
         
-        prettyPrint(GetBlueAutoPoints(cur_match_data))
-        prettyPrint(GetRedAutoPoints(cur_match_data))
-        prettyPrint(GetBlueAutoChargeStationPoints(cur_match_data))
-        prettyPrint(GetBlueAutoBridgeState(cur_match_data))
-        prettyPrint(GetBlueAutoChargeStationRobot1(cur_match_data))
-        prettyPrint(GetBlueAutoChargeStationRobot2(cur_match_data))
-        prettyPrint(GetBlueAutoChargeStationRobot3(cur_match_data))
-        prettyPrint(GetBlueTotalChargeStationPoints(cur_match_data))
-        prettyPrint(GetBlueEndGameChargeStationPoints(cur_match_data))
-        prettyPrint(GetBlueEndGameBridgeState(cur_match_data))
-        prettyPrint(GetBlueEndGameChargeStationRobot1(cur_match_data))
-        prettyPrint(GetBlueEndGameChargeStationRobot2(cur_match_data))
-        prettyPrint(GetBlueEndGameChargeStationRobot3(cur_match_data))
+        # prettyPrint(GetBlueAutoPoints(cur_match_data))
+        # prettyPrint(GetRedAutoPoints(cur_match_data))
+        # prettyPrint(GetBlueAutoChargeStationPoints(cur_match_data))
+        # prettyPrint(GetBlueAutoBridgeState(cur_match_data))
+        # prettyPrint(GetBlueAutoChargeStationRobot1(cur_match_data))
+        # prettyPrint(GetBlueAutoChargeStationRobot2(cur_match_data))
+        # prettyPrint(GetBlueAutoChargeStationRobot3(cur_match_data))
+        # prettyPrint(GetBlueTotalChargeStationPoints(cur_match_data))
+        # prettyPrint(GetBlueEndGameChargeStationPoints(cur_match_data))
+        # prettyPrint(GetBlueEndGameBridgeState(cur_match_data))
+        # prettyPrint(GetBlueEndGameChargeStationRobot1(cur_match_data))
+        # prettyPrint(GetBlueEndGameChargeStationRobot2(cur_match_data))
+        # prettyPrint(GetBlueEndGameChargeStationRobot3(cur_match_data))
         
-        print()
+        # print()
         
-        prettyPrint(GetRedAutoChargeStationPoints(cur_match_data))
-        prettyPrint(GetRedAutoBridgeState(cur_match_data))
-        prettyPrint(GetRedAutoChargeStationRobot1(cur_match_data))
-        prettyPrint(GetRedAutoChargeStationRobot2(cur_match_data))
-        prettyPrint(GetRedAutoChargeStationRobot3(cur_match_data))
-        prettyPrint(GetRedTotalChargeStationPoints(cur_match_data))
-        prettyPrint(GetRedEndGameChargeStationPoints(cur_match_data))
-        prettyPrint(GetRedEndGameBridgeState(cur_match_data))
-        prettyPrint(GetRedEndGameChargeStationRobot1(cur_match_data))
-        prettyPrint(GetRedEndGameChargeStationRobot2(cur_match_data))
-        prettyPrint(GetRedEndGameChargeStationRobot3(cur_match_data))
+        # prettyPrint(GetRedAutoChargeStationPoints(cur_match_data))
+        # prettyPrint(GetRedAutoBridgeState(cur_match_data))
+        # prettyPrint(GetRedAutoChargeStationRobot1(cur_match_data))
+        # prettyPrint(GetRedAutoChargeStationRobot2(cur_match_data))
+        # prettyPrint(GetRedAutoChargeStationRobot3(cur_match_data))
+        # prettyPrint(GetRedTotalChargeStationPoints(cur_match_data))
+        # prettyPrint(GetRedEndGameChargeStationPoints(cur_match_data))
+        # prettyPrint(GetRedEndGameBridgeState(cur_match_data))
+        # prettyPrint(GetRedEndGameChargeStationRobot1(cur_match_data))
+        # prettyPrint(GetRedEndGameChargeStationRobot2(cur_match_data))
+        # prettyPrint(GetRedEndGameChargeStationRobot3(cur_match_data))
         
-        print()
+        # print()
         
-        prettyPrint(GetBlueTeleopGamePiecePoints(cur_match_data))
-        prettyPrint(GetRedTeleopGamePiecePoints(cur_match_data))
-        prettyPrint(GetBlueTeleopGamePieceB(cur_match_data))
-        prettyPrint(GetRedTeleopGamePieceB(cur_match_data))
-        prettyPrint(GetBlueTeleopGamePieceM(cur_match_data))
-        prettyPrint(GetRedTeleopGamePieceM(cur_match_data))
-        prettyPrint(GetBlueTeleopGamePieceT(cur_match_data))
-        prettyPrint(GetRedTeleopGamePieceT(cur_match_data))
+        # prettyPrint(GetBlueTeleopGamePiecePoints(cur_match_data))
+        # prettyPrint(GetRedTeleopGamePiecePoints(cur_match_data))
+        # prettyPrint(GetBlueTeleopGamePieceB(cur_match_data))
+        # prettyPrint(GetRedTeleopGamePieceB(cur_match_data))
+        # prettyPrint(GetBlueTeleopGamePieceM(cur_match_data))
+        # prettyPrint(GetRedTeleopGamePieceM(cur_match_data))
+        # prettyPrint(GetBlueTeleopGamePieceT(cur_match_data))
+        # prettyPrint(GetRedTeleopGamePieceT(cur_match_data))
         
-        print()
-        print()
-        print()
+        # print()
+        # print()
+        # print()
         
         #prettyPrint( TBA_MatchWinner(match))
-        #we have the mathc data now, we fill in each match with the data, code not implemented yet
         
     now = datetime.now().time()
     finished_time = timedelta(hours=float(now.hour),minutes=float(now.minute),seconds=float(now.second))
     print (finished_time - current_time)
 
 
-fill_matchdata()
+#fill_matchdata()
 
