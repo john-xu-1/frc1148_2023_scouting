@@ -21,7 +21,7 @@ gc = pygsheets.authorize(service_file='credentials.json')
 # #update the first sheet with df, starting at cell B2. 
 # wks.set_dataframe(df,(1,1))
 
-print("starting1st")
+print("starting power ratings")
 
 Teams = tb.TBA_EventTeamsFormatted(curEvent)
 
@@ -44,11 +44,12 @@ for i in range (len(Teams)):
    winRates.append(tb.TBA_WinRate(Teams[i],curEvent))
 
 data = pd.DataFrame({"Teams":Teams,"OPR":OPR, "DPR":DPR, "CCWM":CCWM, "Win Rate %": winRates})
+print ("start writing power rating data")
 sh = gc.open('Scouting Spreadsheet')
 wks = sh[1]
 wks.set_dataframe(data,(1,1))
 
-print("starting2nd")
+print("starting tba data (+parking)")
 
 def extract_data(data_type, Match):
     data_list = []
@@ -166,6 +167,7 @@ data2 = pd.DataFrame({
     "Red Endgame Park 3": RedEndgamePark3
 }
 )
+print ("start writing data for tba data")
 sh = gc.open('Scouting Spreadsheet')
 wks = sh[2]
 wks.set_dataframe(data2,(1,1))
