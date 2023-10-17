@@ -26,3 +26,15 @@ As for goals for next time, there are listed below as such in no particular orde
 2. We have NOT done OPR & cube/cone points yet 
 
 Perhpas it's a good idea to split up and each person focuses on one thing 
+
+
+== 10/13 John 6:45 pm ==
+
+Fixed token expiring issue, no need to publish / make google review app
+just need service client 
+
+CHECK quickstart.py not quickstartOUTDATE.py, the latter would be the old code
+
+== 10/17 John 4:40 pm ==
+
+Finished cube and cone OPR. Preparing for merge

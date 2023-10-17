@@ -63,8 +63,11 @@ def TBA_TeamInfo(team):
 def TBA_TeamFullInfo(team):
     return TBA_AddressFetcher('team/frc'+team)
 
-def TBA_TeamNicknname(team):
+def TBA_TeamNickname(team):
     return TBA_TeamInfo(team)['nickname']
+
+
+
 
 def TBA_TeamName(team):
     return TBA_TeamInfo(team)['name']
@@ -275,6 +278,8 @@ def GetRedTeleopGamePieceT(match):
 # it takes for this method to run. 
 # We have NOT written anything to actually write the prints to the spreadsheet, that is one of our next goals
 
+
+
 #fills entire sheet
 def fill_matchdata():   
     matches = TBA_EventMatchKeys(curEvent) 
@@ -343,12 +348,11 @@ def fill_matchdata():
         # print()
         
         #prettyPrint( TBA_MatchWinner(match))
-        #we have the mathc data now, we fill in each match with the data, code not implemented yet
         
     now = datetime.now().time()
     finished_time = timedelta(hours=float(now.hour),minutes=float(now.minute),seconds=float(now.second))
     print (finished_time - current_time)
 
 
-fill_matchdata()
+#fill_matchdata()
 
