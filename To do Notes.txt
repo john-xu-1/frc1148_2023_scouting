@@ -46,3 +46,9 @@ then Calculate OPR using the values
 
 == 10/15 Matthew 1:00pm==
 I finished recreating the google spreadsheets
+
+== 10/17 John 5:00pm==
+
+Re-integrated my work with Mathew's work, all that is needed is done (for now)! 
+
+We are planning to create an app for scouting next or do some more funny data science.

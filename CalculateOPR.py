@@ -3,10 +3,11 @@ import TBA_Functions as tba
 import pandas as pd
 
 
-allTeam = tba.TBA_EventTeamsRaw(event="2023cala")
 
-def coneNcubeOPR():   
-    matches = tba.TBA_EventMatchKeys("2023cala")
+
+def coneNcubeOPR(event):   
+    allTeam = tba.TBA_EventTeamsRaw(event)
+    matches = tba.TBA_EventMatchKeys(event)
     
     coneMatrix = [] 
     cubeMatrix = []
@@ -140,11 +141,12 @@ def coneNcubeOPR():
     df = pd.DataFrame( {"team": allTeam, "coneOPR": coneArray, "cubeOPR": cubeArray})
 
     print (df)
+    return df
     
 
     
 
-coneNcubeOPR()
+#coneNcubeOPR("2023cala")
 # teamNames = []
 
 # for i in range (0, len(team),1):
