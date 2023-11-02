@@ -172,4 +172,14 @@ sh = gc.open('Scouting Spreadsheet')
 wks = sh[2]
 wks.set_dataframe(data2,(1,1))
 
+
+B = pd.DataFrame({"BlueAlliance":BlueAlliance})
+R = pd.DataFrame({"RedAlliance":RedAlliance})
+print ("start writing data for scouting")
+sh = gc.open('Scouting Spreadsheet')
+wks = sh[3]
+wks.set_dataframe(B,(1,5))
+wks.set_dataframe(R,(1,9))
+
+
 print("all done")
