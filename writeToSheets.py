@@ -3,6 +3,63 @@ import pandas as pd
 import TBA_Functions as tb
 import CalculateOPR as cop
 import numpy as np
+import re
+import re
+
+def custom_sort(item_list):
+    def custom_key(item):
+        # Split the item into parts using '_' as the separator
+        parts = item.split('_')
+
+        # Define a dictionary to assign a sorting key to each part
+        sorting_key = {
+            'qm': 0,  # 'qm' comes first
+            'sf': 1,  # 'sf' comes second
+            'f': 2    # 'f' comes third
+        }
+
+        # Extract the type of the item (qm, sf, f) and the number part
+        item_type = re.search(r'qm|sf|f', parts[1]).group(0)
+        number_part = int(re.search(r'(\d+)$', parts[-1]).group(0))
+
+        return sorting_key[item_type], number_part
+
+    sorted_list = sorted(item_list, key=custom_key)
+
+    return sorted_list
+
+# def custom_sort_M(match_data_list):
+#     def custom_key(match_data):
+#         # Extract the match key
+#         key = match_data.get('key', '')
+#         return key
+
+#     # Define a dictionary to assign a sorting key to each part
+#     sorting_key = {
+#         'qm': 0,  # 'qm' comes first
+#         'sf': 1,  # 'sf' comes second
+#         'f': 2    # 'f' comes third
+#     }
+
+#     sorted_list = sorted(match_data_list, key=lambda match_data: (sorting_key.get(match_data.get('comp_level'), 999), match_data.get('key')))
+#     return sorted_list
+def custom_sort_M(match_data_list):
+    def custom_key(match_data):
+        # Extract the match key
+        key = match_data.get('key', '')
+        return key
+
+    # Define a dictionary to assign a sorting key to each part
+    sorting_key = {
+        'qm': 0,  # 'qm' comes first
+        'sf': 1,  # 'sf' comes second
+        'f': 2    # 'f' comes third
+    }
+
+    sorted_list = sorted(match_data_list, key=lambda match_data: (sorting_key.get(match_data.get('comp_level'), 999), match_data.get('match_number'), match_data.get('key')))
+    return sorted_list
+
+
 #authorization
 curEvent = "2023catt"
 
@@ -35,39 +92,39 @@ matchesPlayed = []
 
 
 
-for team in Teams:
-    status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
-    if (status  is not None):
-        matchesPlayed.append(tb.TBA_MatchesPlayed(team, curEvent))
-    else: matchesPlayed.append("None")
+# for team in Teams:
+#     status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
+#     if (status  is not None):
+#         matchesPlayed.append(tb.TBA_MatchesPlayed(team, curEvent))
+#     else: matchesPlayed.append("None")
 
-DPR = tb.TBA_EventDPR(curEvent)
+# DPR = tb.TBA_EventDPR(curEvent)
 
-CCWM = tb.TBA_EventCCWM(curEvent)
+# CCWM = tb.TBA_EventCCWM(curEvent)
 
-print (len(Teams))
-print (len(OPR[:36]))
-
-
-winRates = []
-for i in range (len(Teams)):
-    status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
-    if (status is not None):
-        winRates.append(tb.TBA_WinRate(Teams[i],curEvent))
-    else: winRates.append("None")
-
-print (len(coneNCube['coneOPR']))
-print (len( winRates))
-print (len(matchesPlayed))
+# print (len(Teams))
+# print (len(OPR[:36]))
 
 
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], "Win Rate %": winRates, "Cone OPR": coneNCube['coneOPR'], "Cube OPR": coneNCube['cubeOPR'], "Matches Played": matchesPlayed})
-print ("start writing power rating data")
-sh = gc.open('Scouting Spreadsheet')
-wks = sh[1]
-wks.set_dataframe(data,(1,1))
+# winRates = []
+# for i in range (len(Teams)):
+#     status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
+#     if (status is not None):
+#         winRates.append(tb.TBA_WinRate(Teams[i],curEvent))
+#     else: winRates.append("None")
 
-print("starting tba data (+parking)")
+# print (len(coneNCube['coneOPR']))
+# print (len( winRates))
+# print (len(matchesPlayed))
+
+
+# data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], "Win Rate %": winRates, "Cone OPR": coneNCube['coneOPR'], "Cube OPR": coneNCube['cubeOPR'], "Matches Played": matchesPlayed})
+# print ("start writing power rating data")
+# sh = gc.open('Scouting Spreadsheet')
+# wks = sh[1]
+# wks.set_dataframe(data,(1,1))
+
+# print("starting tba data (+parking)")
 
 
 
@@ -97,16 +154,18 @@ def EventMatchKeys(x):
 
     return matches
 
-Match = EventMatchKeys(curEvent)
-match = tb.TBA_EventMatchKeys(curEvent)
+Match = EventMatchKeys(curEvent)## Match info
+match = tb.TBA_EventMatchKeys(curEvent)## Match keys
 
 
+# Sort the list by category (qm, sf, f) and then by the number within each category
+match = custom_sort(match)
+Match = custom_sort_M(Match)
+print (Match)
 
 
 #BlueRP, BlueScore, BlueAlliance, RedAlliance, RedRP, RedScore, BlueTotalAutopts, BluetotalChargeStationPoints, BlueAutoStationpts, BlueAutoStationlvl, BlueAutoPark1, BlueAutoPark2, BlueAutoPark3, BlueEndgamePark1, BlueEndgamePark2, BlueEndgamePark3, Winner = []
 #RedTotalAutopts, RedtotalChargeStationPoints, RedAutoStationpts, RedAutoStationlvl, RedeAutoPark1, RedAutoPark2, RedAutoPark3, RedEndgamePark1, RedEndgamePark2, RedEndgamePark3 = []  
-
-
 
 
 BlueRP = extract_data(tb.GetBlueRP, Match)
