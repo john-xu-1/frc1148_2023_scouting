@@ -92,39 +92,39 @@ matchesPlayed = []
 
 
 
-# for team in Teams:
-#     status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
-#     if (status  is not None):
-#         matchesPlayed.append(tb.TBA_MatchesPlayed(team, curEvent))
-#     else: matchesPlayed.append("None")
+for team in Teams:
+    status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
+    if (status  is not None):
+        matchesPlayed.append(tb.TBA_MatchesPlayed(team, curEvent))
+    else: matchesPlayed.append("None")
 
-# DPR = tb.TBA_EventDPR(curEvent)
+DPR = tb.TBA_EventDPR(curEvent)
 
-# CCWM = tb.TBA_EventCCWM(curEvent)
+CCWM = tb.TBA_EventCCWM(curEvent)
 
-# print (len(Teams))
-# print (len(OPR[:36]))
-
-
-# winRates = []
-# for i in range (len(Teams)):
-#     status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
-#     if (status is not None):
-#         winRates.append(tb.TBA_WinRate(Teams[i],curEvent))
-#     else: winRates.append("None")
-
-# print (len(coneNCube['coneOPR']))
-# print (len( winRates))
-# print (len(matchesPlayed))
+print (len(Teams))
+print (len(OPR[:36]))
 
 
-# data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], "Win Rate %": winRates, "Cone OPR": coneNCube['coneOPR'], "Cube OPR": coneNCube['cubeOPR'], "Matches Played": matchesPlayed})
-# print ("start writing power rating data")
-# sh = gc.open('Scouting Spreadsheet')
-# wks = sh[1]
-# wks.set_dataframe(data,(1,1))
+winRates = []
+for i in range (len(Teams)):
+    status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
+    if (status is not None):
+        winRates.append(tb.TBA_WinRate(Teams[i],curEvent))
+    else: winRates.append("None")
 
-# print("starting tba data (+parking)")
+print (len(coneNCube['coneOPR']))
+print (len( winRates))
+print (len(matchesPlayed))
+
+
+data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], "Win Rate %": winRates, "Cone OPR": coneNCube['coneOPR'], "Cube OPR": coneNCube['cubeOPR'], "Matches Played": matchesPlayed})
+print ("start writing power rating data")
+sh = gc.open('Scouting Spreadsheet')
+wks = sh[1]
+wks.set_dataframe(data,(1,1))
+
+print("starting tba data (+parking)")
 
 
 
