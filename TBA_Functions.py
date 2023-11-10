@@ -3,7 +3,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-curEvent = "2023catt"
+curEvent = "2023mttd"
 
 def prettyPrint(jsonI):
     print (json.dumps(jsonI,indent=2))
@@ -112,9 +112,10 @@ def TBA_EventOPRs(event):
     return TBA_AddressFetcher("event/"+event+"/oprs")
 
 def TBA_EventOPR(event):
-    OPRs = TBA_AddressFetcher("event/" + event + "/oprs")['oprs']
-    OPR_values = list(OPRs.values())
-    return OPR_values
+    if (TBA_AddressFetcher("event/" + event + "/oprs") is not None):
+        OPRs = TBA_AddressFetcher("event/" + event + "/oprs")['oprs']
+        OPR_values = list(OPRs.values())
+        return OPR_values
 
 def TBA_EventDPR(event):
     OPRs = TBA_AddressFetcher("event/" + event + "/oprs")['dprs']

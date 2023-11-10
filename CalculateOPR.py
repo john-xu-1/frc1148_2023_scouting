@@ -13,7 +13,7 @@ def coneNcubeOPR(event):
     cubeMatrix = []
     teamMatrix = []
     
-    print (len(matches))
+    print ("len " + str(len(matches)) + " if this is zero that means matches isn't up")
     
     i = 0
 
