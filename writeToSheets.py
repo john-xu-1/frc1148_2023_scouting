@@ -117,8 +117,8 @@ print (len(coneNCube['coneOPR']))
 print (len( winRates))
 print (len(matchesPlayed))
 
-
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], "Win Rate %": winRates, "Cone OPR": coneNCube['coneOPR'], "Cube OPR": coneNCube['cubeOPR'], "Matches Played": matchesPlayed})
+##changed the OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], to 47
+data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:47], "DPR":DPR[:47], "CCWM":CCWM[:47], "Win Rate %": winRates, "Cone OPR": coneNCube['coneOPR'], "Cube OPR": coneNCube['cubeOPR'], "Matches Played": matchesPlayed})
 print ("start writing power rating data")
 sh = gc.open('Scouting Spreadsheet')
 wks = sh[1]

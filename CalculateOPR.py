@@ -154,6 +154,18 @@ def coneNcubeOPR(event):
     
     # print (coneArray)
     # print (cubeArray)
+    # print("alteam:"+str(len(allTeam)))
+    # print("coneOP:"+str(len(coneArray)))
+    # print("cubeOP:"+str(len(cubeArray)))
+
+#temp fix so that the write to sheets can run    
+    noneArray = [0]*len(allTeam)
+    
+    if((len(coneArray)<len(allTeam))):
+        coneArray = noneArray
+        
+    if((len(cubeArray)<len(allTeam))):
+        cubeArray = noneArray
     
     df = pd.DataFrame( {"team": allTeam, "coneOPR": coneArray, "cubeOPR": cubeArray})
 
