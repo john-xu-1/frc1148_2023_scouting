@@ -31,74 +31,74 @@ def coneNcubeOPR(event):
         
         if (type(cur_match_data['score_breakdown']) is not type(None)):
          
-            blueTeams = tba.GetBlueTeams(cur_match_data)
-            for ii in range(0, len(blueTeams)):
-                if blueTeams[ii] == "frc841B":
-                    blueTeams[ii] = "frc9982"
-                elif blueTeams[ii] == "frc973B":
-                    blueTeams[ii] = "frc9985"
-                elif blueTeams[ii] == "frc1148B":
-                    blueTeams[ii] = "frc9986"
-                elif blueTeams[ii] == "frc1323B":
-                    blueTeams[ii] = "frc9987"
-                elif blueTeams[ii] == "frc1678B":
-                    blueTeams[ii] = "frc9988"
-                elif blueTeams[ii] == "frc2813B":
-                    blueTeams[ii] = "frc9990"
-                elif blueTeams[ii] == "frc3970B":
-                    blueTeams[ii] = "frc9991"
-                elif blueTeams[ii] == "frc5026B":
-                    blueTeams[ii] = "frc9992"
-                elif blueTeams[ii] == "frc5104B":
-                    blueTeams[ii] = "frc9993"
-                elif blueTeams[ii] == "frc5419B":
-                    blueTeams[ii] = "frc9994"
-                elif blueTeams[ii] == "frc5940B":
-                    blueTeams[ii] = "frc9995"
-                elif blueTeams[ii] == "frc6305B":
-                    blueTeams[ii] = "frc9996"
-                elif blueTeams[ii] == "frc6657B":
-                    blueTeams[ii] = "frc9997"
-                elif blueTeams[ii] == "frc7419B":
-                    blueTeams[ii] = "frc9998"
-                elif blueTeams[ii] == "frc8768B":
-                    blueTeams[ii] = "frc9999"
+            # blueTeams = tba.GetBlueTeams(cur_match_data)
+            # for ii in range(0, len(blueTeams)):
+            #     if blueTeams[ii] == "frc841B":
+            #         blueTeams[ii] = "frc9982"
+            #     elif blueTeams[ii] == "frc973B":
+            #         blueTeams[ii] = "frc9985"
+            #     elif blueTeams[ii] == "frc1148B":
+            #         blueTeams[ii] = "frc9986"
+            #     elif blueTeams[ii] == "frc1323B":
+            #         blueTeams[ii] = "frc9987"
+            #     elif blueTeams[ii] == "frc1678B":
+            #         blueTeams[ii] = "frc9988"
+            #     elif blueTeams[ii] == "frc2813B":
+            #         blueTeams[ii] = "frc9990"
+            #     elif blueTeams[ii] == "frc3970B":
+            #         blueTeams[ii] = "frc9991"
+            #     elif blueTeams[ii] == "frc5026B":
+            #         blueTeams[ii] = "frc9992"
+            #     elif blueTeams[ii] == "frc5104B":
+            #         blueTeams[ii] = "frc9993"
+            #     elif blueTeams[ii] == "frc5419B":
+            #         blueTeams[ii] = "frc9994"
+            #     elif blueTeams[ii] == "frc5940B":
+            #         blueTeams[ii] = "frc9995"
+            #     elif blueTeams[ii] == "frc6305B":
+            #         blueTeams[ii] = "frc9996"
+            #     elif blueTeams[ii] == "frc6657B":
+            #         blueTeams[ii] = "frc9997"
+            #     elif blueTeams[ii] == "frc7419B":
+            #         blueTeams[ii] = "frc9998"
+            #     elif blueTeams[ii] == "frc8768B":
+            #         blueTeams[ii] = "frc9999"
             print (i)
             
             
             
-            redTeams = tba.GetRedTeams(cur_match_data)
-            for iii in range(0, len(redTeams)):
-                if redTeams[iii] == "frc841B":
-                    redTeams[iii] = "frc9982"
-                elif redTeams[iii] == "frc973B":
-                    redTeams[iii] = "frc9985"
-                elif redTeams[iii] == "frc1148B":
-                    redTeams[iii] = "frc9986"
-                elif redTeams[iii] == "frc1323B":
-                    redTeams[iii] = "frc9987"
-                elif redTeams[iii] == "frc1678B":
-                    redTeams[iii] = "frc9988"
-                elif redTeams[iii] == "frc2813B":
-                    redTeams[iii] = "frc9990"
-                elif redTeams[iii] == "frc3970B":
-                    redTeams[iii] = "frc9991"
-                elif redTeams[iii] == "frc5026B":
-                    redTeams[iii] = "frc9992"
-                elif redTeams[iii] == "frc5104B":
-                    redTeams[iii] = "frc9993"
-                elif redTeams[iii] == "frc5419B":
-                    redTeams[iii] = "frc9994"
-                elif redTeams[iii] == "frc5940B":
-                    redTeams[iii] = "frc9995"
-                elif redTeams[iii] == "frc6305B":
-                    redTeams[iii] = "frc9996"
-                elif redTeams[iii] == "frc6657B":
-                    redTeams[iii] = "frc9997"
-                elif redTeams[iii] == "frc7419B":
-                    redTeams[iii] = "frc9998"
-                elif redTeams[iii] == "frc8768B":
-                    redTeams[iii] = "frc9999"
+            # redTeams = tba.GetRedTeams(cur_match_data)
+            # for iii in range(0, len(redTeams)):
+            #     if redTeams[iii] == "frc841B":
+            #         redTeams[iii] = "frc9982"
+            #     elif redTeams[iii] == "frc973B":
+            #         redTeams[iii] = "frc9985"
+            #     elif redTeams[iii] == "frc1148B":
+            #         redTeams[iii] = "frc9986"
+            #     elif redTeams[iii] == "frc1323B":
+            #         redTeams[iii] = "frc9987"
+            #     elif redTeams[iii] == "frc1678B":
+            #         redTeams[iii] = "frc9988"
+            #     elif redTeams[iii] == "frc2813B":
+            #         redTeams[iii] = "frc9990"
+            #     elif redTeams[iii] == "frc3970B":
+            #         redTeams[iii] = "frc9991"
+            #     elif redTeams[iii] == "frc5026B":
+            #         redTeams[iii] = "frc9992"
+            #     elif redTeams[iii] == "frc5104B":
+            #         redTeams[iii] = "frc9993"
+            #     elif redTeams[iii] == "frc5419B":
+            #         redTeams[iii] = "frc9994"
+            #     elif redTeams[iii] == "frc5940B":
+            #         redTeams[iii] = "frc9995"
+            #     elif redTeams[iii] == "frc6305B":
+            #         redTeams[iii] = "frc9996"
+            #     elif redTeams[iii] == "frc6657B":
+            #         redTeams[iii] = "frc9997"
+            #     elif redTeams[iii] == "frc7419B":
+            #         redTeams[iii] = "frc9998"
+            #     elif redTeams[iii] == "frc8768B":
+            #         redTeams[iii] = "frc9999"
             
             # for redTeam in redTeams:
             #     count = 0
