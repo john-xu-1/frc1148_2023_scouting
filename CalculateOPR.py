@@ -31,7 +31,7 @@ def coneNcubeOPR(event):
         
         if (type(cur_match_data['score_breakdown']) is not type(None)):
          
-            # blueTeams = tba.GetBlueTeams(cur_match_data)
+            blueTeams = tba.GetBlueTeams(cur_match_data)
             # for ii in range(0, len(blueTeams)):
             #     if blueTeams[ii] == "frc841B":
             #         blueTeams[ii] = "frc9982"
@@ -67,7 +67,7 @@ def coneNcubeOPR(event):
             
             
             
-            # redTeams = tba.GetRedTeams(cur_match_data)
+            redTeams = tba.GetRedTeams(cur_match_data)
             # for iii in range(0, len(redTeams)):
             #     if redTeams[iii] == "frc841B":
             #         redTeams[iii] = "frc9982"
