@@ -3,7 +3,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-curEvent = "2023mttd"
+curEvent = "2023catt"
 
 def prettyPrint(jsonI):
     print (json.dumps(jsonI,indent=2))
@@ -151,10 +151,11 @@ def TBA_GetCurMatch(match):
 def TBA_MatchWinner(match):
     return TBA_GetCurMatch(match)["winning_alliance"]
 
+def GetCoopertitionBonusAchieved (match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['blue']['coopertitionBonusAchieved']
 # def GetMatchData(MatchKey):
 #     return TBA_EventMatchKeys(curEvent)[MatchKey]
-
-
 
     
 def GetBlueRP(match):
@@ -188,128 +189,258 @@ def GetBlueAutoPoints(match):
 def GetRedAutoPoints(match):
     if match['score_breakdown'] is not None: 
         return match['score_breakdown']['red']['autoPoints']
-
-def GetBlueAutoChargeStationPoints(match):
+   
+ 
+def GetBlueAutoAmpPoints(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['autoChargeStationPoints']
-
-def GetBlueAutoBridgeState(match):
+        return match['score_breakdown']['blue']['autoAmpNotePoints']
+    
+def GetBlueTeleAmpPoints(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['autoBridgeState']
-
-def GetBlueAutoChargeStationRobot1(match):
+        return match['score_breakdown']['blue']['teleopAmpNotePoints']
+    
+def GetBlueAutoSpeakerPoints(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['autoChargeStationRobot1']
-    return None
+        return match['score_breakdown']['blue']['autoSpeakerNotePoints']
 
-def GetBlueAutoChargeStationRobot2(match):
+def GetBlueSpeakerPointsRegular(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['autoChargeStationRobot2']
-
-def GetBlueAutoChargeStationRobot3(match):
+        return match['score_breakdown']['blue']['teleopSpeakerNotePoints']
+    
+def GetBlueTeleSpeakerPointsAmped(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['autoChargeStationRobot3']
+        return match['score_breakdown']['blue']['teleopSpeakerNoteAmplifiedPoints']
 
-def GetBlueTotalChargeStationPoints(match):
-    if match['score_breakdown'] is not None:
-        print (match['score_breakdown']['blue'])
-        return match['score_breakdown']['blue']['totalChargeStationPoints']
-
-def GetBlueEndGameChargeStationPoints(match):
+def GetBlueCenterTrapPoints(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['endGameChargeStationPoints']
-
-def GetBlueEndGameBridgeState(match):
+        return match['score_breakdown']['blue']['trapCenterStage']
+    
+def GetBlueLeftTrapPoints(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['endGameBridgeState']
-
-def GetBlueEndGameChargeStationRobot1(match):
+        return match['score_breakdown']['blue']['trapStageLeft']
+    
+def GetBlueRightTrapPoints(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['endGameChargeStationRobot1']
+        return match['score_breakdown']['blue']['trapStageRight']
 
-def GetBlueEndGameChargeStationRobot2(match):
+def GetBlueParkStatus1(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['endGameChargeStationRobot2']
-
-def GetBlueEndGameChargeStationRobot3(match):
+        return match['score_breakdown']['blue']['endGameRobot1']
+    
+def GetBlueParkStatus2(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['endGameChargeStationRobot3']
-
-def GetRedAutoChargeStationPoints(match):
+        return match['score_breakdown']['blue']['endGameRobot2']
+    
+def GetBlueParkStatus3(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['red']['autoChargeStationPoints']
+        return match['score_breakdown']['blue']['endGameRobot3']
 
-def GetRedAutoBridgeState(match):
+def GetBlueCenterMicStatus(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['red']['autoBridgeState']
-
-def GetRedAutoChargeStationRobot1(match):
-    if match['score_breakdown'] is not None:
-        return match['score_breakdown']['red']['autoChargeStationRobot1']
-
-def GetRedAutoChargeStationRobot2(match):
-    if match['score_breakdown'] is not None:
-        return match['score_breakdown']['red']['autoChargeStationRobot2']
-
-def GetRedAutoChargeStationRobot3(match):
-    if match['score_breakdown'] is not None:
-        return match['score_breakdown']['red']['autoChargeStationRobot3']
-
-def GetRedTotalChargeStationPoints(match):
+        return match['score_breakdown']['blue']['micCenterStage']
+    
+def GetBlueLeftMicStatus(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['red']['totalChargeStationPoints']
-
-def GetRedEndGameChargeStationPoints(match):
+        return match['score_breakdown']['blue']['micStageLeft']
+    
+def GetBlueRightMicStatus(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['red']['endGameChargeStationPoints']
-
-def GetRedEndGameBridgeState(match):
-    if match['score_breakdown'] is not None:
-        return match['score_breakdown']['red']['endGameBridgeState']
-
-def GetRedEndGameChargeStationRobot1(match):
-    if match['score_breakdown'] is not None:
-        return match['score_breakdown']['red']['endGameChargeStationRobot1']
-
-def GetRedEndGameChargeStationRobot2(match):
-    if match['score_breakdown'] is not None:
-        return match['score_breakdown']['red']['endGameChargeStationRobot2']
-
-def GetRedEndGameChargeStationRobot3(match):
-    if match['score_breakdown'] is not None:
-        return match['score_breakdown']['red']['endGameChargeStationRobot3']
-
-def GetBlueTeleopGamePiecePoints(match):
+        return match['score_breakdown']['blue']['micStageRight']
+    
+def GetBlueHarmonyPoints (match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['teleopGamePiecePoints']
-
-def GetRedTeleopGamePiecePoints(match):
+        return match['score_breakdown']['blue']['endGameHarmonyPoints']
+    
+def GetBlueCoopTry (match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['red']['teleopGamePiecePoints']
+        return match['score_breakdown']['blue']['coopNotePlayed']
 
-def GetBlueTeleopGamePieceB(match):
+def GetRedAutoAmpPoints(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['teleopCommunity']['B']
+        return match['score_breakdown']['red']['autoAmpNotePoints']
+    
+def GetRedTeleAmpPoints(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['teleopAmpNotePoints']
+    
+def GetRedAutoSpeakerPoints(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['autoSpeakerNotePoints']
 
-def GetRedTeleopGamePieceB(match):
+def GetRedSpeakerPointsRegular(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['red']['teleopCommunity']['B']
+        return match['score_breakdown']['red']['teleopSpeakerNotePoints']
+    
+def GetRedTeleSpeakerPointsAmped(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['teleopSpeakerNoteAmplifiedPoints']
 
-def GetBlueTeleopGamePieceM(match):
+def GetRedCenterTrapPoints(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['teleopCommunity']['M']
+        return match['score_breakdown']['red']['trapCenterStage']
+    
+def GetRedLeftTrapPoints(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['trapStageLeft']
+    
+def GetRedRightTrapPoints(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['trapStageRight']
 
-def GetRedTeleopGamePieceM(match):
+def GetRedParkStatus1(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['red']['teleopCommunity']['M']
+        return match['score_breakdown']['red']['endGameRobot1']
+    
+def GetRedParkStatus2(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['endGameRobot2']
+    
+def GetRedParkStatus3(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['endGameRobot3']
 
-def GetBlueTeleopGamePieceT(match):
+def GetRedCenterMicStatus(match):
     if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['teleopCommunity']['T']
+        return match['score_breakdown']['red']['micCenterStage']
+    
+def GetRedLeftMicStatus(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['micStageLeft']
+    
+def GetRedRightMicStatus(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['micStageRight']
+    
+def GetRedHarmonyPoints(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['endGameHarmonyPoints']
+    
+def GetRedCoopTry(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['coopNotePlayed']
 
-def GetRedTeleopGamePieceT(match):
-    if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['red']['teleopCommunity']['T']
+
+# def GetBlueAutoChargeStationPoints(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['autoChargeStationPoints']
+
+# def GetBlueAutoBridgeState(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['autoBridgeState']
+
+# def GetBlueAutoChargeStationRobot1(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['autoChargeStationRobot1']
+#     return None
+
+# def GetBlueAutoChargeStationRobot2(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['autoChargeStationRobot2']
+
+# def GetBlueAutoChargeStationRobot3(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['autoChargeStationRobot3']
+
+# def GetBlueTotalChargeStationPoints(match):
+#     if match['score_breakdown'] is not None:
+#         print (match['score_breakdown']['blue'])
+#         return match['score_breakdown']['blue']['totalChargeStationPoints']
+
+# def GetBlueEndGameChargeStationPoints(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['endGameChargeStationPoints']
+
+# def GetBlueEndGameBridgeState(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['endGameBridgeState']
+
+# def GetBlueEndGameChargeStationRobot1(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['endGameChargeStationRobot1']
+
+# def GetBlueEndGameChargeStationRobot2(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['endGameChargeStationRobot2']
+
+# def GetBlueEndGameChargeStationRobot3(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['endGameChargeStationRobot3']
+
+# def GetRedAutoChargeStationPoints(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['red']['autoChargeStationPoints']
+
+# def GetRedAutoBridgeState(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['red']['autoBridgeState']
+
+# def GetRedAutoChargeStationRobot1(match):
+#     if match['score_breakdown'] is not None:
+#         return match['score_breakdown']['red']['autoChargeStationRobot1']
+
+# def GetRedAutoChargeStationRobot2(match):
+#     if match['score_breakdown'] is not None:
+#         return match['score_breakdown']['red']['autoChargeStationRobot2']
+
+# def GetRedAutoChargeStationRobot3(match):
+#     if match['score_breakdown'] is not None:
+#         return match['score_breakdown']['red']['autoChargeStationRobot3']
+
+# def GetRedTotalChargeStationPoints(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['red']['totalChargeStationPoints']
+
+# def GetRedEndGameChargeStationPoints(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['red']['endGameChargeStationPoints']
+
+# def GetRedEndGameBridgeState(match):
+#     if match['score_breakdown'] is not None:
+#         return match['score_breakdown']['red']['endGameBridgeState']
+
+# def GetRedEndGameChargeStationRobot1(match):
+#     if match['score_breakdown'] is not None:
+#         return match['score_breakdown']['red']['endGameChargeStationRobot1']
+
+# def GetRedEndGameChargeStationRobot2(match):
+#     if match['score_breakdown'] is not None:
+#         return match['score_breakdown']['red']['endGameChargeStationRobot2']
+
+# def GetRedEndGameChargeStationRobot3(match):
+#     if match['score_breakdown'] is not None:
+#         return match['score_breakdown']['red']['endGameChargeStationRobot3']
+
+# def GetBlueTeleopGamePiecePoints(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['teleopGamePiecePoints']
+
+# def GetRedTeleopGamePiecePoints(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['red']['teleopGamePiecePoints']
+
+# def GetBlueTeleopGamePieceB(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['teleopCommunity']['B']
+
+# def GetRedTeleopGamePieceB(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['red']['teleopCommunity']['B']
+
+# def GetBlueTeleopGamePieceM(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['teleopCommunity']['M']
+
+# def GetRedTeleopGamePieceM(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['red']['teleopCommunity']['M']
+
+# def GetBlueTeleopGamePieceT(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['blue']['teleopCommunity']['T']
+
+# def GetRedTeleopGamePieceT(match):
+#     if match['score_breakdown'] is not None: 
+#         return match['score_breakdown']['red']['teleopCommunity']['T']
 
 #we need to use the bottom middle and top rows to find the specific amount of cube points scord, and telopgamepeicepoint-cube = cone
 

@@ -61,7 +61,7 @@ def custom_sort_M(match_data_list):
 
 
 #authorization
-curEvent = "2023mttd"
+curEvent = "2023catt"
 
 gc = pygsheets.authorize(service_file='credentials.json')
 
@@ -103,22 +103,23 @@ DPR = tb.TBA_EventDPR(curEvent)
 CCWM = tb.TBA_EventCCWM(curEvent)
 
 print (len(Teams))
-print (len(OPR[:36]))
+print (len(OPR[:34]))
 
 
 winRates = []
 for i in range (len(Teams)):
-    status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
-    if (status is not None):
-        winRates.append(tb.TBA_WinRate(Teams[i],curEvent))
-    else: winRates.append("None")
+    # status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
+    # if (status is not None):
+    #     winRates.append(tb.TBA_WinRate(Teams[i],curEvent))
+    # else: winRates.append("None")
+    winRates.append("None")
 
 print (len(coneNCube['coneOPR']))
 print (len( winRates))
 print (len(matchesPlayed))
 
 ##changed the OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], to 47
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:47], "DPR":DPR[:47], "CCWM":CCWM[:47], "Win Rate %": winRates, "Cone OPR": coneNCube['coneOPR'], "Cube OPR": coneNCube['cubeOPR'], "Matches Played": matchesPlayed})
+data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:34], "DPR":DPR[:34], "CCWM":CCWM[:34], "Win Rate %": winRates, "Cone OPR": coneNCube['coneOPR'], "Cube OPR": coneNCube['cubeOPR'], "Matches Played": matchesPlayed})
 print ("start writing power rating data")
 sh = gc.open('Scouting Spreadsheet')
 wks = sh[1]
@@ -167,6 +168,7 @@ print (Match)
 #BlueRP, BlueScore, BlueAlliance, RedAlliance, RedRP, RedScore, BlueTotalAutopts, BluetotalChargeStationPoints, BlueAutoStationpts, BlueAutoStationlvl, BlueAutoPark1, BlueAutoPark2, BlueAutoPark3, BlueEndgamePark1, BlueEndgamePark2, BlueEndgamePark3, Winner = []
 #RedTotalAutopts, RedtotalChargeStationPoints, RedAutoStationpts, RedAutoStationlvl, RedeAutoPark1, RedAutoPark2, RedAutoPark3, RedEndgamePark1, RedEndgamePark2, RedEndgamePark3 = []  
 
+CoopertitionBonusAchieved = extract_data(tb.GetCoopertitionBonusAchieved,Match)
 
 BlueRP = extract_data(tb.GetBlueRP, Match)
 
@@ -178,96 +180,137 @@ RedAlliance= extract_data(tb.GetRedTeams, Match)
 
 RedRP= extract_data(tb.GetRedRP, Match)
 
-
 RedScore = extract_data(tb.GetRedScore, Match)
-    
-
-    
-BlueTotalAutopts= extract_data(tb.GetBlueAutoPoints, Match)
-    
-BluetotalChargeStationPoints= [] #extract_data(tb.GetBlueTotalChargeStationPoints, Match)
-    
-BlueAutoStationpts= [] #extract_data(tb.GetBlueAutoChargeStationPoints, Match)
-    
-BlueAutoStationlvl= [] #extract_data(tb.GetBlueAutoBridgeState, Match)
-    
-BlueAutoPark1= extract_data(tb.GetBlueAutoChargeStationRobot1, Match)
-
-BlueAutoPark2= extract_data(tb.GetBlueAutoChargeStationRobot2, Match)
-    
-BlueAutoPark3= extract_data(tb.GetBlueAutoChargeStationRobot3, Match)
-
-BlueendGameChargeStationPoints= [] #extract_data(tb.GetBlueEndGameChargeStationPoints, Match)
-
-BlueendGameBridgeState= extract_data(tb.GetBlueEndGameBridgeState, Match)
-
-BlueEndgamePark1= extract_data(tb.GetBlueEndGameChargeStationRobot1, Match)
-    
-BlueEndgamePark2= extract_data(tb.GetBlueEndGameChargeStationRobot2, Match)
-    
-BlueEndgamePark3= extract_data(tb.GetBlueEndGameChargeStationRobot3, Match)
-
-RedTotalAutopts= extract_data(tb.GetRedAutoPoints, Match)
-    
-RedtotalChargeStationPoints= [] #extract_data(tb.GetRedTotalChargeStationPoints, Match)
-    
-RedAutoStationpts= [] #extract_data(tb.GetRedAutoChargeStationPoints, Match)
-    
-RedAutoStationlvl= [] #extract_data(tb.GetRedAutoBridgeState, Match)
-    
-RedAutoPark1= extract_data(tb.GetRedAutoChargeStationRobot1, Match)
-
-RedAutoPark2= extract_data(tb.GetRedAutoChargeStationRobot2, Match)
-    
-RedAutoPark3= extract_data(tb.GetRedAutoChargeStationRobot3, Match)
-
-RedendGameChargeStationPoints= [] #extract_data(tb.GetRedEndGameChargeStationPoints, Match)
-
-RedendGameBridgeState= extract_data(tb.GetRedEndGameBridgeState, Match)
-
-RedEndgamePark1= extract_data(tb.GetRedEndGameChargeStationRobot1, Match)
-    
-RedEndgamePark2= extract_data(tb.GetRedEndGameChargeStationRobot2, Match)
-
-RedEndgamePark3= extract_data(tb.GetRedEndGameChargeStationRobot3, Match)
 
 Winner = extract_data(tb.TBA_MatchWinner, match)
 
-sizes = []
+RedAutoPoints = extract_data(tb.GetRedAutoPoints, Match)
+BlueAutoPoints = extract_data(tb.GetBlueAutoPoints, Match)
+RedRP = extract_data(tb.GetRedRP, Match)
+BlueRP = extract_data(tb.GetBlueRP, Match)
+RedScore = extract_data(tb.GetRedScore, Match)
+BlueScore = extract_data(tb.GetBlueScore, Match)
+RedTeams = extract_data(tb.GetRedTeams, Match)
+BlueTeams = extract_data(tb.GetBlueTeams, Match)
+RedAutoAmpPoints = extract_data(tb.GetRedAutoAmpPoints, Match)
+BlueAutoAmpPoints = extract_data(tb.GetBlueAutoAmpPoints, Match)
+RedTeleAmpPoints = extract_data(tb.GetRedTeleAmpPoints, Match)
+BlueTeleAmpPoints = extract_data(tb.GetBlueTeleAmpPoints, Match)
+RedAutoSpeakerPoints = extract_data(tb.GetRedAutoSpeakerPoints, Match)
+BlueAutoSpeakerPoints = extract_data(tb.GetBlueAutoSpeakerPoints, Match)
+RedSpeakerPointsRegular = extract_data(tb.GetRedSpeakerPointsRegular, Match)
+BlueSpeakerPointsRegular = extract_data(tb.GetBlueSpeakerPointsRegular, Match)
+RedTeleSpeakerPointsAmped = extract_data(tb.GetRedTeleSpeakerPointsAmped, Match)
+BlueTeleSpeakerPointsAmped = extract_data(tb.GetBlueTeleSpeakerPointsAmped, Match)
+RedCenterTrapPoints = extract_data(tb.GetRedCenterTrapPoints, Match)
+BlueCenterTrapPoints = extract_data(tb.GetBlueCenterTrapPoints, Match)
+RedLeftTrapPoints = extract_data(tb.GetRedLeftTrapPoints, Match)
+BlueLeftTrapPoints = extract_data(tb.GetBlueLeftTrapPoints, Match)
+RedRightTrapPoints = extract_data(tb.GetRedRightTrapPoints, Match)
+BlueRightTrapPoints = extract_data(tb.GetBlueRightTrapPoints, Match)
+RedParkStatus1 = extract_data(tb.GetRedParkStatus1, Match)
+BlueParkStatus1 = extract_data(tb.GetBlueParkStatus1, Match)
+RedParkStatus2 = extract_data(tb.GetRedParkStatus2, Match)
+BlueParkStatus2 = extract_data(tb.GetBlueParkStatus2, Match)
+RedParkStatus3 = extract_data(tb.GetRedParkStatus3, Match)
+BlueParkStatus3 = extract_data(tb.GetBlueParkStatus3, Match)
+RedCenterMicStatus = extract_data(tb.GetRedCenterMicStatus, Match)
+BlueCenterMicStatus = extract_data(tb.GetBlueCenterMicStatus, Match)
+RedLeftMicStatus = extract_data(tb.GetRedLeftMicStatus, Match)
+BlueLeftMicStatus = extract_data(tb.GetBlueLeftMicStatus, Match)
+RedRightMicStatus = extract_data(tb.GetRedRightMicStatus, Match)
+BlueRightMicStatus = extract_data(tb.GetBlueRightMicStatus, Match)
+RedHarmonyPoints = extract_data(tb.GetRedHarmonyPoints, Match)
+BlueHarmonyPoints = extract_data(tb.GetBlueHarmonyPoints, Match)
+RedCoopTry = extract_data(tb.GetRedCoopTry, Match)
+BlueCoopTry = extract_data(tb.GetBlueCoopTry, Match)
 
-sizes.append(len(BlueRP))
-sizes.append(len(BlueAlliance))
-sizes.append(len(BlueScore))
-sizes.append(len(RedRP))
-sizes.append(len(RedScore))
-sizes.append(len(RedAlliance))
-sizes.append(len(Winner))
 
-sizes.append(len(BlueTotalAutopts))
-#sizes.append(len(BluetotalChargeStationPoints))
-#sizes.append(len(BlueAutoStationpts))
-#sizes.append(len(BlueAutoStationlvl))
-sizes.append(len(BlueAutoPark1))
-sizes.append(len(BlueAutoPark2))
-sizes.append(len(BlueAutoPark3))
-#sizes.append(len(BlueendGameChargeStationPoints))
-sizes.append(len(BlueendGameBridgeState))
-sizes.append(len(BlueEndgamePark1))
-sizes.append(len(BlueEndgamePark2))
-sizes.append(len(BlueEndgamePark3))
+# BlueTotalAutopts= extract_data(tb.GetBlueAutoPoints, Match)
+    
+# BluetotalChargeStationPoints= [] #extract_data(tb.GetBlueTotalChargeStationPoints, Match)
+    
+# BlueAutoStationpts= [] #extract_data(tb.GetBlueAutoChargeStationPoints, Match)
+    
+# BlueAutoStationlvl= [] #extract_data(tb.GetBlueAutoBridgeState, Match)
+    
+# BlueAutoPark1= extract_data(tb.GetBlueAutoChargeStationRobot1, Match)
 
-sizes.append(len(RedTotalAutopts))
-#sizes.append(len(RedtotalChargeStationPoints))
-#sizes.append(len(RedAutoStationpts))
-#sizes.append(len(RedAutoStationlvl))
-sizes.append(len(RedAutoPark1))
-sizes.append(len(RedAutoPark2))
-sizes.append(len(RedAutoPark3))
-#sizes.append(len(RedendGameChargeStationPoints))
-sizes.append(len(RedendGameBridgeState))
-sizes.append(len(RedEndgamePark1))
-sizes.append(len(RedEndgamePark2))
-sizes.append(len(RedEndgamePark3))
+# BlueAutoPark2= extract_data(tb.GetBlueAutoChargeStationRobot2, Match)
+    
+# BlueAutoPark3= extract_data(tb.GetBlueAutoChargeStationRobot3, Match)
+
+# BlueendGameChargeStationPoints= [] #extract_data(tb.GetBlueEndGameChargeStationPoints, Match)
+
+# BlueendGameBridgeState= extract_data(tb.GetBlueEndGameBridgeState, Match)
+
+# BlueEndgamePark1= extract_data(tb.GetBlueEndGameChargeStationRobot1, Match)
+    
+# BlueEndgamePark2= extract_data(tb.GetBlueEndGameChargeStationRobot2, Match)
+    
+# BlueEndgamePark3= extract_data(tb.GetBlueEndGameChargeStationRobot3, Match)
+
+# RedTotalAutopts= extract_data(tb.GetRedAutoPoints, Match)
+    
+# RedtotalChargeStationPoints= [] #extract_data(tb.GetRedTotalChargeStationPoints, Match)
+    
+# RedAutoStationpts= [] #extract_data(tb.GetRedAutoChargeStationPoints, Match)
+    
+# RedAutoStationlvl= [] #extract_data(tb.GetRedAutoBridgeState, Match)
+    
+# RedAutoPark1= extract_data(tb.GetRedAutoChargeStationRobot1, Match)
+
+# RedAutoPark2= extract_data(tb.GetRedAutoChargeStationRobot2, Match)
+    
+# RedAutoPark3= extract_data(tb.GetRedAutoChargeStationRobot3, Match)
+
+# RedendGameChargeStationPoints= [] #extract_data(tb.GetRedEndGameChargeStationPoints, Match)
+
+# RedendGameBridgeState= extract_data(tb.GetRedEndGameBridgeState, Match)
+
+# RedEndgamePark1= extract_data(tb.GetRedEndGameChargeStationRobot1, Match)
+    
+# RedEndgamePark2= extract_data(tb.GetRedEndGameChargeStationRobot2, Match)
+
+# RedEndgamePark3= extract_data(tb.GetRedEndGameChargeStationRobot3, Match)
+
+
+
+# sizes = []
+
+# sizes.append(len(BlueRP))
+# sizes.append(len(BlueAlliance))
+# sizes.append(len(BlueScore))
+# sizes.append(len(RedRP))
+# sizes.append(len(RedScore))
+# sizes.append(len(RedAlliance))
+# sizes.append(len(Winner))
+
+# sizes.append(len(BlueTotalAutopts))
+# #sizes.append(len(BluetotalChargeStationPoints))
+# #sizes.append(len(BlueAutoStationpts))
+# #sizes.append(len(BlueAutoStationlvl))
+# sizes.append(len(BlueAutoPark1))
+# sizes.append(len(BlueAutoPark2))
+# sizes.append(len(BlueAutoPark3))
+# #sizes.append(len(BlueendGameChargeStationPoints))
+# sizes.append(len(BlueendGameBridgeState))
+# sizes.append(len(BlueEndgamePark1))
+# sizes.append(len(BlueEndgamePark2))
+# sizes.append(len(BlueEndgamePark3))
+
+# sizes.append(len(RedTotalAutopts))
+# #sizes.append(len(RedtotalChargeStationPoints))
+# #sizes.append(len(RedAutoStationpts))
+# #sizes.append(len(RedAutoStationlvl))
+# sizes.append(len(RedAutoPark1))
+# sizes.append(len(RedAutoPark2))
+# sizes.append(len(RedAutoPark3))
+# #sizes.append(len(RedendGameChargeStationPoints))
+# sizes.append(len(RedendGameBridgeState))
+# sizes.append(len(RedEndgamePark1))
+# sizes.append(len(RedEndgamePark2))
+# sizes.append(len(RedEndgamePark3))
 
 
 
@@ -323,6 +366,7 @@ sizes.append(len(RedEndgamePark3))
  
     
 data2 = pd.DataFrame({
+    
     "Matches":match,
     "Blue RP": BlueRP,
     "Blue Score": BlueScore,
@@ -331,30 +375,70 @@ data2 = pd.DataFrame({
     "Red Score": RedScore,
     "Red Alliance": RedAlliance,
     "Winner": Winner,
-    "Blue Total Auto pts": BlueTotalAutopts,
-    # "Blue totalChargeStationPoints": BluetotalChargeStationPoints,
-    # "Blue Auto Station pts": BlueAutoStationpts,
-    # "Blue Auto Station lvl": BlueAutoStationlvl,
-    "Blue Auto Park 1": BlueAutoPark1,
-    "Blue Auto Park 2": BlueAutoPark2,
-    "Blue Auto Park 3": BlueAutoPark3,
-    # "Blue endGameChargeStationPoints": BlueendGameChargeStationPoints,
-    "Blue endGameBridgeState": BlueendGameBridgeState,
-    "Blue Endgame Park 1": BlueEndgamePark1,
-    "Blue Endgame Park 2": BlueEndgamePark2,
-    "Blue Endgame Park 3": BlueEndgamePark3,
-    "Red Total Auto pts": RedTotalAutopts,
-    # "Red totalChargeStationPoints": RedtotalChargeStationPoints,
-    # "Red Auto Station pts": RedAutoStationpts,
-    # "Red Auto Station lvl": RedAutoStationlvl,
-    "Red Auto Park 1": RedAutoPark1,
-    "Red Auto Park 2": RedAutoPark2,
-    "Red Auto Park 3": RedAutoPark3,
-    # "Red endGameChargeStationPoints": RedendGameChargeStationPoints,
-    "Red endGameBridgeState": RedendGameBridgeState,
-    "Red Endgame Park 1": RedEndgamePark1,
-    "Red Endgame Park 2": RedEndgamePark2,
-    "Red Endgame Park 3": RedEndgamePark3
+    # For Blue Alliance:
+    "Blue Coop Try": BlueCoopTry,
+    "Blue Auto Points": BlueAutoPoints,
+    "Blue Auto Amp Points": BlueAutoAmpPoints,
+    "Blue Tele Amp Points": BlueTeleAmpPoints,
+    "Blue Auto Speaker Points": BlueAutoSpeakerPoints,
+    "Blue Speaker Points Regular": BlueSpeakerPointsRegular,
+    "Blue Tele Speaker Points Amped": BlueTeleSpeakerPointsAmped,
+    "Blue Center Trap Points": BlueCenterTrapPoints,
+    "Blue Left Trap Points": BlueLeftTrapPoints,
+    "Blue Right Trap Points": BlueRightTrapPoints,
+    "Blue Park Status 1": BlueParkStatus1,
+    "Blue Park Status 2": BlueParkStatus2,
+    "Blue Park Status 3": BlueParkStatus3,
+    "Blue Center Mic Status": BlueCenterMicStatus,
+    "Blue Left Mic Status": BlueLeftMicStatus,
+    "Blue Right Mic Status": BlueRightMicStatus,
+    "Blue Harmony Points": BlueHarmonyPoints,
+    
+
+    # For Red Alliance:
+    "Red Coop Try": RedCoopTry,
+    "Red Auto Points": RedAutoPoints,
+    "Red Auto Amp Points": RedAutoAmpPoints,
+    "Red Tele Amp Points": RedTeleAmpPoints,
+    "Red Auto Speaker Points": RedAutoSpeakerPoints,
+    "Red Speaker Points Regular": RedSpeakerPointsRegular,
+    "Red Tele Speaker Points Amped": RedTeleSpeakerPointsAmped,
+    "Red Center Trap Points": RedCenterTrapPoints,
+    "Red Left Trap Points": RedLeftTrapPoints,
+    "Red Right Trap Points": RedRightTrapPoints,
+    "Red Park Status 1": RedParkStatus1,
+    "Red Park Status 2": RedParkStatus2,
+    "Red Park Status 3": RedParkStatus3,
+    "Red Center Mic Status": RedCenterMicStatus,
+    "Red Left Mic Status": RedLeftMicStatus,
+    "Red Right Mic Status": RedRightMicStatus,
+    "Red Harmony Points": RedHarmonyPoints,
+    
+
+    # "Blue Total Auto pts": BlueTotalAutopts,
+    # # "Blue totalChargeStationPoints": BluetotalChargeStationPoints,
+    # # "Blue Auto Station pts": BlueAutoStationpts,
+    # # "Blue Auto Station lvl": BlueAutoStationlvl,
+    # "Blue Auto Park 1": BlueAutoPark1,
+    # "Blue Auto Park 2": BlueAutoPark2,
+    # "Blue Auto Park 3": BlueAutoPark3,
+    # # "Blue endGameChargeStationPoints": BlueendGameChargeStationPoints,
+    # "Blue endGameBridgeState": BlueendGameBridgeState,
+    # "Blue Endgame Park 1": BlueEndgamePark1,
+    # "Blue Endgame Park 2": BlueEndgamePark2,
+    # "Blue Endgame Park 3": BlueEndgamePark3,
+    # "Red Total Auto pts": RedTotalAutopts,
+    # # "Red totalChargeStationPoints": RedtotalChargeStationPoints,
+    # # "Red Auto Station pts": RedAutoStationpts,
+    # # "Red Auto Station lvl": RedAutoStationlvl,
+    # "Red Auto Park 1": RedAutoPark1,
+    # "Red Auto Park 2": RedAutoPark2,
+    # "Red Auto Park 3": RedAutoPark3,
+    # # "Red endGameChargeStationPoints": RedendGameChargeStationPoints,
+    # "Red endGameBridgeState": RedendGameBridgeState,
+    # "Red Endgame Park 1": RedEndgamePark1,
+    # "Red Endgame Park 2": RedEndgamePark2,
+    # "Red Endgame Park 3": RedEndgamePark3
 }
 )
 print ("start writing data for tba data")
