@@ -93,10 +93,11 @@ matchesPlayed = []
 
 
 for team in Teams:
-    status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
-    if (status  is not None):
-        matchesPlayed.append(tb.TBA_MatchesPlayed(team, curEvent))
-    else: matchesPlayed.append("None")
+    if tb.TBA_TeamEventStatus(team,curEvent) is not None:
+        status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
+        if (status is not None):
+            matchesPlayed.append(tb.TBA_MatchesPlayed(team, curEvent))
+        else: matchesPlayed.append("None")
 
 DPR = tb.TBA_EventDPR(curEvent)
 
