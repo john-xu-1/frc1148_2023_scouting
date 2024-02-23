@@ -3,7 +3,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-curEvent = "2023catt"
+curEvent = "2024week0"
 
 def prettyPrint(jsonI):
     print (json.dumps(jsonI,indent=2))

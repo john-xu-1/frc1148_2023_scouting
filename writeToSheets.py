@@ -5,6 +5,7 @@ import CalculateOPR as cop
 import numpy as np
 import re
 import re
+import ast
 
 def custom_sort(item_list):
     def custom_key(item):
@@ -61,7 +62,7 @@ def custom_sort_M(match_data_list):
 
 
 #authorization
-curEvent = "2023catt"
+curEvent = "2024week0"
 
 gc = pygsheets.authorize(service_file='credentials.json')
 
@@ -86,7 +87,7 @@ Teams = tb.TBA_EventTeamsFormatted(curEvent)
 
 OPR = tb.TBA_EventOPR(curEvent)
 
-coneNCube = cop.coneNcubeOPR(event=curEvent)
+#coneNCube = cop.coneNcubeOPR(event=curEvent)
 
 matchesPlayed = []
 
@@ -115,12 +116,12 @@ for i in range (len(Teams)):
     # else: winRates.append("None")
     winRates.append("None")
 
-print (len(coneNCube['coneOPR']))
+#print (len(coneNCube['coneOPR']))
 print (len( winRates))
 print (len(matchesPlayed))
 
 ##changed the OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], to 47
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:34], "DPR":DPR[:34], "CCWM":CCWM[:34], "Win Rate %": winRates, "Cone OPR": coneNCube['coneOPR'], "Cube OPR": coneNCube['cubeOPR'], "Matches Played": matchesPlayed})
+data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:34], "DPR":DPR[:34], "CCWM":CCWM[:34], "Win Rate %": winRates, "Cone OPR": 0, "Cube OPR": 0, "Matches Played": matchesPlayed})
 print ("start writing power rating data")
 sh = gc.open('Scouting Spreadsheet')
 wks = sh[1]
@@ -364,6 +365,39 @@ BlueCoopTry = extract_data(tb.GetBlueCoopTry, Match)
     
 # BlueAutoStationlvl= [None] * min #extract_data(tb.GetRedAutoBridgeState, Match)
 # BlueendGameChargeStationPoints = [None] * min
+
+#blueTeams = inner_lists = BlueAlliance[2:-2].split("'], ['")
+
+
+#blue_parsed_list = BlueAlliance[1:-1].split("], [")
+
+# Parse the string using literal_eval from the ast module
+blue_first_elements = []
+blue_second_elements = []
+blue_third_elements = []
+
+# Iterate over each inner list and append corresponding elements to their respective lists
+for inner_list in BlueAlliance:
+    blue_first_elements.append(inner_list[0])
+    blue_second_elements.append(inner_list[1])
+    blue_third_elements.append(inner_list[2])
+
+
+
+#red_parsed_list = RedAlliance[1:-1].split("], [")
+
+# Parse the string using literal_eval from the ast module
+red_first_elements = []
+red_second_elements = []
+red_third_elements = []
+
+# Iterate over each inner list and append corresponding elements to their respective lists
+for inner_list in RedAlliance:
+    red_first_elements.append(inner_list[0])
+    red_second_elements.append(inner_list[1])
+    red_third_elements.append(inner_list[2])
+
+
  
     
 data2 = pd.DataFrame({
@@ -371,10 +405,14 @@ data2 = pd.DataFrame({
     "Matches":match,
     "Blue RP": BlueRP,
     "Blue Score": BlueScore,
-    "Blue Alliance": BlueAlliance,
+    "Blue1": blue_first_elements,
+    "Blue2": blue_second_elements,
+    "Blue3": blue_third_elements,
     "Red RP": RedRP,
     "Red Score": RedScore,
-    "Red Alliance": RedAlliance,
+    "Red1": red_first_elements,
+    "Red2": red_second_elements,
+    "Red3": red_third_elements,
     "Winner": Winner,
     # For Blue Alliance:
     "Blue Coop Try": BlueCoopTry,
@@ -414,6 +452,9 @@ data2 = pd.DataFrame({
     "Red Left Mic Status": RedLeftMicStatus,
     "Red Right Mic Status": RedRightMicStatus,
     "Red Harmony Points": RedHarmonyPoints,
+    
+    #bro fogor
+    "Coopertition Achieve": CoopertitionBonusAchieved,
     
 
     # "Blue Total Auto pts": BlueTotalAutopts,
