@@ -9,8 +9,10 @@ def coneNcubeOPR(event):
     allTeam = tba.TBA_EventTeamsRaw(event)
     matches = tba.TBA_EventMatchKeys(event)
     
-    coneMatrix = [] 
-    cubeMatrix = []
+    # coneMatrix = [] 
+    # cubeMatrix = []
+    ampMatrix = []
+    speakerMatrix = []
     teamMatrix = []
     
     print ("len " + str(len(matches)) + " if this is zero that means matches isn't up")
@@ -131,52 +133,67 @@ def coneNcubeOPR(event):
             
             
             
-            blueTotalPiece = tba.GetBlueTeleopGamePiecePoints(cur_match_data)
-            blueBototmPiece = tba.GetBlueTeleopGamePieceB(cur_match_data)
-            blueMiddlePiece = tba.GetBlueTeleopGamePieceM(cur_match_data)
-            blueTopPiece = tba.GetBlueTeleopGamePieceT(cur_match_data)
+            # blueTotalPiece = tba.GetBlueTeleopGamePiecePoints(cur_match_data)
+            # blueBototmPiece = tba.GetBlueTeleopGamePieceB(cur_match_data)
+            # blueMiddlePiece = tba.GetBlueTeleopGamePieceM(cur_match_data)
+            # blueTopPiece = tba.GetBlueTeleopGamePieceT(cur_match_data)
             
-            redTotalPiece = tba.GetRedTeleopGamePiecePoints(cur_match_data)
-            redBototmPiece = tba.GetRedTeleopGamePieceB(cur_match_data)
-            redMiddlePiece = tba.GetRedTeleopGamePieceM(cur_match_data)
-            redTopPiece = tba.GetRedTeleopGamePieceT(cur_match_data)
+            # redTotalPiece = tba.GetRedTeleopGamePiecePoints(cur_match_data)
+            # redBototmPiece = tba.GetRedTeleopGamePieceB(cur_match_data)
+            # redMiddlePiece = tba.GetRedTeleopGamePieceM(cur_match_data)
+            # redTopPiece = tba.GetRedTeleopGamePieceT(cur_match_data)
             
-            coneBlueScore = 0
+            BlueAmpPoints = tba.GetBlueTeleAmpPoints(cur_match_data)
+            BlueTotalPoints = tba.GetBlueTele(cur_match_data)
+            RedAmpPoints = tba.GetRedTeleAmpPoints(cur_match_data)
+            RedTotalPoints = tba.GetRedTele(cur_match_data)
             
-            for bottoms in blueBototmPiece:
-                if (bottoms == "Cone"):
-                    coneBlueScore += 2
+            # coneBlueScore = 0
             
-            for middle in blueMiddlePiece:
-                if (middle == "Cone"):
-                    coneBlueScore += 3
+            # for bottoms in blueBototmPiece:
+            #     if (bottoms == "Cone"):
+            #         coneBlueScore += 2
             
-            for top in blueTopPiece:
-                if (top == "Cone"):
-                    coneBlueScore += 5
+            # for middle in blueMiddlePiece:
+            #     if (middle == "Cone"):
+            #         coneBlueScore += 3
+            
+            # for top in blueTopPiece:
+            #     if (top == "Cone"):
+            #         coneBlueScore += 5
                     
-            cubeMatrix.append([blueTotalPiece - coneBlueScore])
+            # cubeMatrix.append([blueTotalPiece - coneBlueScore])
             
-            coneMatrix.append([coneBlueScore])
+            # coneMatrix.append([coneBlueScore])
             
+            BlueSpeakerPoints = BlueTotalPoints-BlueAmpPoints
+            
+            ampMatrix.append(BlueAmpPoints)
+            speakerMatrix.append(BlueSpeakerPoints)
+            
+            RedSpeakerPoints = RedTotalPoints-BlueAmpPoints
+            
+            ampMatrix.append(RedAmpPoints)
+            
+            speakerMatrix.append(RedSpeakerPoints)
                     
-            coneRedScore = 0
+            # coneRedScore = 0
                     
-            for bottoms in redBototmPiece:
-                if (bottoms == "Cone"):
-                    coneRedScore += 2
+            # for bottoms in redBototmPiece:
+            #     if (bottoms == "Cone"):
+            #         coneRedScore += 2
             
-            for middle in redMiddlePiece:
-                if (middle == "Cone"):
-                    coneRedScore += 3
+            # for middle in redMiddlePiece:
+            #     if (middle == "Cone"):
+            #         coneRedScore += 3
             
-            for top in redTopPiece:
-                if (top == "Cone"):
-                    coneRedScore += 5
+            # for top in redTopPiece:
+            #     if (top == "Cone"):
+            #         coneRedScore += 5
                 
-            cubeMatrix.append([redTotalPiece - coneRedScore])
+            # cubeMatrix.append([redTotalPiece - coneRedScore])
             
-            coneMatrix.append ([coneRedScore])
+            # coneMatrix.append ([coneRedScore])
         
         
         
@@ -189,28 +206,44 @@ def coneNcubeOPR(event):
         
         #prettyPrint( TBA_MatchWinner(match))
         #we have the mathc data now, we fill in each match with the data, code not implemented yet
-    
-    
+        
+ 
     
     teamMatrix = numpy.matrix(teamMatrix)
-    coneMatrix = numpy.matrix(coneMatrix)
-    cubeMatrix = numpy.matrix(cubeMatrix)
+    # coneMatrix = numpy.matrix(coneMatrix)
+    ampMatrix = numpy.matrix(ampMatrix)
+    # cubeMatrix = numpy.matrix(cubeMatrix)
+    speakerMatrix = numpy.matrix(speakerMatrix)
     
     pseudoinverse = numpy.linalg.pinv (teamMatrix)
     
-    coneOPR = numpy.matmul(pseudoinverse, coneMatrix)
-    cubeOPR = numpy.matmul(pseudoinverse, cubeMatrix)
+    print("Shapes before multiplication:")
+    print("pseudoinverse shape:", pseudoinverse.shape)
+    print("ampMatrix shape:", ampMatrix.shape)
+
+    # coneOPR = numpy.matmul(pseudoinverse, coneMatrix)
+    ampOPR = numpy.matmul(pseudoinverse,ampMatrix.T)
+    # cubeOPR = numpy.matmul(pseudoinverse, cubeMatrix)
+    speakerOPR = numpy.matmul(pseudoinverse,speakerMatrix.T)
     
     # print (coneOPR)
     
     
-    coneArray = []
-    cubeArray = []
+    # coneArray = []
+    ampArray = []
+    # cubeArray = []
+    speakerArray = []
     
-    for cone in coneOPR:
-        coneArray.append(float(cone[0][0]))
-    for cube in cubeOPR:
-        cubeArray.append(float(cube[0][0]))
+    # for cone in coneOPR:
+    #     coneArray.append(float(cone[0][0]))
+    # for cube in cubeOPR:
+    #     cubeArray.append(float(cube[0][0]))
+    
+    for amp in ampOPR:
+        ampArray.append(float(amp[0][0]))
+    
+    for speaker in speakerOPR:
+        speakerArray.append(float(speaker[0][0]))
     
     # print (coneArray)
     # print (cubeArray)
@@ -227,7 +260,9 @@ def coneNcubeOPR(event):
     # if((len(cubeArray)<len(allTeam))):
     #     cubeArray = noneArray
     
-    df = pd.DataFrame( {"team": allTeam, "coneOPR": coneArray, "cubeOPR": cubeArray})
+    # df = pd.DataFrame( {"team": allTeam, "coneOPR": coneArray, "cubeOPR": cubeArray})
+
+    df = pd.DataFrame( {"team": allTeam, "ampOPR": ampArray, "speakerOPR": speakerArray})
 
     print (df)
     return df

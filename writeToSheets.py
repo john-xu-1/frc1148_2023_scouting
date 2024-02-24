@@ -87,7 +87,7 @@ Teams = tb.TBA_EventTeamsFormatted(curEvent)
 
 OPR = tb.TBA_EventOPR(curEvent)
 
-#coneNCube = cop.coneNcubeOPR(event=curEvent)
+coneNCube = cop.coneNcubeOPR(event=curEvent)
 
 matchesPlayed = []
 
@@ -121,7 +121,7 @@ print (len( winRates))
 print (len(matchesPlayed))
 
 ##changed the OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], to 47
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:34], "DPR":DPR[:34], "CCWM":CCWM[:34], "Win Rate %": winRates, "Cone OPR": 0, "Cube OPR": 0, "Matches Played": matchesPlayed})
+data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:34], "DPR":DPR[:34], "CCWM":CCWM[:34], "Win Rate %": winRates, "Amp OPR": coneNCube["ampOPR"], "Speaker OPR": coneNCube["speakerOPR"], "Matches Played": matchesPlayed})
 print ("start writing power rating data")
 sh = gc.open('Scouting Spreadsheet')
 wks = sh[1]

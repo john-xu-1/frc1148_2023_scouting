@@ -161,6 +161,14 @@ def GetCoopertitionBonusAchieved (match):
 def GetBlueRP(match):
     if match['score_breakdown']is not None:
         return match['score_breakdown']['blue']['rp']
+ 
+def GetBlueTele(match):
+    if match['score_breakdown']is not None:
+        return match['score_breakdown']['blue']['teleopTotalNotePoints']
+    
+def GetRedTele(match):
+    if match['score_breakdown']is not None:
+        return match['score_breakdown']['red']['teleopTotalNotePoints']
 
 def GetRedRP(match):
     if match['score_breakdown'] is not None:
