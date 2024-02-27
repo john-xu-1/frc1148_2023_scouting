@@ -14,6 +14,8 @@ def coneNcubeOPR(event):
     ampMatrix = []
     speakerMatrix = []
     teamMatrix = []
+    ampCountMatrix = []
+    speakerCountMatrix = []
     
     print ("len " + str(len(matches)) + " if this is zero that means matches isn't up")
     
@@ -148,6 +150,22 @@ def coneNcubeOPR(event):
             RedAmpPoints = tba.GetRedTeleAmpPoints(cur_match_data)
             RedTotalPoints = tba.GetRedTele(cur_match_data)
             
+            
+            BlueAmpCount = tba.GetBlueAmpCount(cur_match_data)
+            BReg = tba.GetBlueSpeakerCount(cur_match_data)
+            BAm = tba.GetBlueSpeakerAmpedCount(cur_match_data)
+            BlueSpeakerCount = BReg+BAm
+            
+            RedAmpCount = tba.GetRedAmpCount(cur_match_data)
+            RReg = tba.GetRedSpeakerCount(cur_match_data)
+            RAm = tba.GetRedSpeakerAmpedCount(cur_match_data)
+            RedSpeakerCount = RReg+RAm
+            
+            ampCountMatrix.append(BlueAmpCount)
+            speakerCountMatrix.append(BlueSpeakerCount)
+            
+            ampCountMatrix.append(RedAmpCount)
+            speakerCountMatrix.append(RedSpeakerCount)
             # coneBlueScore = 0
             
             # for bottoms in blueBototmPiece:
@@ -215,12 +233,20 @@ def coneNcubeOPR(event):
     # cubeMatrix = numpy.matrix(cubeMatrix)
     speakerMatrix = numpy.matrix(speakerMatrix)
     
+    ampCountMatrix = numpy.matrix(ampCountMatrix)
+    
+    speakerCountMatrix = numpy.matrix(speakerCountMatrix)
+    
     pseudoinverse = numpy.linalg.pinv (teamMatrix)
     
     print("Shapes before multiplication:")
     print("pseudoinverse shape:", pseudoinverse.shape)
     print("ampMatrix shape:", ampMatrix.shape)
-
+    
+    ampCount = numpy.matmul(pseudoinverse,ampCountMatrix.T)
+    
+    speakerCount = numpy.matmul(pseudoinverse,speakerCountMatrix.T)
+    
     # coneOPR = numpy.matmul(pseudoinverse, coneMatrix)
     ampOPR = numpy.matmul(pseudoinverse,ampMatrix.T)
     # cubeOPR = numpy.matmul(pseudoinverse, cubeMatrix)
@@ -228,7 +254,9 @@ def coneNcubeOPR(event):
     
     # print (coneOPR)
     
+    AmpCountArray = []
     
+    speakerCountArray = []
     # coneArray = []
     ampArray = []
     # cubeArray = []
@@ -238,6 +266,12 @@ def coneNcubeOPR(event):
     #     coneArray.append(float(cone[0][0]))
     # for cube in cubeOPR:
     #     cubeArray.append(float(cube[0][0]))
+    
+    for count in ampCount:
+        AmpCountArray.append(float(count[0][0]))
+    
+    for count in speakerCount:
+        speakerCountArray.append(float(count[0][0]))
     
     for amp in ampOPR:
         ampArray.append(float(amp[0][0]))
@@ -261,8 +295,12 @@ def coneNcubeOPR(event):
     #     cubeArray = noneArray
     
     # df = pd.DataFrame( {"team": allTeam, "coneOPR": coneArray, "cubeOPR": cubeArray})
+    print ("unicornssssssss")
+    print (len(allTeam))
+    print (len(AmpCountArray))
+    print (len(speakerCountArray))
 
-    df = pd.DataFrame( {"team": allTeam, "ampOPR": ampArray, "speakerOPR": speakerArray})
+    df = pd.DataFrame( {"team": allTeam, "ampOPR": ampArray, "speakerOPR": speakerArray, "Amps":AmpCountArray, "Speakers":speakerCountArray})
 
     print (df)
     return df

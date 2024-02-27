@@ -327,6 +327,29 @@ def GetRedCoopTry(match):
     if match['score_breakdown'] is not None: 
         return match['score_breakdown']['red']['coopNotePlayed']
 
+def GetBlueAmpCount(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['blue']['teleopAmpNoteCount']
+
+def GetBlueSpeakerCount(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['blue']['teleopSpeakerNoteAmplifiedCount']
+
+def GetBlueSpeakerAmpedCount(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['blue']['teleopSpeakerNoteCount']
+
+def GetRedAmpCount(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['teleopAmpNoteCount']
+
+def GetRedSpeakerCount(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['teleopSpeakerNoteAmplifiedCount']
+
+def GetRedSpeakerAmpedCount(match):
+    if match['score_breakdown'] is not None: 
+        return match['score_breakdown']['red']['teleopSpeakerNoteCount']
 
 # def GetBlueAutoChargeStationPoints(match):
 #     if match['score_breakdown'] is not None: 
