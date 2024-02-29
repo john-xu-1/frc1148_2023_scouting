@@ -87,9 +87,42 @@ Teams = tb.TBA_EventTeamsFormatted(curEvent)
 
 OPR = tb.TBA_EventOPR(curEvent)
 
-coneNCube = cop.coneNcubeOPR(event=curEvent)
+speakerNAmps = cop.coneNcubeOPR(event=curEvent)
 
 matchesPlayed = []
+
+sh = gc.open('Scouting Spreadsheet')
+wks = sh[5]
+
+rows = wks.get_all_values()
+
+avgAmpNum = {}
+avgSpeakerNum = {}
+
+for row in rows[1:]:
+    name = row[0]
+    if name != '':
+        print (name)
+        cutoff = name.index("c")
+        name = name[cutoff+1:]
+        if name in Teams:            
+            if row[5] != '':
+                if name not in avgAmpNum:
+                    avgAmpNum[name] = 0
+                avgAmpNum[name] += int(row[5])
+                
+            if row[2] != '':
+                if name not in avgSpeakerNum:
+                    avgSpeakerNum[name] = 0
+                avgSpeakerNum[name] += int(row[2])
+
+        
+print (avgAmpNum)
+print (avgSpeakerNum)
+
+
+#values = result.get("values", [])
+
 
 
 
@@ -99,6 +132,11 @@ for team in Teams:
         if (status is not None):
             matchesPlayed.append(tb.TBA_MatchesPlayed(team, curEvent))
         else: matchesPlayed.append("None")
+    if team not in avgAmpNum:
+        avgAmpNum[team] = 0
+    if team not in avgSpeakerNum:
+        avgSpeakerNum[team] = 0
+
 
 DPR = tb.TBA_EventDPR(curEvent)
 
@@ -120,8 +158,17 @@ for i in range (len(Teams)):
 print (len( winRates))
 print (len(matchesPlayed))
 
+#print (Teams)
+sorted_avgAmpNum = sorted(avgAmpNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sorted_avgSpeakerNum = sorted(avgSpeakerNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+print (len(sorted_avgAmpNum))
+print (len (sorted_avgSpeakerNum))
+print (len([item[1] for item in sorted_avgSpeakerNum] ))
+print (len([item[1] for item in sorted_avgAmpNum] ))
+print (sorted_avgAmpNum)
+
 ##changed the OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], to 47
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:34], "DPR":DPR[:34], "CCWM":CCWM[:34], "Win Rate %": winRates, "Amp OPR": coneNCube["ampOPR"], "Speaker OPR": coneNCube["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": coneNCube["Amps"], "Speaker per Game": coneNCube["Speakers"]})
+data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:34], "DPR":DPR[:34], "CCWM":CCWM[:34], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"], "Team Total Speaker": [item[1] for item in sorted_avgSpeakerNum], "Team Total Amp": [item[1] for item in sorted_avgAmpNum]})
 print ("start writing power rating data")
 sh = gc.open('Scouting Spreadsheet')
 wks = sh[1]
