@@ -168,7 +168,7 @@ print (len([item[1] for item in sorted_avgAmpNum] ))
 print (sorted_avgAmpNum)
 
 ##changed the OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], to 47
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:34], "DPR":DPR[:34], "CCWM":CCWM[:34], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"], "Team Total Speaker": [item[1] for item in sorted_avgSpeakerNum], "Team Total Amp": [item[1] for item in sorted_avgAmpNum]})
+data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:50], "DPR":DPR[:50], "CCWM":CCWM[:50], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"], "Team Total Speaker": [item[1] for item in sorted_avgSpeakerNum], "Team Total Amp": [item[1] for item in sorted_avgAmpNum]})
 print ("start writing power rating data")
 sh = gc.open('Scouting Spreadsheet')
 wks = sh[1]
