@@ -62,7 +62,7 @@ def custom_sort_M(match_data_list):
 
 
 #authorization
-curEvent = "2024week0"
+curEvent = "2024caph"
 
 gc = pygsheets.authorize(service_file='credentials.json')
 
