@@ -98,44 +98,91 @@ rows = wks.get_all_values()
 
 avgAmpNum = {}
 avgSpeakerNum = {}
+avgMissedSpeaker = {}
+avgMissedAmp = {}
+teamMatches = {}
+
+print (Teams)
 
 for row in rows[1:]:
     name = row[0]
     if name != '':
-        print (name)
+        
         cutoff = name.index("c")
         name = name[cutoff+1:]
-        if name in Teams:            
+        if name in Teams:  
+            print (row)
             if row[5] != '':
                 if name not in avgAmpNum:
                     avgAmpNum[name] = 0
                 avgAmpNum[name] += int(row[5])
-                
-            if row[2] != '':
+                print (avgAmpNum[name]) 
+            if row[3] != '':
                 if name not in avgSpeakerNum:
                     avgSpeakerNum[name] = 0
-                avgSpeakerNum[name] += int(row[2])
+                avgSpeakerNum[name] += int(row[3])
+            if row[4] != '':
+                if name not in avgSpeakerNum:
+                    avgSpeakerNum[name] = 0
+                avgSpeakerNum[name] += int(row[4])
+            if row[7] != '':
+                if name not in avgMissedSpeaker:
+                    avgMissedSpeaker[name] = 0
+                avgMissedSpeaker[name] += int(row[7])
+                print (avgMissedSpeaker[name])
+            if row[8] != '':
+                if name not in avgMissedAmp:
+                    avgMissedAmp[name] = 0
+                avgMissedAmp[name] += int(row[8])
+            if name not in teamMatches:
+                teamMatches[name] = 0
+            teamMatches[name] += 1
 
-        
-print (avgAmpNum)
-print (avgSpeakerNum)
+print(avgSpeakerNum)      
+# print (avgAmpNum)
+# print (avgSpeakerNum)
+
 
 
 #values = result.get("values", [])
 
 
-
+# OPR = []
+# DPR = []
+# CCWM = []
+# winRates = []
+ampOPR = []
+speakerOPR = []
+Amps = []
+Speakers = []
 
 for team in Teams:
     if tb.TBA_TeamEventStatus(team,curEvent) is not None:
         status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
         if (status is not None):
             matchesPlayed.append(tb.TBA_MatchesPlayed(team, curEvent))
-        else: matchesPlayed.append("None")
+        else: matchesPlayed.append("3") 
     if team not in avgAmpNum:
         avgAmpNum[team] = 0
     if team not in avgSpeakerNum:
         avgSpeakerNum[team] = 0
+    if team not in avgMissedSpeaker:
+        avgMissedSpeaker[team] = 0
+        print ("set missed = 0 ", team)
+    if team not in avgMissedAmp:
+        avgMissedAmp[team] = 0
+    if team not in teamMatches:
+        teamMatches[team] = 0
+    # OPR.append( 0)
+    # DPR.append( 0)
+    # CCWM.append( 0)
+    # winRates.append( 0)
+    ampOPR.append( 0)
+    speakerOPR.append( 0)
+    Amps.append( 0)
+    Speakers.append( 0)
+    
+    
 
 
 DPR = tb.TBA_EventDPR(curEvent)
@@ -143,7 +190,6 @@ DPR = tb.TBA_EventDPR(curEvent)
 CCWM = tb.TBA_EventCCWM(curEvent)
 
 print (len(Teams))
-print (len(OPR[:34]))
 
 
 winRates = []
@@ -159,17 +205,66 @@ print (len( winRates))
 print (len(matchesPlayed))
 
 #print (Teams)
-sorted_avgAmpNum = sorted(avgAmpNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
-sorted_avgSpeakerNum = sorted(avgSpeakerNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
-print (len(sorted_avgAmpNum))
-print (len (sorted_avgSpeakerNum))
-print (len([item[1] for item in sorted_avgSpeakerNum] ))
-print (len([item[1] for item in sorted_avgAmpNum] ))
-print (sorted_avgAmpNum)
+sortedAmpNum = sorted(avgAmpNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedSpeakerNum = sorted(avgSpeakerNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedMissedSpeaker = sorted(avgMissedSpeaker.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedMissedAmp = sorted(avgMissedAmp.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedTeamMatches = sorted(teamMatches.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+# print (len(sortedAmpNum))
+# print (sortedAmpNum[0])
+# print (sortedAmpNum[0][1])
+# print (len (sortedSpeakerNum))
+# # sortedSpeakerNumArray = []
+# # for item in sortedSpeakerNum:
+# #     sortedSpeakerNumArray.append( item[1] )
+# # sortedAmpNumArray = []
+# # for item in sortedAmpNum:
+# #     sortedAmpNumArray.append( item[1] )
+# print (len([item[1] for item in sortedSpeakerNum] ))
+# print (len([item[1] for item in sortedAmpNum] ))
+# print (sortedMissedSpeaker)
+# print (sortedAmpNum)
+# print (sortedMissedAmp)
+# print (sortedMissedSpeaker)
+
+print (len(Teams))
+print (len(OPR[:50]))
+print (len(DPR[:50]))
+print (len(CCWM[:50]))
+print (len(winRates))
+# print (len(speakerNAmps["ampOPR"]))
+# print (len(speakerNAmps["speakerOPR"]))
+# print (len(matchesPlayed))
+# print (len(speakerNAmps["Amps"]))
+# print (len(speakerNAmps["Speakers"]))
+print (len(sortedAmpNum))                         
+print (len(sortedSpeakerNum))
+print (len(sortedMissedSpeaker))
+print (len(sortedMissedAmp))
+
+print (type(Teams))
+print (type(OPR[:50]))
+print (type(DPR[:50]))
+print (type(CCWM[:50]))
+print (type(winRates))
+# print (len(speakerNAmps["ampOPR"]))
+# print (len(speakerNAmps["speakerOPR"]))
+# print (len(matchesPlayed))
+# print (len(speakerNAmps["Amps"]))
+# print (len(speakerNAmps["Speakers"]))
+print (type(sortedAmpNum))                         
+print (type(sortedSpeakerNum))
+print (type(sortedMissedSpeaker))
+print (type(sortedMissedAmp))
+
+
 
 ##changed the OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], to 47
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:50], "DPR":DPR[:50], "CCWM":CCWM[:50], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"], "Team Total Speaker": [item[1] for item in sorted_avgSpeakerNum], "Team Total Amp": [item[1] for item in sorted_avgAmpNum]})
-print ("start writing power rating data")
+#:50 for 50 teams in current event
+#data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:50], "DPR":DPR[:50], "CCWM":CCWM[:50], "Win Rate %": winRates, "Amp OPR": ampOPR, "Speaker OPR": speakerOPR, "Matches Played": teamMatches, "Amps per Game": Amps, "Speaker per Game": Speakers, "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
+data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:50], "DPR":DPR[:50], "CCWM":CCWM[:50], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": [item[1] for item in sortedTeamMatches], "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"], "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
+# "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"],
+print ("start power rating data")
 sh = gc.open('Scouting Spreadsheet')
 wks = sh[1]
 wks.set_dataframe(data,(1,1))
@@ -442,7 +537,7 @@ red_third_elements = []
 for inner_list in RedAlliance:
     red_first_elements.append(inner_list[0])
     red_second_elements.append(inner_list[1])
-    red_third_elements.append(inner_list[2])
+    red_third_elements.append(inner_list[2])  
 
 
  
