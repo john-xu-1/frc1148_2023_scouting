@@ -234,8 +234,12 @@ for team in Teams:
     Amps.append( 0)
     Speakers.append( 0)
     
-    
-
+TeamName = []
+teamNameCounter = 0
+for team in Teams:
+    # print(tb.TBA_TeamNickname(team))
+    TeamName.append( tb.TBA_TeamNickname(team)),
+    teamNameCounter+=1
 
 
 for i in range (len(Teams)):
@@ -319,7 +323,14 @@ data = pd.DataFrame({
     "Total Breaks": [item[1] for item in sortedBreakNum]
 })
 
+
+
 wks.set_dataframe(data,(1,22))
+
+data = pd.DataFrame({
+    "Team Name": TeamName,
+})
+wks.set_dataframe(data,(1,33))
 print("starting tba data (+parking)")
 
 
@@ -689,6 +700,5 @@ sh = gc.open('Scouting Spreadsheet')
 wks = sh[3]
 wks.set_dataframe(B,(1,5))
 wks.set_dataframe(R,(1,9))
-
 
 print("all done")
