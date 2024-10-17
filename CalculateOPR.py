@@ -210,7 +210,7 @@ def coneNcubeOPR(event):
     print (len(AmpCountArray))
     print (len(speakerCountArray))
 
-    df = pd.DataFrame( {"team": allTeam, "ampOPR": ampArray, "speakerOPR": speakerArray, "Amps":AmpCountArray, "Speakers":speakerCountArray})
+    df = pd.DataFrame( {"team": allTeam, "ampOPR": ampArray, "speakerOPR": speakerArray, "AmpsCount":AmpCountArray, "SpeakersCount":speakerCountArray})
 
     print (df)
     return df

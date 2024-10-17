@@ -101,11 +101,18 @@ avgSpeakerNum = {}
 avgMissedSpeaker = {}
 avgMissedAmp = {}
 teamMatches = {}
+passNum = {}
+climbFailNum = {}
+climbTryNum = {}
+trapScoredNum = {}
+trapMissedNum = {}
+breakNum = {}
 
 print (Teams)
 
 for row in rows[1:]:
     name = row[0]
+    intBoolValue = 0
     if name != '':
         
         cutoff = name.index("c")
@@ -130,6 +137,42 @@ for row in rows[1:]:
                     avgMissedSpeaker[name] = 0
                 avgMissedSpeaker[name] += int(row[7])
                 print (avgMissedSpeaker[name])
+            if row[12] != '':
+                if name not in passNum:
+                    passNum[name] = 0
+                passNum[name] += int(row[12])
+            if row[6] != '':
+                if name not in trapScoredNum:
+                    trapScoredNum[name] = 0
+                trapScoredNum[name] += ((int (row[6]))/5)
+            if row[9] != '':
+                if name not in trapMissedNum:
+                    trapMissedNum[name] = 0
+                trapMissedNum[name] += int(row[9])
+            if row[10] != '':
+                if name not in climbTryNum:
+                    climbTryNum[name] = 0
+                if row[10] == "TRUE":
+                    intBoolValue = 1
+                if row[10] == "FALSE":
+                    intBoolValue = 0
+                climbTryNum[name] += intBoolValue
+            if row[11] != '':
+                if name not in climbFailNum:
+                    climbFailNum[name] = 0
+                if row[11] == "TRUE":
+                    intBoolValue = 1
+                if row[11] == "FALSE":
+                    intBoolValue = 0
+                climbFailNum[name] += intBoolValue
+            if row[15] != '':
+                if name not in breakNum:
+                    breakNum[name] = 0
+                if row[15] == "TRUE":
+                    intBoolValue = 1
+                if row[15] == "FALSE":
+                    intBoolValue = 0
+                breakNum[name] += intBoolValue
             if row[8] != '':
                 if name not in avgMissedAmp:
                     avgMissedAmp[name] = 0
@@ -212,6 +255,12 @@ sortedSpeakerNum = sorted(avgSpeakerNum.items(), key=lambda x: Teams.index(x[0])
 sortedMissedSpeaker = sorted(avgMissedSpeaker.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
 sortedMissedAmp = sorted(avgMissedAmp.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
 sortedTeamMatches = sorted(teamMatches.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedPassNum = sorted(passNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedClimbFailNum = sorted(climbFailNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedClimbTryNum = sorted(climbTryNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedTrapScoredNum = sorted(trapScoredNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedTrapMissedNum = sorted(trapMissedNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedBreakNum = sorted(breakNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
 # print (len(sortedAmpNum))
 # print (sortedAmpNum[0])
 # print (sortedAmpNum[0][1])
@@ -254,13 +303,23 @@ print (type(Teams))
 ##changed the OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], to 47
 #:50 for 50 teams in current event
 #data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:50], "DPR":DPR[:50], "CCWM":CCWM[:50], "Win Rate %": winRates, "Amp OPR": ampOPR, "Speaker OPR": speakerOPR, "Matches Played": teamMatches, "Amps per Game": Amps, "Speaker per Game": Speakers, "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:43], "DPR":DPR[:43], "CCWM":CCWM[:43], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": [item[1] for item in sortedTeamMatches], "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"], "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
+data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:43], "DPR":DPR[:43], "CCWM":CCWM[:43], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": [item[1] for item in sortedTeamMatches], "Amps per Game(OPR)": speakerNAmps["AmpsCount"], "Speaker per Game(OPR)": speakerNAmps["SpeakersCount"], "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
 # "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"],
 print ("start power rating data")
 sh = gc.open('Scouting Spreadsheet')
 wks = sh[1]
 wks.set_dataframe(data,(1,1))
 
+data = pd.DataFrame({
+    "Total Passes": [item[1] for item in sortedPassNum],
+    "Climb Fails": [item[1] for item in sortedClimbFailNum],
+    "Climb Tries": [item[1] for item in sortedClimbTryNum],
+    "Trap Scored": [item[1] for item in sortedTrapScoredNum],
+    "Trap Missed": [item[1] for item in sortedTrapMissedNum],
+    "Total Breaks": [item[1] for item in sortedBreakNum]
+})
+
+wks.set_dataframe(data,(1,22))
 print("starting tba data (+parking)")
 
 
