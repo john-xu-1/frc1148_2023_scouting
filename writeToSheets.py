@@ -62,7 +62,7 @@ def custom_sort_M(match_data_list):
 
 
 #authorization
-curEvent = "2024cc"
+curEvent = "2024catt"
 
 gc = pygsheets.authorize(service_file='credentials.json')
 
@@ -307,7 +307,7 @@ print (type(Teams))
 ##changed the OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], to 47
 #:50 for 50 teams in current event
 #data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:50], "DPR":DPR[:50], "CCWM":CCWM[:50], "Win Rate %": winRates, "Amp OPR": ampOPR, "Speaker OPR": speakerOPR, "Matches Played": teamMatches, "Amps per Game": Amps, "Speaker per Game": Speakers, "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:43], "DPR":DPR[:43], "CCWM":CCWM[:43], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": [item[1] for item in sortedTeamMatches], "Amps per Game(OPR)": speakerNAmps["AmpsCount"], "Speaker per Game(OPR)": speakerNAmps["SpeakersCount"], "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
+data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:41], "DPR":DPR[:41], "CCWM":CCWM[:41], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": [item[1] for item in sortedTeamMatches], "Amps per Game(OPR)": speakerNAmps["AmpsCount"], "Speaker per Game(OPR)": speakerNAmps["SpeakersCount"], "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
 # "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"],
 print ("start power rating data")
 sh = gc.open('Scouting Spreadsheet')
