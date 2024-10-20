@@ -85,7 +85,18 @@ print("starting power ratings")
 
 Teams = tb.TBA_EventTeamsFormatted(curEvent)
 
+Teams.append("3512B")
+Teams.append("4415B");
+Teams.append("1138B");
+Teams.append("9408B");
+Teams.append("4414B");
+Teams.append("1148B");
+Teams.append("5199B");
+Teams.append("696B");
+
 OPR = tb.TBA_EventOPR(curEvent)
+
+print (len(OPR))
 
 speakerNAmps = cop.coneNcubeOPR(event=curEvent)
 
@@ -181,7 +192,8 @@ for row in rows[1:]:
                 teamMatches[name] = 0
             teamMatches[name] += 1
 
-print(avgSpeakerNum)      
+print(avgSpeakerNum)     
+print (str(len(teamMatches)) + "============")
 # print (avgAmpNum)
 # print (avgSpeakerNum)
 
@@ -209,7 +221,13 @@ print (len(Teams))
 winRates = []
 
 for team in Teams:
+    
     if tb.TBA_TeamEventStatus(team,curEvent) is not None:
+        if ("B" in team):
+            team = team[:4]
+            if ("B" in team):
+                team = team[:3]
+            print (team)
         status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
         if (status is not None):
             matchesPlayed.append(tb.TBA_MatchesPlayed(team, curEvent))
@@ -238,6 +256,11 @@ TeamName = []
 teamNameCounter = 0
 for team in Teams:
     # print(tb.TBA_TeamNickname(team))
+    if ("B" in team):
+        team = team[:4]
+        if ("B" in team):
+            team = team[:3]
+        print (team)
     TeamName.append( tb.TBA_TeamNickname(team)),
     teamNameCounter+=1
 
@@ -285,11 +308,11 @@ sortedBreakNum = sorted(breakNum.items(), key=lambda x: Teams.index(x[0]) if x[0
 
 print (len(Teams))
 #OPR.append(0)
-print (len(OPR[:50]))
+print (len(OPR[:48]))
 #DPR.append (0)
-print (len(DPR[:50]))
+print (len(DPR[:48]))
 #CCWM.append (0)
-print (len(CCWM[:50]))
+print (len(CCWM[:48]))
 print (len(winRates))
 # print (len(speakerNAmps["ampOPR"]))
 # print (len(speakerNAmps["speakerOPR"]))
@@ -303,11 +326,26 @@ print (len(sortedMissedAmp))
 
 print (type(Teams))
 
+print (len(speakerNAmps["ampOPR"]))
+print (len(speakerNAmps["speakerOPR"]))
 
 ##changed the OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], to 47
 #:50 for 50 teams in current event
 #data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:50], "DPR":DPR[:50], "CCWM":CCWM[:50], "Win Rate %": winRates, "Amp OPR": ampOPR, "Speaker OPR": speakerOPR, "Matches Played": teamMatches, "Amps per Game": Amps, "Speaker per Game": Speakers, "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:41], "DPR":DPR[:41], "CCWM":CCWM[:41], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": [item[1] for item in sortedTeamMatches], "Amps per Game(OPR)": speakerNAmps["AmpsCount"], "Speaker per Game(OPR)": speakerNAmps["SpeakersCount"], "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
+data = pd.DataFrame({"Teams":Teams,
+                     "OPR":OPR[:48], 
+                     "DPR":DPR[:48], 
+                     "CCWM":CCWM[:48], 
+                     "Win Rate %": winRates, 
+                     "Amp OPR": speakerNAmps["ampOPR"], 
+                     "Speaker OPR": speakerNAmps["speakerOPR"], 
+                     "Matches Played": [item[1] for item in sortedTeamMatches], 
+                     "Amps per Game(OPR)": speakerNAmps["AmpsCount"], 
+                     "Speaker per Game(OPR)": speakerNAmps["SpeakersCount"], 
+                     "Team Total Speaker": [item[1] for item in sortedSpeakerNum], 
+                     "Team Total Amp": [item[1] for item in sortedAmpNum], 
+                     "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], 
+                     "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
 # "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"],
 print ("start power rating data")
 sh = gc.open('Scouting Spreadsheet')
