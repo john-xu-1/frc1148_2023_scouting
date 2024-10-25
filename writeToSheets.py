@@ -291,75 +291,75 @@ def EventMatchKeys(x):
 
     return matches
 
-Match = EventMatchKeys(curEvent)## Match info
-match = tb.TBA_EventMatchKeys(curEvent)## Match keys
+MatchJsonDictionary = EventMatchKeys(curEvent)## Match info
+theMatchKey = tb.TBA_EventMatchKeys(curEvent)## Match keys
 
 
 # Sort the list by category (qm, sf, f) and then by the number within each category
-match = custom_sort(match)
-Match = custom_sort_M(Match)
-print (Match)
+theMatchKey = custom_sort(theMatchKey)
+MatchJsonDictionary = custom_sort_M(MatchJsonDictionary)
+print (MatchJsonDictionary)
 
 
 #BlueRP, BlueScore, BlueAlliance, RedAlliance, RedRP, RedScore, BlueTotalAutopts, BluetotalChargeStationPoints, BlueAutoStationpts, BlueAutoStationlvl, BlueAutoPark1, BlueAutoPark2, BlueAutoPark3, BlueEndgamePark1, BlueEndgamePark2, BlueEndgamePark3, Winner = []
 #RedTotalAutopts, RedtotalChargeStationPoints, RedAutoStationpts, RedAutoStationlvl, RedeAutoPark1, RedAutoPark2, RedAutoPark3, RedEndgamePark1, RedEndgamePark2, RedEndgamePark3 = []  
 
-CoopertitionBonusAchieved = extract_data(tb.GetCoopertitionBonusAchieved,Match)
+# CoopertitionBonusAchieved = extract_data(tb.GetCoopertitionBonusAchieved,MatchJsonDictionary)
 
-BlueRP = extract_data(tb.GetBlueRP, Match)
+BlueRP = extract_data(tb.GetBlueRP, MatchJsonDictionary)
 
-BlueScore= extract_data(tb.GetBlueScore, Match)
+BlueScore= extract_data(tb.GetBlueScore, MatchJsonDictionary)
 
-BlueAlliance= extract_data(tb.GetBlueTeams, Match)
+BlueAlliance= extract_data(tb.GetBlueTeams, MatchJsonDictionary)
 
-RedAlliance= extract_data(tb.GetRedTeams, Match)
+RedAlliance= extract_data(tb.GetRedTeams, MatchJsonDictionary)
 
-RedRP= extract_data(tb.GetRedRP, Match)
+RedRP= extract_data(tb.GetRedRP, MatchJsonDictionary)
 
-RedScore = extract_data(tb.GetRedScore, Match)
+RedScore = extract_data(tb.GetRedScore, MatchJsonDictionary)
 
-Winner = extract_data(tb.TBA_MatchWinner, match)
+Winner = extract_data(tb.TBA_MatchWinner, MatchJsonDictionary)
 
-RedAutoPoints = extract_data(tb.GetRedAutoPoints, Match)
-BlueAutoPoints = extract_data(tb.GetBlueAutoPoints, Match)
-RedRP = extract_data(tb.GetRedRP, Match)
-BlueRP = extract_data(tb.GetBlueRP, Match)
-RedScore = extract_data(tb.GetRedScore, Match)
-BlueScore = extract_data(tb.GetBlueScore, Match)
-RedTeams = extract_data(tb.GetRedTeams, Match)
-BlueTeams = extract_data(tb.GetBlueTeams, Match)
-RedAutoAmpPoints = extract_data(tb.GetRedAutoAmpPoints, Match)
-BlueAutoAmpPoints = extract_data(tb.GetBlueAutoAmpPoints, Match)
-RedTeleAmpPoints = extract_data(tb.GetRedTeleAmpPoints, Match)
-BlueTeleAmpPoints = extract_data(tb.GetBlueTeleAmpPoints, Match)
-RedAutoSpeakerPoints = extract_data(tb.GetRedAutoSpeakerPoints, Match)
-BlueAutoSpeakerPoints = extract_data(tb.GetBlueAutoSpeakerPoints, Match)
-RedSpeakerPointsRegular = extract_data(tb.GetRedSpeakerPointsRegular, Match)
-BlueSpeakerPointsRegular = extract_data(tb.GetBlueSpeakerPointsRegular, Match)
-RedTeleSpeakerPointsAmped = extract_data(tb.GetRedTeleSpeakerPointsAmped, Match)
-BlueTeleSpeakerPointsAmped = extract_data(tb.GetBlueTeleSpeakerPointsAmped, Match)
-RedCenterTrapPoints = extract_data(tb.GetRedCenterTrapPoints, Match)
-BlueCenterTrapPoints = extract_data(tb.GetBlueCenterTrapPoints, Match)
-RedLeftTrapPoints = extract_data(tb.GetRedLeftTrapPoints, Match)
-BlueLeftTrapPoints = extract_data(tb.GetBlueLeftTrapPoints, Match)
-RedRightTrapPoints = extract_data(tb.GetRedRightTrapPoints, Match)
-BlueRightTrapPoints = extract_data(tb.GetBlueRightTrapPoints, Match)
-RedParkStatus1 = extract_data(tb.GetRedParkStatus1, Match)
-BlueParkStatus1 = extract_data(tb.GetBlueParkStatus1, Match)
-RedParkStatus2 = extract_data(tb.GetRedParkStatus2, Match)
-BlueParkStatus2 = extract_data(tb.GetBlueParkStatus2, Match)
-RedParkStatus3 = extract_data(tb.GetRedParkStatus3, Match)
-BlueParkStatus3 = extract_data(tb.GetBlueParkStatus3, Match)
-RedCenterMicStatus = extract_data(tb.GetRedCenterMicStatus, Match)
-BlueCenterMicStatus = extract_data(tb.GetBlueCenterMicStatus, Match)
-RedLeftMicStatus = extract_data(tb.GetRedLeftMicStatus, Match)
-BlueLeftMicStatus = extract_data(tb.GetBlueLeftMicStatus, Match)
-RedRightMicStatus = extract_data(tb.GetRedRightMicStatus, Match)
-BlueRightMicStatus = extract_data(tb.GetBlueRightMicStatus, Match)
-RedHarmonyPoints = extract_data(tb.GetRedHarmonyPoints, Match)
-BlueHarmonyPoints = extract_data(tb.GetBlueHarmonyPoints, Match)
-RedCoopTry = extract_data(tb.GetRedCoopTry, Match)
-BlueCoopTry = extract_data(tb.GetBlueCoopTry, Match)
+RedAutoPoints = extract_data(tb.GetRedAutoPoints, MatchJsonDictionary)
+BlueAutoPoints = extract_data(tb.GetBlueAutoPoints, MatchJsonDictionary)
+RedRP = extract_data(tb.GetRedRP, MatchJsonDictionary)
+BlueRP = extract_data(tb.GetBlueRP, MatchJsonDictionary)
+RedScore = extract_data(tb.GetRedScore, MatchJsonDictionary)
+BlueScore = extract_data(tb.GetBlueScore, MatchJsonDictionary)
+RedTeams = extract_data(tb.GetRedTeams, MatchJsonDictionary)
+BlueTeams = extract_data(tb.GetBlueTeams, MatchJsonDictionary)
+RedAutoAmpPoints = extract_data(tb.GetRedAutoAmpPoints, MatchJsonDictionary)
+BlueAutoAmpPoints = extract_data(tb.GetBlueAutoAmpPoints, MatchJsonDictionary)
+RedTeleAmpPoints = extract_data(tb.GetRedTeleAmpPoints, MatchJsonDictionary)
+BlueTeleAmpPoints = extract_data(tb.GetBlueTeleAmpPoints, MatchJsonDictionary)
+RedAutoSpeakerPoints = extract_data(tb.GetRedAutoSpeakerPoints, MatchJsonDictionary)
+BlueAutoSpeakerPoints = extract_data(tb.GetBlueAutoSpeakerPoints, MatchJsonDictionary)
+RedSpeakerPointsRegular = extract_data(tb.GetRedSpeakerPointsRegular, MatchJsonDictionary)
+BlueSpeakerPointsRegular = extract_data(tb.GetBlueSpeakerPointsRegular, MatchJsonDictionary)
+RedTeleSpeakerPointsAmped = extract_data(tb.GetRedTeleSpeakerPointsAmped, MatchJsonDictionary)
+BlueTeleSpeakerPointsAmped = extract_data(tb.GetBlueTeleSpeakerPointsAmped, MatchJsonDictionary)
+RedCenterTrapPoints = extract_data(tb.GetRedCenterTrapPoints, MatchJsonDictionary)
+BlueCenterTrapPoints = extract_data(tb.GetBlueCenterTrapPoints, MatchJsonDictionary)
+RedLeftTrapPoints = extract_data(tb.GetRedLeftTrapPoints, MatchJsonDictionary)
+BlueLeftTrapPoints = extract_data(tb.GetBlueLeftTrapPoints, MatchJsonDictionary)
+RedRightTrapPoints = extract_data(tb.GetRedRightTrapPoints, MatchJsonDictionary)
+BlueRightTrapPoints = extract_data(tb.GetBlueRightTrapPoints, MatchJsonDictionary)
+RedParkStatus1 = extract_data(tb.GetRedParkStatus1, MatchJsonDictionary)
+BlueParkStatus1 = extract_data(tb.GetBlueParkStatus1, MatchJsonDictionary)
+RedParkStatus2 = extract_data(tb.GetRedParkStatus2, MatchJsonDictionary)
+BlueParkStatus2 = extract_data(tb.GetBlueParkStatus2, MatchJsonDictionary)
+RedParkStatus3 = extract_data(tb.GetRedParkStatus3, MatchJsonDictionary)
+BlueParkStatus3 = extract_data(tb.GetBlueParkStatus3, MatchJsonDictionary)
+RedCenterMicStatus = extract_data(tb.GetRedCenterMicStatus, MatchJsonDictionary)
+BlueCenterMicStatus = extract_data(tb.GetBlueCenterMicStatus, MatchJsonDictionary)
+RedLeftMicStatus = extract_data(tb.GetRedLeftMicStatus, MatchJsonDictionary)
+BlueLeftMicStatus = extract_data(tb.GetBlueLeftMicStatus, MatchJsonDictionary)
+RedRightMicStatus = extract_data(tb.GetRedRightMicStatus, MatchJsonDictionary)
+BlueRightMicStatus = extract_data(tb.GetBlueRightMicStatus, MatchJsonDictionary)
+RedHarmonyPoints = extract_data(tb.GetRedHarmonyPoints, MatchJsonDictionary)
+BlueHarmonyPoints = extract_data(tb.GetBlueHarmonyPoints, MatchJsonDictionary)
+# RedCoopTry = extract_data(tb.GetRedCoopTry, MatchJsonDictionary)
+# BlueCoopTry = extract_data(tb.GetBlueCoopTry, MatchJsonDictionary)
 
 
 # BlueTotalAutopts= extract_data(tb.GetBlueAutoPoints, Match)
@@ -536,7 +536,7 @@ for inner_list in RedAlliance:
     
 data2 = pd.DataFrame({
     
-    "Matches":match,
+    "Matches":theMatchKey,
     "Blue RP": BlueRP,
     "Blue Score": BlueScore,
     "Blue1": blue_first_elements,
@@ -549,7 +549,7 @@ data2 = pd.DataFrame({
     "Red3": red_third_elements,
     "Winner": Winner,
     # For Blue Alliance:
-    "Blue Coop Try": BlueCoopTry,
+    # "Blue Coop Try": BlueCoopTry,
     "Blue Auto Points": BlueAutoPoints,
     "Blue Auto Amp Points": BlueAutoAmpPoints,
     "Blue Tele Amp Points": BlueTeleAmpPoints,
@@ -569,7 +569,7 @@ data2 = pd.DataFrame({
     
 
     # For Red Alliance:
-    "Red Coop Try": RedCoopTry,
+    # "Red Coop Try": RedCoopTry,
     "Red Auto Points": RedAutoPoints,
     "Red Auto Amp Points": RedAutoAmpPoints,
     "Red Tele Amp Points": RedTeleAmpPoints,
@@ -588,7 +588,7 @@ data2 = pd.DataFrame({
     "Red Harmony Points": RedHarmonyPoints,
     
     #bro fogor
-    "Coopertition Achieve": CoopertitionBonusAchieved,
+    # "Coopertition Achieve": CoopertitionBonusAchieved,
     
 
     # "Blue Total Auto pts": BlueTotalAutopts,
@@ -630,6 +630,5 @@ sh = gc.open('Scouting Spreadsheet')
 wks = sh[3]
 wks.set_dataframe(B,(1,5))
 wks.set_dataframe(R,(1,9))
-
 
 print("all done")

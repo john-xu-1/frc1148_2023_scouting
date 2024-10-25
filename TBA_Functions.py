@@ -150,7 +150,8 @@ def TBA_GetCurMatch(match):
     return TBA_AddressFetcher("match/" + match)
 
 def TBA_MatchWinner(match):
-    return TBA_GetCurMatch(match)["winning_alliance"]
+    if match['score_breakdown']is not None:
+        return match["winning_alliance"]
 
 def GetCoopertitionBonusAchieved (match):
     if match['score_breakdown'] is not None: 
