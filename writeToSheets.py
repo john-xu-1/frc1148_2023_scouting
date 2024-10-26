@@ -83,9 +83,15 @@ gc = pygsheets.authorize(service_file='credentials.json')
 
 print("starting power ratings")
 
-Teams = tb.TBA_EventTeamsFormatted(curEvent)
 
 OPR = tb.TBA_EventOPR(curEvent)
+
+DPR = tb.TBA_EventDPR(curEvent)
+
+CCWM = tb.TBA_EventCCWM(curEvent)
+
+Teams = tb.TBA_EventTeamsFormatted(curEvent)
+
 
 speakerNAmps = cop.coneNcubeOPR(event=curEvent)
 
@@ -156,9 +162,6 @@ speakerOPR = []
 Amps = []
 Speakers = []
 
-DPR = tb.TBA_EventDPR(curEvent)
-
-CCWM = tb.TBA_EventCCWM(curEvent)
 
 print (len(Teams))
 
