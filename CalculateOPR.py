@@ -7,7 +7,7 @@ import pandas as pd
 
 def coneNcubeOPR(event):   
     allTeam = tba.TBA_EventTeamsRaw(event)
-    matches = tba.TBA_EventMatchKeys(event)
+    matches = tba.TBA_EventMatchKeys(event)# these are rthe event match keys
     
     # coneMatrix = [] 
     # cubeMatrix = []
@@ -29,7 +29,7 @@ def coneNcubeOPR(event):
         
         
         
-        cur_match_data= tba.TBA_GetCurMatch(match)
+        cur_match_data= tba.TBA_GetCurMatch(match)# ths gets the json of the match based on the matchkeys
         
         
         
