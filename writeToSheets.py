@@ -83,15 +83,16 @@ gc = pygsheets.authorize(service_file='credentials.json')
 
 print("starting power ratings")
 
+OPRAll = tb.TBA_EventOPRs(curEvent)
 
-OPR = tb.TBA_EventOPR(curEvent)
+OPR = OPRAll['oprs'].values()
 
-DPR = tb.TBA_EventDPR(curEvent)
+DPR = OPRAll['dprs'].values()
 
-CCWM = tb.TBA_EventCCWM(curEvent)
+CCWM = OPRAll['ccwms'].values()
 
-Teams = tb.TBA_EventTeamsFormatted(curEvent)
-
+# Teams = tb.TBA_EventTeamsFormatted(curEvent)
+Teams = OPRAll['ccwms'].keys()
 
 speakerNAmps = cop.coneNcubeOPR(event=curEvent)
 
@@ -107,6 +108,7 @@ avgSpeakerNum = {}
 avgMissedSpeaker = {}
 avgMissedAmp = {}
 teamMatches = {}
+nickNames = {}
 
 print (Teams)
 
@@ -185,6 +187,10 @@ for team in Teams:
         avgMissedAmp[team] = 0
     if team not in teamMatches:
         teamMatches[team] = 0
+    if team[team.length()-1] == 'B':
+        nickNames[team] = tb.TBA_TeamNickname(team[:team.length()-1]) + " B team"
+    else:
+        nickNames[team] = tb.TBA_TeamNickname(team)
     # OPR.append( 0)
     # DPR.append( 0)
     # CCWM.append( 0)
@@ -634,4 +640,8 @@ wks = sh[3]
 wks.set_dataframe(B,(1,5))
 wks.set_dataframe(R,(1,9))
 
+print("stats")
+print(CCWM)
+print("teams")
+print(Teams)
 print("all done")
