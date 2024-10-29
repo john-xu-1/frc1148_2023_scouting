@@ -62,7 +62,7 @@ def custom_sort_M(match_data_list):
 
 
 #authorization
-curEvent = "2024cc"
+curEvent = "2024catt"
 
 gc = pygsheets.authorize(service_file='credentials.json')
 
@@ -108,12 +108,19 @@ avgSpeakerNum = {}
 avgMissedSpeaker = {}
 avgMissedAmp = {}
 teamMatches = {}
+passNum = {}
 nickNames = {}
+climbFailNum = {}
+climbTryNum = {}
+trapScoredNum = {}
+trapMissedNum = {}
+breakNum = {}
 
 print (Teams)
 
 for row in rows[1:]:
     name = row[0]
+    intBoolValue = 0
     if name != '':
         
         cutoff = name.index("c")
@@ -138,6 +145,42 @@ for row in rows[1:]:
                     avgMissedSpeaker[name] = 0
                 avgMissedSpeaker[name] += int(row[7])
                 print (avgMissedSpeaker[name])
+            if row[12] != '':
+                if name not in passNum:
+                    passNum[name] = 0
+                passNum[name] += int(row[12])
+            if row[6] != '':
+                if name not in trapScoredNum:
+                    trapScoredNum[name] = 0
+                trapScoredNum[name] += ((int (row[6]))/5)
+            if row[9] != '':
+                if name not in trapMissedNum:
+                    trapMissedNum[name] = 0
+                trapMissedNum[name] += int(row[9])
+            if row[10] != '':
+                if name not in climbTryNum:
+                    climbTryNum[name] = 0
+                if row[10] == "TRUE":
+                    intBoolValue = 1
+                if row[10] == "FALSE":
+                    intBoolValue = 0
+                climbTryNum[name] += intBoolValue
+            if row[11] != '':
+                if name not in climbFailNum:
+                    climbFailNum[name] = 0
+                if row[11] == "TRUE":
+                    intBoolValue = 1
+                if row[11] == "FALSE":
+                    intBoolValue = 0
+                climbFailNum[name] += intBoolValue
+            if row[15] != '':
+                if name not in breakNum:
+                    breakNum[name] = 0
+                if row[15] == "TRUE":
+                    intBoolValue = 1
+                if row[15] == "FALSE":
+                    intBoolValue = 0
+                breakNum[name] += intBoolValue
             if row[8] != '':
                 if name not in avgMissedAmp:
                     avgMissedAmp[name] = 0
@@ -146,7 +189,8 @@ for row in rows[1:]:
                 teamMatches[name] = 0
             teamMatches[name] += 1
 
-print(avgSpeakerNum)      
+print(avgSpeakerNum)     
+print (str(len(teamMatches)) + "============")
 # print (avgAmpNum)
 # print (avgSpeakerNum)
 
@@ -200,8 +244,17 @@ for team in Teams:
     Amps.append( 0)
     Speakers.append( 0)
     
-    
-
+TeamName = []
+teamNameCounter = 0
+for team in Teams:
+    # print(tb.TBA_TeamNickname(team))
+    if ("B" in team):
+        team = team[:4]
+        if ("B" in team):
+            team = team[:3]
+        print (team)
+    TeamName.append( tb.TBA_TeamNickname(team)),
+    teamNameCounter+=1
 
 
 for i in range (len(Teams)):
@@ -221,6 +274,12 @@ sortedSpeakerNum = sorted(avgSpeakerNum.items(), key=lambda x: Teams.index(x[0])
 sortedMissedSpeaker = sorted(avgMissedSpeaker.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
 sortedMissedAmp = sorted(avgMissedAmp.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
 sortedTeamMatches = sorted(teamMatches.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedPassNum = sorted(passNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedClimbFailNum = sorted(climbFailNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedClimbTryNum = sorted(climbTryNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedTrapScoredNum = sorted(trapScoredNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedTrapMissedNum = sorted(trapMissedNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
+sortedBreakNum = sorted(breakNum.items(), key=lambda x: Teams.index(x[0]) if x[0] in Teams else float('inf'))
 # print (len(sortedAmpNum))
 # print (sortedAmpNum[0])
 # print (sortedAmpNum[0][1])
@@ -241,11 +300,11 @@ sortedTeamMatches = sorted(teamMatches.items(), key=lambda x: Teams.index(x[0]) 
 
 print (len(Teams))
 #OPR.append(0)
-print (len(OPR[:50]))
+print (len(OPR[:48]))
 #DPR.append (0)
-print (len(DPR[:50]))
+print (len(DPR[:48]))
 #CCWM.append (0)
-print (len(CCWM[:50]))
+print (len(CCWM[:48]))
 print (len(winRates))
 # print (len(speakerNAmps["ampOPR"]))
 # print (len(speakerNAmps["speakerOPR"]))
@@ -259,17 +318,50 @@ print (len(sortedMissedAmp))
 
 print (type(Teams))
 
+print (len(speakerNAmps["ampOPR"]))
+print (len(speakerNAmps["speakerOPR"]))
 
 ##changed the OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], to 47
 #:50 for 50 teams in current event
 #data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:50], "DPR":DPR[:50], "CCWM":CCWM[:50], "Win Rate %": winRates, "Amp OPR": ampOPR, "Speaker OPR": speakerOPR, "Matches Played": teamMatches, "Amps per Game": Amps, "Speaker per Game": Speakers, "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:43], "DPR":DPR[:43], "CCWM":CCWM[:43], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": [item[1] for item in sortedTeamMatches], "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"], "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
+data = pd.DataFrame({"Teams":Teams,
+                     "OPR":OPR[:48], 
+                     "DPR":DPR[:48], 
+                     "CCWM":CCWM[:48], 
+                     "Win Rate %": winRates, 
+                     "Amp OPR": speakerNAmps["ampOPR"], 
+                     "Speaker OPR": speakerNAmps["speakerOPR"], 
+                     "Matches Played": [item[1] for item in sortedTeamMatches], 
+                     "Amps per Game(OPR)": speakerNAmps["AmpsCount"], 
+                     "Speaker per Game(OPR)": speakerNAmps["SpeakersCount"], 
+                     "Team Total Speaker": [item[1] for item in sortedSpeakerNum], 
+                     "Team Total Amp": [item[1] for item in sortedAmpNum], 
+                     "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], 
+                     "Total Missed Amp": [item[1] for item in sortedMissedAmp],
+                     "Team Names": nickNames,})
 # "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"],
 print ("start power rating data")
 sh = gc.open('Scouting Spreadsheet')
 wks = sh[1]
 wks.set_dataframe(data,(1,1))
 
+data = pd.DataFrame({
+    "Total Passes": [item[1] for item in sortedPassNum],
+    "Climb Fails": [item[1] for item in sortedClimbFailNum],
+    "Climb Tries": [item[1] for item in sortedClimbTryNum],
+    "Trap Scored": [item[1] for item in sortedTrapScoredNum],
+    "Trap Missed": [item[1] for item in sortedTrapMissedNum],
+    "Total Breaks": [item[1] for item in sortedBreakNum]
+})
+
+
+
+wks.set_dataframe(data,(1,22))
+
+data = pd.DataFrame({
+    "Team Name": TeamName,
+})
+wks.set_dataframe(data,(1,33))
 print("starting tba data (+parking)")
 
 
@@ -300,75 +392,75 @@ def EventMatchKeys(x):
 
     return matches
 
-MatchJsonDictionary = EventMatchKeys(curEvent)## Match info
-theMatchKey = tb.TBA_EventMatchKeys(curEvent)## Match keys
+Match = EventMatchKeys(curEvent)## Match info
+match = tb.TBA_EventMatchKeys(curEvent)## Match keys
 
 
 # Sort the list by category (qm, sf, f) and then by the number within each category
-theMatchKey = custom_sort(theMatchKey)
-MatchJsonDictionary = custom_sort_M(MatchJsonDictionary)
-print (MatchJsonDictionary)
+match = custom_sort(match)
+Match = custom_sort_M(Match)
+print (Match)
 
 
 #BlueRP, BlueScore, BlueAlliance, RedAlliance, RedRP, RedScore, BlueTotalAutopts, BluetotalChargeStationPoints, BlueAutoStationpts, BlueAutoStationlvl, BlueAutoPark1, BlueAutoPark2, BlueAutoPark3, BlueEndgamePark1, BlueEndgamePark2, BlueEndgamePark3, Winner = []
 #RedTotalAutopts, RedtotalChargeStationPoints, RedAutoStationpts, RedAutoStationlvl, RedeAutoPark1, RedAutoPark2, RedAutoPark3, RedEndgamePark1, RedEndgamePark2, RedEndgamePark3 = []  
 
-# CoopertitionBonusAchieved = extract_data(tb.GetCoopertitionBonusAchieved,MatchJsonDictionary)
+CoopertitionBonusAchieved = extract_data(tb.GetCoopertitionBonusAchieved,Match)
 
-BlueRP = extract_data(tb.GetBlueRP, MatchJsonDictionary)
+BlueRP = extract_data(tb.GetBlueRP, Match)
 
-BlueScore= extract_data(tb.GetBlueScore, MatchJsonDictionary)
+BlueScore= extract_data(tb.GetBlueScore, Match)
 
-BlueAlliance= extract_data(tb.GetBlueTeams, MatchJsonDictionary)
+BlueAlliance= extract_data(tb.GetBlueTeams, Match)
 
-RedAlliance= extract_data(tb.GetRedTeams, MatchJsonDictionary)
+RedAlliance= extract_data(tb.GetRedTeams, Match)
 
-RedRP= extract_data(tb.GetRedRP, MatchJsonDictionary)
+RedRP= extract_data(tb.GetRedRP, Match)
 
-RedScore = extract_data(tb.GetRedScore, MatchJsonDictionary)
+RedScore = extract_data(tb.GetRedScore, Match)
 
-Winner = extract_data(tb.TBA_MatchWinner, MatchJsonDictionary)
+Winner = extract_data(tb.TBA_MatchWinner, match)
 
-RedAutoPoints = extract_data(tb.GetRedAutoPoints, MatchJsonDictionary)
-BlueAutoPoints = extract_data(tb.GetBlueAutoPoints, MatchJsonDictionary)
-RedRP = extract_data(tb.GetRedRP, MatchJsonDictionary)
-BlueRP = extract_data(tb.GetBlueRP, MatchJsonDictionary)
-RedScore = extract_data(tb.GetRedScore, MatchJsonDictionary)
-BlueScore = extract_data(tb.GetBlueScore, MatchJsonDictionary)
-RedTeams = extract_data(tb.GetRedTeams, MatchJsonDictionary)
-BlueTeams = extract_data(tb.GetBlueTeams, MatchJsonDictionary)
-RedAutoAmpPoints = extract_data(tb.GetRedAutoAmpPoints, MatchJsonDictionary)
-BlueAutoAmpPoints = extract_data(tb.GetBlueAutoAmpPoints, MatchJsonDictionary)
-RedTeleAmpPoints = extract_data(tb.GetRedTeleAmpPoints, MatchJsonDictionary)
-BlueTeleAmpPoints = extract_data(tb.GetBlueTeleAmpPoints, MatchJsonDictionary)
-RedAutoSpeakerPoints = extract_data(tb.GetRedAutoSpeakerPoints, MatchJsonDictionary)
-BlueAutoSpeakerPoints = extract_data(tb.GetBlueAutoSpeakerPoints, MatchJsonDictionary)
-RedSpeakerPointsRegular = extract_data(tb.GetRedSpeakerPointsRegular, MatchJsonDictionary)
-BlueSpeakerPointsRegular = extract_data(tb.GetBlueSpeakerPointsRegular, MatchJsonDictionary)
-RedTeleSpeakerPointsAmped = extract_data(tb.GetRedTeleSpeakerPointsAmped, MatchJsonDictionary)
-BlueTeleSpeakerPointsAmped = extract_data(tb.GetBlueTeleSpeakerPointsAmped, MatchJsonDictionary)
-RedCenterTrapPoints = extract_data(tb.GetRedCenterTrapPoints, MatchJsonDictionary)
-BlueCenterTrapPoints = extract_data(tb.GetBlueCenterTrapPoints, MatchJsonDictionary)
-RedLeftTrapPoints = extract_data(tb.GetRedLeftTrapPoints, MatchJsonDictionary)
-BlueLeftTrapPoints = extract_data(tb.GetBlueLeftTrapPoints, MatchJsonDictionary)
-RedRightTrapPoints = extract_data(tb.GetRedRightTrapPoints, MatchJsonDictionary)
-BlueRightTrapPoints = extract_data(tb.GetBlueRightTrapPoints, MatchJsonDictionary)
-RedParkStatus1 = extract_data(tb.GetRedParkStatus1, MatchJsonDictionary)
-BlueParkStatus1 = extract_data(tb.GetBlueParkStatus1, MatchJsonDictionary)
-RedParkStatus2 = extract_data(tb.GetRedParkStatus2, MatchJsonDictionary)
-BlueParkStatus2 = extract_data(tb.GetBlueParkStatus2, MatchJsonDictionary)
-RedParkStatus3 = extract_data(tb.GetRedParkStatus3, MatchJsonDictionary)
-BlueParkStatus3 = extract_data(tb.GetBlueParkStatus3, MatchJsonDictionary)
-RedCenterMicStatus = extract_data(tb.GetRedCenterMicStatus, MatchJsonDictionary)
-BlueCenterMicStatus = extract_data(tb.GetBlueCenterMicStatus, MatchJsonDictionary)
-RedLeftMicStatus = extract_data(tb.GetRedLeftMicStatus, MatchJsonDictionary)
-BlueLeftMicStatus = extract_data(tb.GetBlueLeftMicStatus, MatchJsonDictionary)
-RedRightMicStatus = extract_data(tb.GetRedRightMicStatus, MatchJsonDictionary)
-BlueRightMicStatus = extract_data(tb.GetBlueRightMicStatus, MatchJsonDictionary)
-RedHarmonyPoints = extract_data(tb.GetRedHarmonyPoints, MatchJsonDictionary)
-BlueHarmonyPoints = extract_data(tb.GetBlueHarmonyPoints, MatchJsonDictionary)
-# RedCoopTry = extract_data(tb.GetRedCoopTry, MatchJsonDictionary)
-# BlueCoopTry = extract_data(tb.GetBlueCoopTry, MatchJsonDictionary)
+RedAutoPoints = extract_data(tb.GetRedAutoPoints, Match)
+BlueAutoPoints = extract_data(tb.GetBlueAutoPoints, Match)
+RedRP = extract_data(tb.GetRedRP, Match)
+BlueRP = extract_data(tb.GetBlueRP, Match)
+RedScore = extract_data(tb.GetRedScore, Match)
+BlueScore = extract_data(tb.GetBlueScore, Match)
+RedTeams = extract_data(tb.GetRedTeams, Match)
+BlueTeams = extract_data(tb.GetBlueTeams, Match)
+RedAutoAmpPoints = extract_data(tb.GetRedAutoAmpPoints, Match)
+BlueAutoAmpPoints = extract_data(tb.GetBlueAutoAmpPoints, Match)
+RedTeleAmpPoints = extract_data(tb.GetRedTeleAmpPoints, Match)
+BlueTeleAmpPoints = extract_data(tb.GetBlueTeleAmpPoints, Match)
+RedAutoSpeakerPoints = extract_data(tb.GetRedAutoSpeakerPoints, Match)
+BlueAutoSpeakerPoints = extract_data(tb.GetBlueAutoSpeakerPoints, Match)
+RedSpeakerPointsRegular = extract_data(tb.GetRedSpeakerPointsRegular, Match)
+BlueSpeakerPointsRegular = extract_data(tb.GetBlueSpeakerPointsRegular, Match)
+RedTeleSpeakerPointsAmped = extract_data(tb.GetRedTeleSpeakerPointsAmped, Match)
+BlueTeleSpeakerPointsAmped = extract_data(tb.GetBlueTeleSpeakerPointsAmped, Match)
+RedCenterTrapPoints = extract_data(tb.GetRedCenterTrapPoints, Match)
+BlueCenterTrapPoints = extract_data(tb.GetBlueCenterTrapPoints, Match)
+RedLeftTrapPoints = extract_data(tb.GetRedLeftTrapPoints, Match)
+BlueLeftTrapPoints = extract_data(tb.GetBlueLeftTrapPoints, Match)
+RedRightTrapPoints = extract_data(tb.GetRedRightTrapPoints, Match)
+BlueRightTrapPoints = extract_data(tb.GetBlueRightTrapPoints, Match)
+RedParkStatus1 = extract_data(tb.GetRedParkStatus1, Match)
+BlueParkStatus1 = extract_data(tb.GetBlueParkStatus1, Match)
+RedParkStatus2 = extract_data(tb.GetRedParkStatus2, Match)
+BlueParkStatus2 = extract_data(tb.GetBlueParkStatus2, Match)
+RedParkStatus3 = extract_data(tb.GetRedParkStatus3, Match)
+BlueParkStatus3 = extract_data(tb.GetBlueParkStatus3, Match)
+RedCenterMicStatus = extract_data(tb.GetRedCenterMicStatus, Match)
+BlueCenterMicStatus = extract_data(tb.GetBlueCenterMicStatus, Match)
+RedLeftMicStatus = extract_data(tb.GetRedLeftMicStatus, Match)
+BlueLeftMicStatus = extract_data(tb.GetBlueLeftMicStatus, Match)
+RedRightMicStatus = extract_data(tb.GetRedRightMicStatus, Match)
+BlueRightMicStatus = extract_data(tb.GetBlueRightMicStatus, Match)
+RedHarmonyPoints = extract_data(tb.GetRedHarmonyPoints, Match)
+BlueHarmonyPoints = extract_data(tb.GetBlueHarmonyPoints, Match)
+RedCoopTry = extract_data(tb.GetRedCoopTry, Match)
+BlueCoopTry = extract_data(tb.GetBlueCoopTry, Match)
 
 
 # BlueTotalAutopts= extract_data(tb.GetBlueAutoPoints, Match)
@@ -545,7 +637,7 @@ for inner_list in RedAlliance:
     
 data2 = pd.DataFrame({
     
-    "Matches":theMatchKey,
+    "Matches":match,
     "Blue RP": BlueRP,
     "Blue Score": BlueScore,
     "Blue1": blue_first_elements,
@@ -558,7 +650,7 @@ data2 = pd.DataFrame({
     "Red3": red_third_elements,
     "Winner": Winner,
     # For Blue Alliance:
-    # "Blue Coop Try": BlueCoopTry,
+    "Blue Coop Try": BlueCoopTry,
     "Blue Auto Points": BlueAutoPoints,
     "Blue Auto Amp Points": BlueAutoAmpPoints,
     "Blue Tele Amp Points": BlueTeleAmpPoints,
@@ -578,7 +670,7 @@ data2 = pd.DataFrame({
     
 
     # For Red Alliance:
-    # "Red Coop Try": RedCoopTry,
+    "Red Coop Try": RedCoopTry,
     "Red Auto Points": RedAutoPoints,
     "Red Auto Amp Points": RedAutoAmpPoints,
     "Red Tele Amp Points": RedTeleAmpPoints,
@@ -597,7 +689,7 @@ data2 = pd.DataFrame({
     "Red Harmony Points": RedHarmonyPoints,
     
     #bro fogor
-    # "Coopertition Achieve": CoopertitionBonusAchieved,
+    "Coopertition Achieve": CoopertitionBonusAchieved,
     
 
     # "Blue Total Auto pts": BlueTotalAutopts,
@@ -640,8 +732,4 @@ wks = sh[3]
 wks.set_dataframe(B,(1,5))
 wks.set_dataframe(R,(1,9))
 
-print("stats")
-print(CCWM)
-print("teams")
-print(Teams)
 print("all done")
