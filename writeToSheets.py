@@ -128,8 +128,8 @@ for row in rows[1:]:
     intBoolValue = 0
     if name != '':
         
-        cutoff = name.index("c")
-        name = name[cutoff+1:]
+        cutoff = name.index("f")
+        name = name[cutoff:]
         if name in Teams:  
             print (row)
             if row[5] != '':
@@ -728,5 +728,6 @@ wks = sh[3]
 wks.set_dataframe(B,(1,5))
 wks.set_dataframe(R,(1,9))
 
-print(teamCounts)
+# print("total stuff that hapsn to be missed")
+print (sortedMissedSpeaker)
 print("all done")
