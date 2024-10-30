@@ -6,6 +6,7 @@ import numpy as np
 import re
 import re
 import ast
+from collections import Counter
 
 def custom_sort(item_list):
     def custom_key(item):
@@ -89,12 +90,15 @@ OPR = tb.TBA_EventOPR(curEvent)
 
 speakerNAmps = cop.coneNcubeOPR(event=curEvent)
 
-matchesPlayed = []
+matchesPlayed = {}
 
 sh = gc.open('Scouting Spreadsheet')
 wks = sh[5]
 
 rows = wks.get_all_values()
+
+teamIsoColumn = [row[23] for row in rows[1:]]
+teamCounts = Counter(teamIsoColumn)
 
 avgAmpNum = {}
 avgSpeakerNum = {}
@@ -102,6 +106,7 @@ avgMissedSpeaker = {}
 avgMissedAmp = {}
 teamMatches = {}
 
+print(teamCounts)
 print (Teams)
 
 for row in rows[1:]:
@@ -169,7 +174,7 @@ for team in Teams:
     if tb.TBA_TeamEventStatus(team,curEvent) is not None:
         status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
         if (status is not None):
-            matchesPlayed.append(tb.TBA_MatchesPlayed(team, curEvent))
+            matchesPlayed.append(teamCounts[team])
         else: matchesPlayed.append("3") 
     if team not in avgAmpNum:
         avgAmpNum[team] = 0
