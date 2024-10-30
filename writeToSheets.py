@@ -332,8 +332,7 @@ data = pd.DataFrame({"Teams":Teams,
                      "Team Total Speaker": [item[1] for item in sortedSpeakerNum], 
                      "Team Total Amp": [item[1] for item in sortedAmpNum], 
                      "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], 
-                     "Total Missed Amp": [item[1] for item in sortedMissedAmp],
-                     "Team Names": nickNames,})
+                     "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
 # "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"],
 print ("start power rating data")
 sh = gc.open('Scouting Spreadsheet')
@@ -400,7 +399,7 @@ print (Match)
 #BlueRP, BlueScore, BlueAlliance, RedAlliance, RedRP, RedScore, BlueTotalAutopts, BluetotalChargeStationPoints, BlueAutoStationpts, BlueAutoStationlvl, BlueAutoPark1, BlueAutoPark2, BlueAutoPark3, BlueEndgamePark1, BlueEndgamePark2, BlueEndgamePark3, Winner = []
 #RedTotalAutopts, RedtotalChargeStationPoints, RedAutoStationpts, RedAutoStationlvl, RedeAutoPark1, RedAutoPark2, RedAutoPark3, RedEndgamePark1, RedEndgamePark2, RedEndgamePark3 = []  
 
-CoopertitionBonusAchieved = extract_data(tb.GetCoopertitionBonusAchieved,Match)
+# CoopertitionBonusAchieved = extract_data(tb.GetCoopertitionBonusAchieved,Match)
 
 BlueRP = extract_data(tb.GetBlueRP, Match)
 
@@ -454,8 +453,8 @@ RedRightMicStatus = extract_data(tb.GetRedRightMicStatus, Match)
 BlueRightMicStatus = extract_data(tb.GetBlueRightMicStatus, Match)
 RedHarmonyPoints = extract_data(tb.GetRedHarmonyPoints, Match)
 BlueHarmonyPoints = extract_data(tb.GetBlueHarmonyPoints, Match)
-RedCoopTry = extract_data(tb.GetRedCoopTry, Match)
-BlueCoopTry = extract_data(tb.GetBlueCoopTry, Match)
+# RedCoopTry = extract_data(tb.GetRedCoopTry, Match)
+# BlueCoopTry = extract_data(tb.GetBlueCoopTry, Match)
 
 
 # BlueTotalAutopts= extract_data(tb.GetBlueAutoPoints, Match)
@@ -645,7 +644,8 @@ data2 = pd.DataFrame({
     "Red3": red_third_elements,
     "Winner": Winner,
     # For Blue Alliance:
-    "Blue Coop Try": BlueCoopTry,
+    # "Blue Coop Try": BlueCoopTry,
+    "Blue Coop Try": "Not doing this",
     "Blue Auto Points": BlueAutoPoints,
     "Blue Auto Amp Points": BlueAutoAmpPoints,
     "Blue Tele Amp Points": BlueTeleAmpPoints,
@@ -665,7 +665,8 @@ data2 = pd.DataFrame({
     
 
     # For Red Alliance:
-    "Red Coop Try": RedCoopTry,
+    # "Red Coop Try": RedCoopTry,
+    "Red Coop Try": "Not doing this",
     "Red Auto Points": RedAutoPoints,
     "Red Auto Amp Points": RedAutoAmpPoints,
     "Red Tele Amp Points": RedTeleAmpPoints,
@@ -684,7 +685,7 @@ data2 = pd.DataFrame({
     "Red Harmony Points": RedHarmonyPoints,
     
     #bro fogor
-    "Coopertition Achieve": CoopertitionBonusAchieved,
+    # "Coopertition Achieve": CoopertitionBonusAchieved,
     
 
     # "Blue Total Auto pts": BlueTotalAutopts,
