@@ -6,6 +6,7 @@ import numpy as np
 import re
 import re
 import ast
+from collections import Counter
 
 def custom_sort(item_list):
     def custom_key(item):
@@ -102,6 +103,10 @@ sh = gc.open('Scouting Spreadsheet')
 wks = sh[5]
 
 rows = wks.get_all_values()
+
+#code added to get matches played from App results
+teamIsoColumn = [row[23] for row in rows[1:]]
+teamCounts = Counter(teamIsoColumn)
 
 avgAmpNum = {}
 avgSpeakerNum = {}
@@ -215,11 +220,10 @@ print (len(Teams))
 winRates = []
 
 for team in Teams:
-    if tb.TBA_TeamEventStatus(team,curEvent) is not None:
-        status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
-        if (status is not None):
-            matchesPlayed.append(tb.TBA_MatchesPlayed(team, curEvent))
-        else: matchesPlayed.append("3") 
+  if (tb.TBA_TeamEventStatus(team, curEvent) is not None) or (team[len(team) - 1] == 'B'):
+    matchesPlayed.append(teamCounts[team])
+else:
+    matchesPlayed.append("3")
     if team not in avgAmpNum:
         avgAmpNum[team] = 0
     if team not in avgSpeakerNum:
