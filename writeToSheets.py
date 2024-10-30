@@ -230,6 +230,7 @@ for team in Teams:
             print (team)
         status = tb.TBA_TeamEventStatus(team,curEvent)["qual"]
         if (status is not None):
+            print(team)
             matchesPlayed.append(tb.TBA_MatchesPlayed(team, curEvent))
         else: matchesPlayed.append("3") 
     if team not in avgAmpNum:
@@ -243,6 +244,19 @@ for team in Teams:
         avgMissedAmp[team] = 0
     if team not in teamMatches:
         teamMatches[team] = 0
+    if team not in passNum:
+        passNum[team]=0
+    if team not in climbFailNum:
+        climbFailNum[team]=0
+    if team not in climbTryNum:
+        climbTryNum[team]=0
+    if team not in trapScoredNum:
+        trapScoredNum[team]=0
+    if team not in trapMissedNum:
+        trapMissedNum[team]=0
+    if team not in breakNum:
+        breakNum[team]=0
+        
     # OPR.append( 0)
     # DPR.append( 0)
     # CCWM.append( 0)
@@ -305,14 +319,17 @@ sortedBreakNum = sorted(breakNum.items(), key=lambda x: Teams.index(x[0]) if x[0
 # print (sortedMissedAmp)
 # print (sortedMissedSpeaker)
 
-
+print("listinglengths")
 print (len(Teams))
 #OPR.append(0)
 print (len(OPR[:48]))
+print (len(OPR[:40]))
 #DPR.append (0)
 print (len(DPR[:48]))
+print (len(DPR[:40]))
 #CCWM.append (0)
 print (len(CCWM[:48]))
+print (len(CCWM[:40]))
 print (len(winRates))
 # print (len(speakerNAmps["ampOPR"]))
 # print (len(speakerNAmps["speakerOPR"]))
@@ -323,6 +340,14 @@ print (len(sortedAmpNum))
 print (len(sortedSpeakerNum))
 print (len(sortedMissedSpeaker))
 print (len(sortedMissedAmp))
+
+# missing 4414
+print (len(sortedClimbFailNum))
+print (len(sortedClimbTryNum))
+print (len(sortedTrapScoredNum))
+print (len(sortedTrapMissedNum))
+# missing 4414, 7415, 973
+print (len(sortedBreakNum))
 
 print (type(Teams))
 
@@ -346,6 +371,7 @@ data = pd.DataFrame({"Teams":Teams,
                      "Team Total Amp": [item[1] for item in sortedAmpNum], 
                      "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], 
                      "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
+data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:40], "DPR":DPR[:40], "CCWM":CCWM[:40], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": [item[1] for item in sortedTeamMatches], "Amps per Game(OPR)": speakerNAmps["AmpsCount"], "Speaker per Game(OPR)": speakerNAmps["SpeakersCount"], "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
 # "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"],
 print ("start power rating data")
 sh = gc.open('Scouting Spreadsheet')
@@ -412,7 +438,7 @@ print (Match)
 #BlueRP, BlueScore, BlueAlliance, RedAlliance, RedRP, RedScore, BlueTotalAutopts, BluetotalChargeStationPoints, BlueAutoStationpts, BlueAutoStationlvl, BlueAutoPark1, BlueAutoPark2, BlueAutoPark3, BlueEndgamePark1, BlueEndgamePark2, BlueEndgamePark3, Winner = []
 #RedTotalAutopts, RedtotalChargeStationPoints, RedAutoStationpts, RedAutoStationlvl, RedeAutoPark1, RedAutoPark2, RedAutoPark3, RedEndgamePark1, RedEndgamePark2, RedEndgamePark3 = []  
 
-CoopertitionBonusAchieved = extract_data(tb.GetCoopertitionBonusAchieved,Match)
+# CoopertitionBonusAchieved = extract_data(tb.GetCoopertitionBonusAchieved,Match)
 
 BlueRP = extract_data(tb.GetBlueRP, Match)
 
@@ -426,7 +452,7 @@ RedRP= extract_data(tb.GetRedRP, Match)
 
 RedScore = extract_data(tb.GetRedScore, Match)
 
-Winner = extract_data(tb.TBA_MatchWinner, match)
+Winner = extract_data(tb.TBA_MatchWinner, match)#jbjbjbjb
 
 RedAutoPoints = extract_data(tb.GetRedAutoPoints, Match)
 BlueAutoPoints = extract_data(tb.GetBlueAutoPoints, Match)
@@ -466,8 +492,8 @@ RedRightMicStatus = extract_data(tb.GetRedRightMicStatus, Match)
 BlueRightMicStatus = extract_data(tb.GetBlueRightMicStatus, Match)
 RedHarmonyPoints = extract_data(tb.GetRedHarmonyPoints, Match)
 BlueHarmonyPoints = extract_data(tb.GetBlueHarmonyPoints, Match)
-RedCoopTry = extract_data(tb.GetRedCoopTry, Match)
-BlueCoopTry = extract_data(tb.GetBlueCoopTry, Match)
+# RedCoopTry = extract_data(tb.GetRedCoopTry, Match)
+# BlueCoopTry = extract_data(tb.GetBlueCoopTry, Match)
 
 
 # BlueTotalAutopts= extract_data(tb.GetBlueAutoPoints, Match)
@@ -644,7 +670,7 @@ for inner_list in RedAlliance:
     
 data2 = pd.DataFrame({
     
-    "Matches":match,
+    "Matches":match,#jbjbjbjb
     "Blue RP": BlueRP,
     "Blue Score": BlueScore,
     "Blue1": blue_first_elements,
@@ -657,7 +683,8 @@ data2 = pd.DataFrame({
     "Red3": red_third_elements,
     "Winner": Winner,
     # For Blue Alliance:
-    "Blue Coop Try": BlueCoopTry,
+    # "Blue Coop Try": BlueCoopTry,
+     "Blue Coop Try": 'none',
     "Blue Auto Points": BlueAutoPoints,
     "Blue Auto Amp Points": BlueAutoAmpPoints,
     "Blue Tele Amp Points": BlueTeleAmpPoints,
@@ -677,7 +704,8 @@ data2 = pd.DataFrame({
     
 
     # For Red Alliance:
-    "Red Coop Try": RedCoopTry,
+    # "Red Coop Try": RedCoopTry,
+    "Red Coop Try": "none",
     "Red Auto Points": RedAutoPoints,
     "Red Auto Amp Points": RedAutoAmpPoints,
     "Red Tele Amp Points": RedTeleAmpPoints,
@@ -696,7 +724,8 @@ data2 = pd.DataFrame({
     "Red Harmony Points": RedHarmonyPoints,
     
     #bro fogor
-    "Coopertition Achieve": CoopertitionBonusAchieved,
+    # "Coopertition Achieve": CoopertitionBonusAchieved,
+    "Coopertition Achieve": "none",
     
 
     # "Blue Total Auto pts": BlueTotalAutopts,
@@ -739,4 +768,9 @@ wks = sh[3]
 wks.set_dataframe(B,(1,5))
 wks.set_dataframe(R,(1,9))
 
+print("M")
+print(Match[0])
+
+print("m")
+print(match[0])
 print("all done")
