@@ -413,7 +413,7 @@ RedRP= extract_data(tb.GetRedRP, Match)
 
 RedScore = extract_data(tb.GetRedScore, Match)
 
-Winner = extract_data(tb.TBA_MatchWinner, match)
+Winner = extract_data(tb.TBA_MatchWinner, Match)
 
 RedAutoPoints = extract_data(tb.GetRedAutoPoints, Match)
 BlueAutoPoints = extract_data(tb.GetBlueAutoPoints, Match)
