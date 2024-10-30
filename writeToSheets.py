@@ -371,7 +371,7 @@ data = pd.DataFrame({"Teams":Teams,
                      "Team Total Amp": [item[1] for item in sortedAmpNum], 
                      "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], 
                      "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:40], "DPR":DPR[:40], "CCWM":CCWM[:40], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": [item[1] for item in sortedTeamMatches], "Amps per Game(OPR)": speakerNAmps["AmpsCount"], "Speaker per Game(OPR)": speakerNAmps["SpeakersCount"], "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
+# data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:40], "DPR":DPR[:40], "CCWM":CCWM[:40], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": [item[1] for item in sortedTeamMatches], "Amps per Game(OPR)": speakerNAmps["AmpsCount"], "Speaker per Game(OPR)": speakerNAmps["SpeakersCount"], "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
 # "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"],
 print ("start power rating data")
 sh = gc.open('Scouting Spreadsheet')
