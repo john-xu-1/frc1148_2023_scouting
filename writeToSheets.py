@@ -386,14 +386,14 @@ def EventMatchKeys(x):
 
     return matches
 
-Match = EventMatchKeys(curEvent)## Match info
-match = tb.TBA_EventMatchKeys(curEvent)## Match keys
+MatchJsonfile = EventMatchKeys(curEvent)## Match info
+matchKeysForListin = tb.TBA_EventMatchKeys(curEvent)## Match keys
 
 
 # Sort the list by category (qm, sf, f) and then by the number within each category
-match = custom_sort(match)
-Match = custom_sort_M(Match)
-print (Match)
+matchKeysForListin = custom_sort(matchKeysForListin)#this is the match keys
+MatchJsonfile = custom_sort_M(MatchJsonfile)#this is the Json of the match
+print (MatchJsonfile)
 
 
 #BlueRP, BlueScore, BlueAlliance, RedAlliance, RedRP, RedScore, BlueTotalAutopts, BluetotalChargeStationPoints, BlueAutoStationpts, BlueAutoStationlvl, BlueAutoPark1, BlueAutoPark2, BlueAutoPark3, BlueEndgamePark1, BlueEndgamePark2, BlueEndgamePark3, Winner = []
@@ -401,58 +401,58 @@ print (Match)
 
 # CoopertitionBonusAchieved = extract_data(tb.GetCoopertitionBonusAchieved,Match)
 
-BlueRP = extract_data(tb.GetBlueRP, Match)
+BlueRP = extract_data(tb.GetBlueRP, MatchJsonfile)
 
-BlueScore= extract_data(tb.GetBlueScore, Match)
+BlueScore= extract_data(tb.GetBlueScore, MatchJsonfile)
 
-BlueAlliance= extract_data(tb.GetBlueTeams, Match)
+BlueAlliance= extract_data(tb.GetBlueTeams, MatchJsonfile)
 
-RedAlliance= extract_data(tb.GetRedTeams, Match)
+RedAlliance= extract_data(tb.GetRedTeams, MatchJsonfile)
 
-RedRP= extract_data(tb.GetRedRP, Match)
+RedRP= extract_data(tb.GetRedRP, MatchJsonfile)
 
-RedScore = extract_data(tb.GetRedScore, Match)
+RedScore = extract_data(tb.GetRedScore, MatchJsonfile)
 
-Winner = extract_data(tb.TBA_MatchWinner, Match)
+Winner = extract_data(tb.TBA_MatchWinner, MatchJsonfile)
 
-RedAutoPoints = extract_data(tb.GetRedAutoPoints, Match)
-BlueAutoPoints = extract_data(tb.GetBlueAutoPoints, Match)
-RedRP = extract_data(tb.GetRedRP, Match)
-BlueRP = extract_data(tb.GetBlueRP, Match)
-RedScore = extract_data(tb.GetRedScore, Match)
-BlueScore = extract_data(tb.GetBlueScore, Match)
-RedTeams = extract_data(tb.GetRedTeams, Match)
-BlueTeams = extract_data(tb.GetBlueTeams, Match)
-RedAutoAmpPoints = extract_data(tb.GetRedAutoAmpPoints, Match)
-BlueAutoAmpPoints = extract_data(tb.GetBlueAutoAmpPoints, Match)
-RedTeleAmpPoints = extract_data(tb.GetRedTeleAmpPoints, Match)
-BlueTeleAmpPoints = extract_data(tb.GetBlueTeleAmpPoints, Match)
-RedAutoSpeakerPoints = extract_data(tb.GetRedAutoSpeakerPoints, Match)
-BlueAutoSpeakerPoints = extract_data(tb.GetBlueAutoSpeakerPoints, Match)
-RedSpeakerPointsRegular = extract_data(tb.GetRedSpeakerPointsRegular, Match)
-BlueSpeakerPointsRegular = extract_data(tb.GetBlueSpeakerPointsRegular, Match)
-RedTeleSpeakerPointsAmped = extract_data(tb.GetRedTeleSpeakerPointsAmped, Match)
-BlueTeleSpeakerPointsAmped = extract_data(tb.GetBlueTeleSpeakerPointsAmped, Match)
-RedCenterTrapPoints = extract_data(tb.GetRedCenterTrapPoints, Match)
-BlueCenterTrapPoints = extract_data(tb.GetBlueCenterTrapPoints, Match)
-RedLeftTrapPoints = extract_data(tb.GetRedLeftTrapPoints, Match)
-BlueLeftTrapPoints = extract_data(tb.GetBlueLeftTrapPoints, Match)
-RedRightTrapPoints = extract_data(tb.GetRedRightTrapPoints, Match)
-BlueRightTrapPoints = extract_data(tb.GetBlueRightTrapPoints, Match)
-RedParkStatus1 = extract_data(tb.GetRedParkStatus1, Match)
-BlueParkStatus1 = extract_data(tb.GetBlueParkStatus1, Match)
-RedParkStatus2 = extract_data(tb.GetRedParkStatus2, Match)
-BlueParkStatus2 = extract_data(tb.GetBlueParkStatus2, Match)
-RedParkStatus3 = extract_data(tb.GetRedParkStatus3, Match)
-BlueParkStatus3 = extract_data(tb.GetBlueParkStatus3, Match)
-RedCenterMicStatus = extract_data(tb.GetRedCenterMicStatus, Match)
-BlueCenterMicStatus = extract_data(tb.GetBlueCenterMicStatus, Match)
-RedLeftMicStatus = extract_data(tb.GetRedLeftMicStatus, Match)
-BlueLeftMicStatus = extract_data(tb.GetBlueLeftMicStatus, Match)
-RedRightMicStatus = extract_data(tb.GetRedRightMicStatus, Match)
-BlueRightMicStatus = extract_data(tb.GetBlueRightMicStatus, Match)
-RedHarmonyPoints = extract_data(tb.GetRedHarmonyPoints, Match)
-BlueHarmonyPoints = extract_data(tb.GetBlueHarmonyPoints, Match)
+RedAutoPoints = extract_data(tb.GetRedAutoPoints, MatchJsonfile)
+BlueAutoPoints = extract_data(tb.GetBlueAutoPoints, MatchJsonfile)
+RedRP = extract_data(tb.GetRedRP, MatchJsonfile)
+BlueRP = extract_data(tb.GetBlueRP, MatchJsonfile)
+RedScore = extract_data(tb.GetRedScore, MatchJsonfile)
+BlueScore = extract_data(tb.GetBlueScore, MatchJsonfile)
+RedTeams = extract_data(tb.GetRedTeams, MatchJsonfile)
+BlueTeams = extract_data(tb.GetBlueTeams, MatchJsonfile)
+RedAutoAmpPoints = extract_data(tb.GetRedAutoAmpPoints, MatchJsonfile)
+BlueAutoAmpPoints = extract_data(tb.GetBlueAutoAmpPoints, MatchJsonfile)
+RedTeleAmpPoints = extract_data(tb.GetRedTeleAmpPoints, MatchJsonfile)
+BlueTeleAmpPoints = extract_data(tb.GetBlueTeleAmpPoints, MatchJsonfile)
+RedAutoSpeakerPoints = extract_data(tb.GetRedAutoSpeakerPoints, MatchJsonfile)
+BlueAutoSpeakerPoints = extract_data(tb.GetBlueAutoSpeakerPoints, MatchJsonfile)
+RedSpeakerPointsRegular = extract_data(tb.GetRedSpeakerPointsRegular, MatchJsonfile)
+BlueSpeakerPointsRegular = extract_data(tb.GetBlueSpeakerPointsRegular, MatchJsonfile)
+RedTeleSpeakerPointsAmped = extract_data(tb.GetRedTeleSpeakerPointsAmped, MatchJsonfile)
+BlueTeleSpeakerPointsAmped = extract_data(tb.GetBlueTeleSpeakerPointsAmped, MatchJsonfile)
+RedCenterTrapPoints = extract_data(tb.GetRedCenterTrapPoints, MatchJsonfile)
+BlueCenterTrapPoints = extract_data(tb.GetBlueCenterTrapPoints, MatchJsonfile)
+RedLeftTrapPoints = extract_data(tb.GetRedLeftTrapPoints, MatchJsonfile)
+BlueLeftTrapPoints = extract_data(tb.GetBlueLeftTrapPoints, MatchJsonfile)
+RedRightTrapPoints = extract_data(tb.GetRedRightTrapPoints, MatchJsonfile)
+BlueRightTrapPoints = extract_data(tb.GetBlueRightTrapPoints, MatchJsonfile)
+RedParkStatus1 = extract_data(tb.GetRedParkStatus1, MatchJsonfile)
+BlueParkStatus1 = extract_data(tb.GetBlueParkStatus1, MatchJsonfile)
+RedParkStatus2 = extract_data(tb.GetRedParkStatus2, MatchJsonfile)
+BlueParkStatus2 = extract_data(tb.GetBlueParkStatus2, MatchJsonfile)
+RedParkStatus3 = extract_data(tb.GetRedParkStatus3, MatchJsonfile)
+BlueParkStatus3 = extract_data(tb.GetBlueParkStatus3, MatchJsonfile)
+RedCenterMicStatus = extract_data(tb.GetRedCenterMicStatus, MatchJsonfile)
+BlueCenterMicStatus = extract_data(tb.GetBlueCenterMicStatus, MatchJsonfile)
+RedLeftMicStatus = extract_data(tb.GetRedLeftMicStatus, MatchJsonfile)
+BlueLeftMicStatus = extract_data(tb.GetBlueLeftMicStatus, MatchJsonfile)
+RedRightMicStatus = extract_data(tb.GetRedRightMicStatus, MatchJsonfile)
+BlueRightMicStatus = extract_data(tb.GetBlueRightMicStatus, MatchJsonfile)
+RedHarmonyPoints = extract_data(tb.GetRedHarmonyPoints, MatchJsonfile)
+BlueHarmonyPoints = extract_data(tb.GetBlueHarmonyPoints, MatchJsonfile)
 # RedCoopTry = extract_data(tb.GetRedCoopTry, Match)
 # BlueCoopTry = extract_data(tb.GetBlueCoopTry, Match)
 
@@ -631,7 +631,7 @@ for inner_list in RedAlliance:
     
 data2 = pd.DataFrame({
     
-    "Matches":match,
+    "Matches":matchKeysForListin,
     "Blue RP": BlueRP,
     "Blue Score": BlueScore,
     "Blue1": blue_first_elements,
