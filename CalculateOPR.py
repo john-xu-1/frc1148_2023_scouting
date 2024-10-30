@@ -6,7 +6,9 @@ import pandas as pd
 
 
 def coneNcubeOPR(event):   
-    allTeam = tba.TBA_EventTeamsRaw(event)
+    OPRAll = tba.TBA_EventOPRs(event)
+    Teams = OPRAll['ccwms'].keys()
+    allTeam = Teams
     matches = tba.TBA_EventMatchKeys(event)# these are rthe event match keys
     
     # coneMatrix = [] 

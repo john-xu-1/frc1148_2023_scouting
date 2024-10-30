@@ -86,14 +86,14 @@ print("starting power ratings")
 
 OPRAll = tb.TBA_EventOPRs(curEvent)
 
-OPR = OPRAll['oprs'].values()
+OPR = list(OPRAll['oprs'].values())
 
-DPR = OPRAll['dprs'].values()
+DPR = list(OPRAll['dprs'].values())
 
-CCWM = OPRAll['ccwms'].values()
+CCWM = list(OPRAll['ccwms'].values())
 
 # Teams = tb.TBA_EventTeamsFormatted(curEvent)
-Teams = OPRAll['ccwms'].keys()
+Teams = list(OPRAll['ccwms'].keys())
 
 speakerNAmps = cop.coneNcubeOPR(event=curEvent)
 
@@ -114,7 +114,7 @@ avgMissedSpeaker = {}
 avgMissedAmp = {}
 teamMatches = {}
 passNum = {}
-nickNames = {}
+nickNames = []
 climbFailNum = {}
 climbTryNum = {}
 trapScoredNum = {}
@@ -220,10 +220,11 @@ print (len(Teams))
 winRates = []
 
 for team in Teams:
-  if (tb.TBA_TeamEventStatus(team, curEvent) is not None) or (team[len(team) - 1] == 'B'):
-    matchesPlayed.append(teamCounts[team])
-else:
-    matchesPlayed.append("3")
+    print(team)
+    if (tb.TBA_TeamEventStatus(team, curEvent) is not None) or (team[len(team) - 1] == 'B'):
+        matchesPlayed.append(teamCounts[team])
+    else:
+        matchesPlayed.append("3")
     if team not in avgAmpNum:
         avgAmpNum[team] = 0
     if team not in avgSpeakerNum:
@@ -235,10 +236,12 @@ else:
         avgMissedAmp[team] = 0
     if team not in teamMatches:
         teamMatches[team] = 0
-    if team[team.length()-1] == 'B':
-        nickNames[team] = tb.TBA_TeamNickname(team[:team.length()-1]) + " B team"
+    if team[len(team)-1] == 'B':
+        theCurrentName = tb.TBA_TeamNickname(team[3:len(team)-1]) + " B team"
+        nickNames.append(theCurrentName)
     else:
-        nickNames[team] = tb.TBA_TeamNickname(team)
+        theCurrentName = tb.TBA_TeamNickname(team[3:])
+        nickNames.append(theCurrentName)
     # OPR.append( 0)
     # DPR.append( 0)
     # CCWM.append( 0)
@@ -247,18 +250,6 @@ else:
     speakerOPR.append( 0)
     Amps.append( 0)
     Speakers.append( 0)
-    
-TeamName = []
-teamNameCounter = 0
-for team in Teams:
-    # print(tb.TBA_TeamNickname(team))
-    if ("B" in team):
-        team = team[:4]
-        if ("B" in team):
-            team = team[:3]
-        print (team)
-    TeamName.append( tb.TBA_TeamNickname(team)),
-    teamNameCounter+=1
 
 
 for i in range (len(Teams)):
@@ -363,7 +354,7 @@ data = pd.DataFrame({
 wks.set_dataframe(data,(1,22))
 
 data = pd.DataFrame({
-    "Team Name": TeamName,
+    "Team Name": nickNames,
 })
 wks.set_dataframe(data,(1,33))
 print("starting tba data (+parking)")
@@ -736,4 +727,5 @@ wks = sh[3]
 wks.set_dataframe(B,(1,5))
 wks.set_dataframe(R,(1,9))
 
+print(teamCounts)
 print("all done")
