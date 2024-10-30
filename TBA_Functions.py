@@ -110,7 +110,8 @@ def CCWM(team):
 
 #======================================Event Specific Methods======================================
 def TBA_EventOPRs(event):
-    return TBA_AddressFetcher("event/"+event+"/oprs")
+    if TBA_AddressFetcher("event/"+event+"/oprs") is not None:
+        return TBA_AddressFetcher("event/"+event+"/oprs")
 
 def TBA_EventOPR(event):
     if (TBA_AddressFetcher("event/" + event + "/oprs") is not None):
