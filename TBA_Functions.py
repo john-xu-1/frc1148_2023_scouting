@@ -3,7 +3,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-curEvent = "2024cc"
+curEvent = "2024catt"
 # 2024caph
 
 def prettyPrint(jsonI):
@@ -110,7 +110,8 @@ def CCWM(team):
 
 #======================================Event Specific Methods======================================
 def TBA_EventOPRs(event):
-    return TBA_AddressFetcher("event/"+event+"/oprs")
+    if TBA_AddressFetcher("event/"+event+"/oprs") is not None:
+        return TBA_AddressFetcher("event/"+event+"/oprs")
 
 def TBA_EventOPR(event):
     if (TBA_AddressFetcher("event/" + event + "/oprs") is not None):
@@ -150,7 +151,8 @@ def TBA_GetCurMatch(match):
     return TBA_AddressFetcher("match/" + match)
 
 def TBA_MatchWinner(match):
-    return TBA_GetCurMatch(match)["winning_alliance"]
+    if match['score_breakdown']is not None:
+        return match["winning_alliance"]
 
 def GetCoopertitionBonusAchieved(match):
     if match.get('score_breakdown') and match['score_breakdown'].get('blue'):

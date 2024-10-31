@@ -6,8 +6,10 @@ import pandas as pd
 
 
 def coneNcubeOPR(event):   
-    allTeam = tba.TBA_EventTeamsRaw(event)
-    matches = tba.TBA_EventMatchKeys(event)
+    OPRAll = tba.TBA_EventOPRs(event)
+    Teams = OPRAll['ccwms'].keys()
+    allTeam = Teams
+    matches = tba.TBA_EventMatchKeys(event)# these are rthe event match keys
     
     # coneMatrix = [] 
     # cubeMatrix = []
@@ -29,7 +31,7 @@ def coneNcubeOPR(event):
         
         
         
-        cur_match_data= tba.TBA_GetCurMatch(match)
+        cur_match_data= tba.TBA_GetCurMatch(match)# ths gets the json of the match based on the matchkeys
         
         
         
@@ -210,7 +212,7 @@ def coneNcubeOPR(event):
     print (len(AmpCountArray))
     print (len(speakerCountArray))
 
-    df = pd.DataFrame( {"team": allTeam, "ampOPR": ampArray, "speakerOPR": speakerArray, "Amps":AmpCountArray, "Speakers":speakerCountArray})
+    df = pd.DataFrame( {"team": allTeam, "ampOPR": ampArray, "speakerOPR": speakerArray, "AmpsCount":AmpCountArray, "SpeakersCount":speakerCountArray})
 
     print (df)
     return df
