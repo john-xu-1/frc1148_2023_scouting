@@ -62,7 +62,7 @@ def custom_sort_M(match_data_list):
 
 
 #authorization
-curEvent = "2024cc"
+curEvent = "2024cabl"
 
 gc = pygsheets.authorize(service_file='credentials.json')
 
@@ -83,11 +83,18 @@ gc = pygsheets.authorize(service_file='credentials.json')
 
 print("starting power ratings")
 
+#OPRAll = tb.TBA_EventOPRs(curEvent)
+
+# OPR = list(OPRAll['oprs'].values())
+
+# DPR = list(OPRAll['dprs'].values())
+
+# CCWM = list(OPRAll['ccwms'].values())
+
 Teams = tb.TBA_EventTeamsFormatted(curEvent)
+#Teams = list(OPRAll['ccwms'].keys())
 
-OPR = tb.TBA_EventOPR(curEvent)
-
-speakerNAmps = cop.coneNcubeOPR(event=curEvent)
+#speakerNAmps = cop.coneNcubeOPR(event=curEvent)
 
 matchesPlayed = []
 
@@ -190,10 +197,10 @@ print(avgSpeakerNum)
 #values = result.get("values", [])
 
 
-# OPR = []
-# DPR = []
-# CCWM = []
-# winRates = []
+OPR = []
+DPR = []
+CCWM = []
+winRates = []
 ampOPR = []
 speakerOPR = []
 Amps = []
@@ -225,10 +232,17 @@ for team in Teams:
         avgMissedAmp[team] = 0
     if team not in teamMatches:
         teamMatches[team] = 0
-    # OPR.append( 0)
-    # DPR.append( 0)
-    # CCWM.append( 0)
-    #winRates.append( 0)
+    if team[len(team)-1] == 'B':
+        theCurrentName = tb.TBA_TeamNickname(team[3:len(team)-1]) + " B team"
+        nickNames.append(theCurrentName)
+    else:
+        theCurrentName = tb.TBA_TeamNickname(team[3:])
+        nickNames.append(theCurrentName)
+    OPR.append( 0)
+    DPR.append( 0)
+    CCWM.append( 0)
+    # winRates.append( 0)
+    
     ampOPR.append( 0)
     speakerOPR.append( 0)
     Amps.append( 0)
@@ -247,6 +261,7 @@ for i in range (len(Teams)):
     # if (status is not None):
     #     winRates.append(tb.TBA_WinRate(Teams[i],curEvent))
     # else: winRates.append("None")
+    Teams[i] = "frc" + Teams[i]
     winRates.append("None")
 
 #print (len(coneNCube['coneOPR']))
@@ -303,11 +318,26 @@ print (len(sortedMissedAmp))
 
 print (type(Teams))
 
+# print (len(speakerNAmps["ampOPR"]))
+# print (len(speakerNAmps["speakerOPR"]))
 
 ##changed the OPR[:36], "DPR":DPR[:36], "CCWM":CCWM[:36], to 47
 #:50 for 50 teams in current event
-#data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:50], "DPR":DPR[:50], "CCWM":CCWM[:50], "Win Rate %": winRates, "Amp OPR": ampOPR, "Speaker OPR": speakerOPR, "Matches Played": teamMatches, "Amps per Game": Amps, "Speaker per Game": Speakers, "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
-data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:43], "DPR":DPR[:43], "CCWM":CCWM[:43], "Win Rate %": winRates, "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": [item[1] for item in sortedTeamMatches], "Amps per Game(OPR)": speakerNAmps["AmpsCount"], "Speaker per Game(OPR)": speakerNAmps["SpeakersCount"], "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
+data = pd.DataFrame({"Teams":Teams,"OPR":OPR[:42], "DPR":DPR[:42], "CCWM":CCWM[:42], "Win Rate %": winRates, "Amp OPR": ampOPR, "Speaker OPR": speakerOPR, "Matches Played": matchesPlayed, "Amps per Game": Amps, "Speaker per Game": Speakers, "Team Total Speaker": [item[1] for item in sortedSpeakerNum], "Team Total Amp": [item[1] for item in sortedAmpNum], "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
+# data = pd.DataFrame({"Teams":Teams,
+#                      "OPR":OPR[:48], 
+#                      "DPR":DPR[:48], 
+#                      "CCWM":CCWM[:48], 
+#                      "Win Rate %": winRates, 
+#                      "Amp OPR": speakerNAmps["ampOPR"], 
+#                      "Speaker OPR": speakerNAmps["speakerOPR"], 
+#                      "Matches Played": [item[1] for item in sortedTeamMatches], 
+#                      "Amps per Game(OPR)": speakerNAmps["AmpsCount"], 
+#                      "Speaker per Game(OPR)": speakerNAmps["SpeakersCount"], 
+#                      "Team Total Speaker": [item[1] for item in sortedSpeakerNum], 
+#                      "Team Total Amp": [item[1] for item in sortedAmpNum], 
+#                      "Total Missed Speaker": [item[1] for item in sortedMissedSpeaker], 
+#                      "Total Missed Amp": [item[1] for item in sortedMissedAmp],})
 # "Amp OPR": speakerNAmps["ampOPR"], "Speaker OPR": speakerNAmps["speakerOPR"], "Matches Played": matchesPlayed, "Amps per Game": speakerNAmps["Amps"], "Speaker per Game": speakerNAmps["Speakers"],
 print ("start power rating data")
 sh = gc.open('Scouting Spreadsheet')

@@ -3,7 +3,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-curEvent = "2024cc"
+curEvent = "2024cabl"
 # 2024caph
 
 def prettyPrint(jsonI):
@@ -65,7 +65,8 @@ def TBA_TeamFullInfo(team):
     return TBA_AddressFetcher('team/frc'+team)
 
 def TBA_TeamNickname(team):
-    return TBA_TeamInfo(team)['nickname']
+    if TBA_TeamInfo(team).get('nickname'):
+        return TBA_TeamInfo(team)['nickname']
 
 
 
