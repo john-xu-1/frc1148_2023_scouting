@@ -206,9 +206,9 @@ speakerOPR = []
 Amps = []
 Speakers = []
 
-DPR = tb.TBA_EventDPR(curEvent)
+# DPR = tb.TBA_EventDPR(curEvent)
 
-CCWM = tb.TBA_EventCCWM(curEvent)
+# CCWM = tb.TBA_EventCCWM(curEvent)
 
 print (len(Teams))
 
@@ -232,12 +232,12 @@ for team in Teams:
         avgMissedAmp[team] = 0
     if team not in teamMatches:
         teamMatches[team] = 0
-    if team[len(team)-1] == 'B':
-        theCurrentName = tb.TBA_TeamNickname(team[3:len(team)-1]) + " B team"
-        nickNames.append(theCurrentName)
-    else:
-        theCurrentName = tb.TBA_TeamNickname(team[3:])
-        nickNames.append(theCurrentName)
+    # if team[len(team)-1] == 'B':
+    #     theCurrentName = tb.TBA_TeamNickname(team[3:len(team)-1]) + " B team"
+    #     nickNames.append(theCurrentName)
+    # else:
+    #     theCurrentName = tb.TBA_TeamNickname(team[3:])
+    #     nickNames.append(theCurrentName)
     OPR.append( 0)
     DPR.append( 0)
     CCWM.append( 0)
@@ -263,6 +263,7 @@ for i in range (len(Teams)):
     # else: winRates.append("None")
     Teams[i] = "frc" + Teams[i]
     winRates.append("None")
+    #matchesPlayed.append("0")
 
 #print (len(coneNCube['coneOPR']))
 print (len( winRates))
