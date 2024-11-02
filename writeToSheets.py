@@ -63,7 +63,7 @@ def custom_sort_M(match_data_list):
 
 
 #authorization
-curEvent = "2024catt"
+curEvent = "2024cabl"
 
 gc = pygsheets.authorize(service_file='credentials.json')
 
@@ -85,6 +85,8 @@ gc = pygsheets.authorize(service_file='credentials.json')
 print("starting power ratings")
 
 OPRAll = tb.TBA_EventOPRs(curEvent)
+
+print (OPRAll)
 
 OPR = list(OPRAll['oprs'].values())
 

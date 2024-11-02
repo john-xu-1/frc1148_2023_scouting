@@ -3,7 +3,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-curEvent = "2024catt"
+curEvent = "2024cabl"
 # 2024caph
 
 def prettyPrint(jsonI):
