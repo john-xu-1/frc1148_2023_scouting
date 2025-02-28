@@ -53,20 +53,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class FlexibleScoutScheduler:
-    def __init__(self, scout_names, total_matches, unavailability, 
-                 target_consecutive=10, target_break=10):
+    def __init__(self, scout_names, total_matches, unavailability, breaks=None, 
+             target_consecutive=10, target_break=10):
         self.scout_names = scout_names
         self.total_matches = total_matches
         self.unavailability = unavailability
+        self.breaks = breaks if breaks else []  # Store breaks
         self.target_consecutive = target_consecutive
         self.target_break = target_break
         self.robots = ['R1', 'R2', 'R3', 'B1', 'B2', 'B3']
         self.total_shifts = total_matches * len(self.robots)
-        
-        # Calculate target assignments per scout
-        self.num_scouts = len(scout_names)
-        self.base_assignments = self.total_shifts // self.num_scouts
-        self.extra_assignments = self.total_shifts % self.num_scouts
         
         # Initialize data structures
         self.schedule = {m: {r: None for r in self.robots} 
@@ -76,147 +72,162 @@ class FlexibleScoutScheduler:
             'primary_robot': self.robots[i % len(self.robots)],
             'assignments': 0,
             'assigned_robot': defaultdict(int),
-            'last_match': -self.target_break  # Track last assignment
+            'last_match': -self.target_break,
+            'consecutive': 0  # Track consecutive matches
         } for i, s in enumerate(scout_names)}
-
+   
     def generate_work_schedule(self):
-        """Improved work period generation with break awareness"""
-        assignments_per_scout = {}
+        """Generate block-based work periods."""
+        work_blocks = [(1, 11), (22, 32), (43, 53), (64, 74)]
         for i, scout in enumerate(self.scout_names):
-            assignments = self.base_assignments + (1 if i < self.extra_assignments else 0)
-            assignments_per_scout[scout] = assignments
+            if i < 6:  # Group A
+                self.scout_data[scout]['work_periods'] = [work_blocks[0], work_blocks[2]]
+            else:       # Group B
+                self.scout_data[scout]['work_periods'] = [work_blocks[1], work_blocks[3]]
             
-            work_schedule = []
-            current_match = 1
-            remaining = assignments
-            
-            while remaining > 0 and current_match <= self.total_matches:
-                # Calculate ideal block size
-                block_size = min(
-                    remaining,
-                    self.target_consecutive,
-                    self.total_matches - current_match + 1
-                )
-                
-                # Find next available block
-                while True:
-                    end_match = current_match + block_size - 1
-                    unavailable_matches = [m for m in range(current_match, end_match+1)
-                            if m in self.unavailability.get(scout, [])]
-                    
-                    if not unavailable_matches:
-                        break
-                    
-                    # Jump to first available match after conflict
-                    current_match = max(unavailable_matches) + 1
-                    block_size = min(remaining, self.target_consecutive)
-                
-                # Add break buffer between blocks
-                if work_schedule:
-                    last_end = work_schedule[-1][1]
-                    current_match = max(current_match, last_end + self.target_break + 1)
-                
-                work_schedule.append((current_match, end_match))
-                remaining -= block_size
-                current_match = end_match + 1  # Start next block immediately
-                
-            self.scout_data[scout]['work_periods'] = work_schedule
+            # Add extra match for 4 scouts
+            if i in [6, 7, 8, 9]:
+                self.scout_data[scout]['work_periods'].append((74, 74))
 
+    # def assign_robots(self):
+    #     """Assign scouts to robots with flexibility in constraints."""
+    #     # Create availability timeline
+    #     scout_availability = defaultdict(list)
+    #     for scout in self.scout_names:
+    #         for start, end in self.scout_data[scout]['work_periods']:
+    #             for match in range(start, end + 1):
+    #                 if match <= self.total_matches and match not in self.unavailability.get(scout, []):
+    #                     scout_availability[match].append(scout)
+
+    #     # Process each match individually
+    #     for match in range(1, self.total_matches + 1):
+    #         available_scouts = scout_availability.get(match, [])
+    #         robot_prefs = {r: [] for r in self.robots}
+
+    #         # Sort scouts by their affinity to each robot
+    #         for scout in available_scouts:
+    #             primary = self.scout_data[scout]['primary_robot']
+    #             robot_prefs[primary].append(scout)
+                
+    #             # Also consider secondary preferences
+    #             other_robots = [r for r in self.robots if r != primary]
+    #             for r in other_robots:
+    #                 robot_prefs[r].append(scout)
+
+    #         # Create cost matrix for optimal assignment
+    #         cost_matrix = []
+    #         for robot in self.robots:
+    #             row = []
+    #             for scout in available_scouts:
+    #                 # Cost based on previous assignments and preferences
+    #                 cost = (
+    #                     0 if robot == self.scout_data[scout]['primary_robot'] else 1
+    #                 ) + 0.1 * self.scout_data[scout]['assignments']
+    #                 row.append(cost)
+    #             cost_matrix.append(row)
+
+    #         # Use Hungarian algorithm for optimal assignment
+    #         if cost_matrix and available_scouts:
+    #             from scipy.optimize import linear_sum_assignment
+    #             try:
+    #                 row_ind, col_ind = linear_sum_assignment(cost_matrix)
+                    
+    #                 for r, c in zip(row_ind, col_ind):
+    #                     robot = self.robots[r]
+    #                     scout = available_scouts[c]
+    #                     if not self.schedule[match][robot]:
+    #                         self._assign_scout(scout, match, robot)
+    #             except Exception as e:
+    #                 print(f"⚠️ Hungarian algorithm failed for match {match}: {e}")
+
+    #         # Fill any remaining positions
+    #         remaining = [r for r in self.robots if not self.schedule[match][r]]
+    #         for robot in remaining:
+    #             # Find the best scout for the remaining robot
+    #             best_scout = None
+    #             min_assignments = float('inf')
+
+    #             # First try available scouts not yet assigned
+    #             candidates = [
+    #                 s for s in available_scouts 
+    #                 if s not in self.schedule[match].values()
+    #             ]
+                
+    #             # Fallback to any scout if needed
+    #             if not candidates:
+    #                 candidates = [
+    #                     s for s in self.scout_names
+    #                     if match not in self.unavailability.get(s, [])
+    #                     and s not in self.schedule[match].values()
+    #                 ]
+
+    #             # Emergency override if still no candidates
+    #             if not candidates:
+    #                 candidates = [
+    #                     s for s in self.scout_names
+    #                     if s not in self.schedule[match].values()
+    #                 ]
+
+    #             if candidates:
+    #                 # Sort by total assignments and robot consistency
+    #                 candidates.sort(key=lambda x: (
+    #                     self.scout_data[x]['assignments'],
+    #                     x != self.scout_data[x]['primary_robot']
+    #                 ))
+    #                 best_scout = candidates[0]
+    #                 self._assign_scout(best_scout, match, robot)
+    #             else:
+    #                 print(f"🆘 Critical error: No candidates found for match {match} robot {robot}")
+    
     def assign_robots(self):
-        """Assign scouts to robots with flexibility in constraints."""
-        # Create availability timeline
-        scout_availability = defaultdict(list)
-        for scout in self.scout_names:
-            for start, end in self.scout_data[scout]['work_periods']:
-                for match in range(start, end + 1):
-                    if match <= self.total_matches and match not in self.unavailability.get(scout, []):
-                        scout_availability[match].append(scout)
-
-        # Process each match individually
+        """Assign robots with break awareness."""
         for match in range(1, self.total_matches + 1):
-            available_scouts = scout_availability.get(match, [])
-            robot_prefs = {r: [] for r in self.robots}
+            # Reset consecutive counters at breaks
+            if (match - 1) in self.breaks:
+                for scout in self.scout_names:
+                    self.scout_data[scout]['consecutive'] = 0
+            
+            # Get available scouts
+            available_scouts = self.get_available_scouts(match)
+            robot_queue = {r: deque() for r in self.robots}
 
-            # Sort scouts by their affinity to each robot
+            # Prioritize scouts by primary robot affinity
             for scout in available_scouts:
-                primary = self.scout_data[scout]['primary_robot']
-                robot_prefs[primary].append(scout)
-                
-                # Also consider secondary preferences
-                other_robots = [r for r in self.robots if r != primary]
-                for r in other_robots:
-                    robot_prefs[r].append(scout)
+                pref_robot = self.scout_data[scout]['primary_robot']
+                robot_queue[pref_robot].append(scout)
 
-            # Create cost matrix for optimal assignment
-            cost_matrix = []
+            # Assign primary positions first
             for robot in self.robots:
-                row = []
-                for scout in available_scouts:
-                    # Cost based on previous assignments and preferences
-                    cost = (
-                        0 if robot == self.scout_data[scout]['primary_robot'] else 1
-                    ) + 0.1 * self.scout_data[scout]['assignments']
-                    row.append(cost)
-                cost_matrix.append(row)
+                while robot_queue[robot]:
+                    scout = robot_queue[robot].popleft()
+                    if not self.schedule[match][robot]:
+                        self._assign_scout(scout, match, robot)
+                        break
 
-            # Use Hungarian algorithm for optimal assignment
-            if cost_matrix and available_scouts:
-                from scipy.optimize import linear_sum_assignment
-                try:
-                    row_ind, col_ind = linear_sum_assignment(cost_matrix)
-                    
-                    for r, c in zip(row_ind, col_ind):
-                        robot = self.robots[r]
-                        scout = available_scouts[c]
-                        if not self.schedule[match][robot]:
-                            self._assign_scout(scout, match, robot)
-                except Exception as e:
-                    print(f"⚠️ Hungarian algorithm failed for match {match}: {e}")
-
-            # Fill any remaining positions
+            # Fill remaining positions
             remaining = [r for r in self.robots if not self.schedule[match][r]]
             for robot in remaining:
                 # Find the best scout for the remaining robot
                 best_scout = None
                 min_assignments = float('inf')
 
-                # First try available scouts not yet assigned
-                candidates = [
-                    s for s in available_scouts 
-                    if s not in self.schedule[match].values()
-                ]
-                
-                # Fallback to any scout if needed
-                if not candidates:
-                    candidates = [
-                        s for s in self.scout_names
-                        if match not in self.unavailability.get(s, [])
-                        and s not in self.schedule[match].values()
-                    ]
+                for scout in available_scouts:
+                    if scout not in self.schedule[match].values():
+                        # Prefer scouts with fewer total assignments
+                        if self.scout_data[scout]['assignments'] < min_assignments:
+                            best_scout = scout
+                            min_assignments = self.scout_data[scout]['assignments']
 
-                # Emergency override if still no candidates
-                if not candidates:
-                    candidates = [
-                        s for s in self.scout_names
-                        if s not in self.schedule[match].values()
-                    ]
-
-                if candidates:
-                    # Sort by total assignments and robot consistency
-                    candidates.sort(key=lambda x: (
-                        self.scout_data[x]['assignments'],
-                        x != self.scout_data[x]['primary_robot']
-                    ))
-                    best_scout = candidates[0]
+                if best_scout:
                     self._assign_scout(best_scout, match, robot)
-                else:
-                    print(f"🆘 Critical error: No candidates found for match {match} robot {robot}")
 
     def _assign_scout(self, scout, match, robot):
+        """Assign a scout to a robot and update tracking data."""
         self.schedule[match][robot] = scout
         self.scout_data[scout]['assignments'] += 1
         self.scout_data[scout]['assigned_robot'][robot] += 1
         self.scout_data[scout]['last_match'] = match
+        self.scout_data[scout]['consecutive'] += 1
 
     def validate_and_visualize(self):
         """Validate the schedule and generate a visualization."""
@@ -250,62 +261,85 @@ class FlexibleScoutScheduler:
                 f"\nTotal coverage errors: {len(errors)}"
             ]))
 
-    def _warn_constraints(self):
-        """Provide detailed warnings about constraint deviations."""
-        warnings = []
-        for scout in self.scout_names:
-            # Get sorted list of worked matches
-            worked_matches = sorted(
-                [m for m, robots in self.schedule.items() 
-                if scout in robots.values()]
-            )
+    # def _warn_constraints(self):
+    #     """Provide detailed warnings about constraint deviations."""
+    #     warnings = []
+    #     for scout in self.scout_names:
+    #         # Get sorted list of worked matches
+    #         worked_matches = sorted(
+    #             [m for m, robots in self.schedule.items() 
+    #             if scout in robots.values()]
+    #         )
             
-            if not worked_matches:
-                warnings.append(f"⚠️ Scout {scout} has no assignments")
-                continue
+    #         if not worked_matches:
+    #             warnings.append(f"⚠️ Scout {scout} has no assignments")
+    #             continue
 
-            # Track consecutive work streaks
-            current_streak = 1
-            max_streak = 1
-            last_match = worked_matches[0]
+    #         # Track consecutive work streaks
+    #         current_streak = 1
+    #         max_streak = 1
+    #         last_match = worked_matches[0]
             
-            for match in worked_matches[1:]:
+    #         for match in worked_matches[1:]:
+    #             if match == last_match + 1:
+    #                 current_streak += 1
+    #                 max_streak = max(max_streak, current_streak)
+    #             else:
+    #                 gap = match - last_match - 1
+    #                 if gap < self.target_break:
+    #                     warnings.append(
+    #                         f"⚠️ Short break: {scout} had {gap} match break "
+    #                         f"between {last_match} and {match} (target: {self.target_break})"
+    #                     )
+    #                 current_streak = 1
+    #             last_match = match
+
+    #         if max_streak > self.target_consecutive:
+    #             warnings.append(
+    #                 f"⚠️ Long streak: {scout} worked {max_streak} consecutive matches "
+    #                 f"(target: {self.target_consecutive})"
+    #             )
+
+    #         # Check robot consistency
+    #         robot_counts = self.scout_data[scout]['assigned_robot']
+    #         if len(robot_counts) > 1:
+    #             primary = self.scout_data[scout]['primary_robot']
+    #             robot_dist = ", ".join([f"{k} ({v})" for k, v in robot_counts.items()])
+    #             warnings.append(
+    #                 f"⚠️ Robot inconsistency: {scout} (primary: {primary}) "
+    #                 f"assigned to {robot_dist}"
+    #             )
+
+    #     if warnings:
+    #         print("\n".join([
+    #             "CONSTRAINT WARNINGS:",
+    #             "====================",
+    #             *warnings,
+    #             f"\nTotal warnings: {len(warnings)}"
+    #         ]))
+    
+    def _warn_constraints(self):
+        """Warn about deviations from target constraints, considering breaks."""
+        for scout in self.scout_names:
+            last_match = -self.target_break
+            current_streak = 0
+            for match in sorted(m for m in self.schedule 
+                            if scout in self.schedule[m].values()):
+                # Reset streak at breaks
+                if (match - 1) in self.breaks:
+                    current_streak = 0
+                
                 if match == last_match + 1:
                     current_streak += 1
-                    max_streak = max(max_streak, current_streak)
+                    if current_streak > self.target_consecutive:
+                        print(f"⚠️ Scout {scout} worked {current_streak} consecutive matches (target: {self.target_consecutive})")
                 else:
-                    gap = match - last_match - 1
-                    if gap < self.target_break:
-                        warnings.append(
-                            f"⚠️ Short break: {scout} had {gap} match break "
-                            f"between {last_match} and {match} (target: {self.target_break})"
-                        )
+                    if last_match > 0:
+                        break_duration = match - last_match - 1
+                        if break_duration < self.target_break:
+                            print(f"⚠️ Scout {scout} had only {break_duration} break between {last_match} and {match} (target: {self.target_break})")
                     current_streak = 1
                 last_match = match
-
-            if max_streak > self.target_consecutive:
-                warnings.append(
-                    f"⚠️ Long streak: {scout} worked {max_streak} consecutive matches "
-                    f"(target: {self.target_consecutive})"
-                )
-
-            # Check robot consistency
-            robot_counts = self.scout_data[scout]['assigned_robot']
-            if len(robot_counts) > 1:
-                primary = self.scout_data[scout]['primary_robot']
-                robot_dist = ", ".join([f"{k} ({v})" for k, v in robot_counts.items()])
-                warnings.append(
-                    f"⚠️ Robot inconsistency: {scout} (primary: {primary}) "
-                    f"assigned to {robot_dist}"
-                )
-
-        if warnings:
-            print("\n".join([
-                "CONSTRAINT WARNINGS:",
-                "====================",
-                *warnings,
-                f"\nTotal warnings: {len(warnings)}"
-            ]))
 
     def _create_heatmap(self, df):
         """Generate a table-based visualization similar to the reference code."""
@@ -373,19 +407,20 @@ class FlexibleScoutScheduler:
         print("Schedule visualization saved to 'scouting_schedule.png'")
 
 # Usage
-scout_names = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 
-               'Frank', 'Grace', 'Hank', 'Ivy', 'Jack']
+scout_names = ['Alice', 'Bob', 'Charlie', 'David', 'Eve','Frank', 'Grace', 'Hank', 'Ivy', 'Jack','Matthew','Quinn', 'Riley', 'Sam', 'Tina', 'Uma', 'Vince', 'Wendy', 'Xander', 'Yara', 'Zara','Finn']
 total_matches = 74
 unavailability = {
     'Alice': [1, 2, 3],
     'Bob': [4, 5],
     'Charlie': [10, 11, 12],
 }
+breaks = [22,55]
 
 scheduler = FlexibleScoutScheduler(
     scout_names=scout_names,
     total_matches=total_matches,
     unavailability=unavailability,
+    breaks=breaks,
     target_consecutive=10,
     target_break=10
 )
