@@ -63,7 +63,7 @@ def custom_sort_M(match_data_list):
 
 
 #authorization
-curEvent = "2024catt"
+curEvent = "2024cabl"
 
 gc = pygsheets.authorize(service_file='credentials.json')
 
@@ -85,6 +85,8 @@ gc = pygsheets.authorize(service_file='credentials.json')
 print("starting power ratings")
 
 OPRAll = tb.TBA_EventOPRs(curEvent)
+
+print (OPRAll)
 
 OPR = list(OPRAll['oprs'].values())
 
@@ -362,18 +364,17 @@ print("starting tba data (+parking)")
 
 def extract_data(data_type, Match):
     data_list = []
-    
-    
-    
     for i in range(len(Match)):
         #cur_match_data= tb.TBA_GetCurMatch(match[i])
-        data_list.append(data_type(Match[i]))
-        
+        try:
+            data_list.append(data_type(Match[i]))
+        except KeyError:
+            data_list.append(None)
         # if type(cur_match_data['score_breakdown']) is not type(None):
         #     print (cur_match_data)
             
         # else: data_list.append ("none")
-    print ("========================= finished once ==============================")
+    print("========================= finished once ==============================")
     return data_list
 
 def EventMatchKeys(x):

@@ -3,7 +3,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-curEvent = "2024catt"
+curEvent = "2024cabl"
 # 2024caph
 
 def prettyPrint(jsonI):
@@ -154,9 +154,11 @@ def TBA_MatchWinner(match):
     if match['score_breakdown']is not None:
         return match["winning_alliance"]
 
-def GetCoopertitionBonusAchieved (match):
-    if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['blue']['coopertitionBonusAchieved']
+def GetCoopertitionBonusAchieved(match):
+    if match.get('score_breakdown') and match['score_breakdown'].get('blue'):
+        if match['score_breakdown']['blue'].get('coopertitionBonusAchieved') is not None:
+            return match['score_breakdown']['blue']['coopertitionBonusAchieved']
+    return None
 # def GetMatchData(MatchKey):
 #     return TBA_EventMatchKeys(curEvent)[MatchKey]
 
@@ -327,8 +329,9 @@ def GetRedHarmonyPoints(match):
         return match['score_breakdown']['red']['endGameHarmonyPoints']
     
 def GetRedCoopTry(match):
-    if match['score_breakdown'] is not None: 
-        return match['score_breakdown']['red']['coopNotePlayed']
+    if match.get('score_breakdown') and match['score_breakdown'].get('red'):
+        return match['score_breakdown']['red'].get('coopNotePlayed')
+    return None
 
 def GetBlueAmpCount(match):
     if match['score_breakdown'] is not None: 
