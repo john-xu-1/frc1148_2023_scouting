@@ -409,26 +409,24 @@ class ScoutScheduler:
 def run_scout_scheduling():
     """Main function to run the scout assignment algorithm."""
     # Input data
-    scout_names = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 
-                   'Grace', 'Hank', 'Ivy', 'Jack', 'Katie', 'Leo',
-                   'Maya', 'Noah', 'Olivia']
+    scout_names = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 'Grace', 'Hank', 'Ivy', 'Jack', 'Katie', 'Leo']
     total_matches = 74
     unavailability = {
-        'Alice': [1, 2, 3],
-        'Bob': [4, 5],
-        'Charlie': [10, 11, 12],
-        'David': [20, 21],
-        'Eve': [30, 31, 32],
-        'Frank': [40, 41],
-        'Grace': [50, 51, 52],
-        'Hank': [60, 61],
-        'Ivy': [15, 16, 17],
-        'Jack': [25, 26, 27],
-        'Katie': [35, 36],
-        'Leo': [45, 46, 47],
-        'Maya': [55, 56],
-        'Noah': [65, 66, 67],
-        'Olivia': [5, 6, 7]
+        # 'Alice': [1, 2, 3],
+        # 'Bob': [4, 5],
+        # 'Charlie': [10, 11, 12],
+        # 'David': [20, 21],
+        # 'Eve': [30, 31, 32],
+        # 'Frank': [40, 41],
+        # 'Grace': [50, 51, 52],
+        # 'Hank': [60, 61],
+        # 'Ivy': [15, 16, 17],
+        # # 'Jack': [25, 26, 27],
+        # # 'Katie': [35, 36],
+        # 'Leo': [45, 46, 47],
+        # # 'Maya': [55, 56],
+        # 'Noah': [65, 66, 67],
+        # 'Olivia': [5, 6, 7]
     }
     breaks = [22, 55]
     
