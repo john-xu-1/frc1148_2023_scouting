@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from collections import defaultdict, Counter
 
+fun = "/Users/matthewahn/Desktop/"
+
 class ScoutScheduler:
     """
     A scheduler for assigning scouts to monitor players/teams across a season.
@@ -281,7 +283,7 @@ class ScoutScheduler:
         return pd.DataFrame(data)
     
    
-    def visualize_schedule(self, filename: str = "/Users/matthewahn/Desktop/scout_schedule.png") -> None:
+    def visualize_schedule(self, filename: str = fun + "scout_schedule.png") -> None:
         """
         Visualize the schedule as a colorful heatmap with scout names in the shaded boxes.
         
@@ -445,7 +447,7 @@ def run_scout_scheduling():
     scheduler.optimize_schedule(iterations=500)
     
     # Visualize the schedule
-    scheduler.visualize_schedule(filename="/Users/matthewahn/Desktop/scout_schedule.png")
+    scheduler.visualize_schedule(filename=fun + "scout_schedule.png")
     
     # Convert to dataframe
     schedule_df = scheduler.to_dataframe()
@@ -483,9 +485,9 @@ if __name__ == "__main__":
     print(schedule.head(10))
     
     # Save to CSV
-    schedule.to_csv("/Users/matthewahn/Desktop/scout_schedule.csv", index=False)
-    print("\nFull schedule saved to /Users/matthewahn/Desktop/scout_schedule.csv")
-    print("Visualization saved to /Users/matthewahn/Desktop/scout_schedule.png")
+    schedule.to_csv(fun+"scout_schedule.csv", index=False)
+    print("\nFull schedule saved to "+fun+ "scout_schedule.csv")
+    print("Visualization saved to "+fun+"scout_schedule.png")
     
 # ------------------------------------------------------------
 def check_insufficient_rest(self, min_rest_period: int = None) -> Dict[str, List[Tuple[int, int, int]]]:
