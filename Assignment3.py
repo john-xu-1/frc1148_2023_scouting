@@ -280,9 +280,10 @@ class ScoutScheduler:
         
         return pd.DataFrame(data)
     
-    def visualize_schedule(self, filename: str = "/Users/matthewahn/Desktop/"+"scout_schedule.png") -> None:
+   
+    def visualize_schedule(self, filename: str = "/Users/matthewahn/Desktop/scout_schedule.png") -> None:
         """
-        Visualize the schedule as a colorful heatmap.
+        Visualize the schedule as a colorful heatmap with scout names in the shaded boxes.
         
         Args:
             filename: Output file name for the visualization
@@ -329,6 +330,13 @@ class ScoutScheduler:
         ax.set_xticks(np.arange(-.5, len(self.teams_to_scout), 1), minor=True)
         ax.set_yticks(np.arange(-.5, self.total_matches, 1), minor=True)
         ax.grid(which='minor', color='black', linestyle='-', linewidth=0.5, alpha=0.2)
+        
+        # Add scout names to the heatmap cells
+        for i in range(self.total_matches):
+            for j, team in enumerate(self.teams_to_scout):
+                scout = df.iloc[i][team]
+                if scout:
+                    ax.text(j, i, scout, ha='center', va='center', fontsize=8, color='black' if numerical_data[i, j] != -1 else 'white')
         
         # Adjust layout
         plt.tight_layout()
@@ -439,7 +447,7 @@ def run_scout_scheduling():
     scheduler.optimize_schedule(iterations=500)
     
     # Visualize the schedule
-    scheduler.visualize_schedule(filename="scout_schedule.png")
+    scheduler.visualize_schedule(filename="/Users/matthewahn/Desktop/scout_schedule.png")
     
     # Convert to dataframe
     schedule_df = scheduler.to_dataframe()
@@ -477,6 +485,105 @@ if __name__ == "__main__":
     print(schedule.head(10))
     
     # Save to CSV
-    schedule.to_csv("scout_schedule.csv", index=False)
-    print("\nFull schedule saved to scout_schedule.csv")
-    print("Visualization saved to scout_schedule.png")
+    schedule.to_csv("/Users/matthewahn/Desktop/scout_schedule.csv", index=False)
+    print("\nFull schedule saved to /Users/matthewahn/Desktop/scout_schedule.csv")
+    print("Visualization saved to /Users/matthewahn/Desktop/scout_schedule.png")
+    
+# ------------------------------------------------------------
+def check_insufficient_rest(self, min_rest_period: int = None) -> Dict[str, List[Tuple[int, int, int]]]:
+    """
+    Check for scouts who have been reassigned without sufficient rest between assignments.
+    
+    Args:
+        min_rest_period: Minimum required matches between assignments (defaults to self.target_rest_matches)
+        
+    Returns:
+        Dictionary mapping scout names to list of tuples (first_match, next_match, actual_rest_period)
+        for instances where scouts didn't get enough rest
+    """
+    if min_rest_period is None:
+        min_rest_period = self.target_rest_matches
+    
+    # Dictionary to track results
+    insufficient_rest = defaultdict(list)
+    
+    # Dictionary to track when each scout last worked
+    last_worked = {name: 0 for name in self.scout_names}
+    
+    # Process each match
+    for match in range(1, self.total_matches + 1):
+        # Find scouts working in this match
+        working_scouts = set()
+        for team in self.teams_to_scout:
+            scout = self.schedule[match][team]
+            if scout:
+                working_scouts.add(scout)
+        
+        # Check if any working scouts didn't get enough rest
+        for scout in working_scouts:
+            # Skip if this is the first assignment
+            if last_worked[scout] == 0:
+                last_worked[scout] = match
+                continue
+            
+            # Calculate rest period
+            rest_period = match - last_worked[scout] - 1
+            
+            # Check if rest period is insufficient
+            if rest_period < min_rest_period:
+                # Account for scheduled breaks
+                is_break_between = any(last_worked[scout] <= b < match for b in self.breaks)
+                
+                # Only flag if there wasn't a scheduled break
+                if not is_break_between:
+                    insufficient_rest[scout].append((last_worked[scout], match, rest_period))
+            
+            # Update last worked match
+            last_worked[scout] = match
+    
+    return insufficient_rest
+
+def print_insufficient_rest_report(self, min_rest_period: int = None) -> None:
+    """
+    Print a detailed report about scouts who didn't receive sufficient rest between assignments.
+    
+    Args:
+        min_rest_period: Minimum required matches between assignments (defaults to self.target_rest_matches)
+    """
+    if min_rest_period is None:
+        min_rest_period = self.target_rest_matches
+    
+    insufficient_rest = self.check_insufficient_rest(min_rest_period)
+    
+    print(f"\nScout Insufficient Rest Report (Minimum rest: {min_rest_period} matches):")
+    print("-" * 80)
+    
+    if not insufficient_rest:
+        print("All scouts received adequate rest periods between assignments.")
+        return
+    
+    print(f"{'Scout':<15} {'First Match':<15} {'Next Match':<15} {'Rest Period':<15} {'Expected':<15}")
+    print("-" * 80)
+    
+    total_violations = 0
+    
+    for scout, violations in sorted(insufficient_rest.items(), key=lambda x: len(x[1]), reverse=True):
+        for first_match, next_match, rest_period in violations:
+            print(f"{scout:<15} {first_match:<15} {next_match:<15} {rest_period:<15} {min_rest_period:<15}")
+            total_violations += 1
+        
+        # Add a separator line between scouts
+        if violations:
+            print("-" * 80)
+    
+    print(f"\nTotal insufficient rest violations: {total_violations}")
+    print(f"Scouts affected: {len(insufficient_rest)}/{len(self.scout_names)}")
+    
+    # Calculate the most common violations
+    if total_violations > 0:
+        violation_counts = Counter([v[2] for scout_list in insufficient_rest.values() for v in scout_list])
+        most_common = violation_counts.most_common(3)
+        
+        print("\nMost common insufficient rest periods:")
+        for rest_period, count in most_common:
+            print(f"  {rest_period} matches: {count} occurrences ({count/total_violations*100:.1f}%)")
