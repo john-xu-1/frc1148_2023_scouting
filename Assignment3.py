@@ -411,7 +411,7 @@ class ScoutScheduler:
 def run_scout_scheduling():
     """Main function to run the scout assignment algorithm."""
     # Input data
-    scout_names = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 'Grace', 'Hank', 'Ivy', 'Jack', 'Katie', 'Leo']
+    scout_names = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 'Grace', 'Hank', 'Ivy', 'Jack', 'Katie', 'Leo', 'Maya', 'Noah', 'Olivia', 'Peter', 'Quinn', 'Rachel', 'Sam', 'Tina', 'Ulysses', 'Violet', 'Walter', 'Xena', 'Yara', 'Zane','Amy','Ben','Cathy']
     total_matches = 74
     unavailability = {
         # 'Alice': [1, 2, 3],
