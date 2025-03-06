@@ -50,10 +50,13 @@ class ScoutScheduler:
         self.scout_assignments = {name: [] for name in scout_names}
         
         # Track consecutive matches worked for each scout
-        self.consecutive_matches = {name: 0 for name in scout_names}
+        # self.consecutive_matches = {name: 0 for name in scout_names}
+        self.active_streaks = {name: 0 for name in scout_names}  # Current consecutive matches
+        self.rest_needed = {name: False for name in scout_names}  # Whether scout needs rest
+        self.last_worked = {name: -100 for name in scout_names} 
         
         # Track matches since last worked for each scout
-        self.matches_since_worked = {name: 0 for name in scout_names}
+        # self.matches_since_worked = {name: 0 for name in scout_names}
         
         # Track team familiarity (which teams each scout has worked with)
         self.team_familiarity = {name: set() for name in scout_names}
@@ -96,93 +99,228 @@ class ScoutScheduler:
         """
         return match not in self.unavailability.get(scout, [])
     
-    def get_available_scouts(self, match: int) -> List[str]:
-        """
-        Get all scouts available for a specific match.
+    # def get_available_scouts(self, match: int) -> List[str]:
+    #     """
+    #     Get all scouts available for a specific match.
         
-        Args:
-            match: The match number to check
+    #     Args:
+    #         match: The match number to check
             
-        Returns:
-            List of available scouts
-        """
-        return [name for name in self.scout_names if self.is_available(name, match)]
+    #     Returns:
+    #         List of available scouts
+    #     """
+    #     return [name for name in self.scout_names if self.is_available(name, match)]
+    
+    # def should_rest(self, scout: str) -> bool:
+    #     """
+    #     Determine if a scout should rest based on consecutive matches worked.
+        
+    #     Args:
+    #         scout: The name of the scout
+            
+    #     Returns:
+    #         True if the scout should rest, False otherwise
+    #     """
+    #     return self.consecutive_matches[scout] >= self.target_consecutive_matches
     
     def should_rest(self, scout: str) -> bool:
-        """
-        Determine if a scout should rest based on consecutive matches worked.
+        """Determine if scout needs mandatory rest"""
+        return self.rest_needed[scout]
+
+    def get_available_scouts(self, match: int) -> List[str]:
+        """Override to enforce mandatory rest periods"""
+        return [s for s in self.scout_names 
+                if self.is_available(s, match) and not self.rest_needed[s]]
+    
+    # def select_scout_for_team(self, match: int, team: str, available_scouts: List[str]) -> str:
+    #     """
+    #     Select the best scout for a team on a given match.
         
-        Args:
-            scout: The name of the scout
+    #     Args:
+    #         match: The current match
+    #         team: The team needing scouting
+    #         available_scouts: List of available scouts
             
-        Returns:
-            True if the scout should rest, False otherwise
-        """
-        return self.consecutive_matches[scout] >= self.target_consecutive_matches
+    #     Returns:
+    #         Name of selected scout
+    #     """
+    #     # Filter out scouts who should rest unless necessary
+    #     rested_scouts = [s for s in available_scouts if not self.should_rest(s)]
+        
+    #     # If no rested scouts are available, use all available scouts
+    #     candidates = rested_scouts if rested_scouts else available_scouts
+        
+    #     # First priority: scouts familiar with this team
+    #     familiar_candidates = [s for s in candidates if team in self.team_familiarity[s]]
+    #     if familiar_candidates:
+    #         # Among familiar candidates, prefer those with fewer assignments on this match
+    #         return min(familiar_candidates, key=lambda s: self.match_assignments[match][s])
+        
+    #     # Second priority: scouts with the fewest current team assignments overall
+    #     return min(candidates, key=lambda s: len(self.team_familiarity[s]))
+    
+    # def select_scout_for_team(self, match: int, team: str, available_scouts: List[str]) -> str:
+    #     """
+    #     Select the best scout for a team on a given match, balancing multiple factors.
+        
+    #     Args:
+    #         match: The current match number
+    #         team: The team needing scouting
+    #         available_scouts: List of available scouts
+                
+    #     Returns:
+    #         Name of selected scout
+    #     """
+    #     # Filter out scouts who should rest unless necessary
+    #     rested_scouts = [s for s in available_scouts if not self.should_rest(s)]
+        
+    #     # Debugging: Print the list of rested scouts
+    #     print(f"\nMatch {match}, Team {team}:")
+    #     print(f"Available scouts: {available_scouts}")
+    #     print(f"Rested scouts (not needing rest): {rested_scouts}")
+        
+    #     # If no rested scouts are available, use all available scouts
+    #     candidates = rested_scouts if rested_scouts else available_scouts
+        
+    #     # Debugging: Print the final list of candidates
+    #     print(f"Candidates for assignment: {candidates}")
+        
+    #     # Calculate total assignments for each scout
+    #     total_assignments = {scout: sum(1 for m, t in self.scout_assignments[scout]) for scout in candidates}
+        
+    #     # Define a scoring function that balances multiple factors
+    #     def scout_score(scout):
+    #         # Primary factor: current match assignments (avoid overloading in a single match)
+    #         current_match_load = self.match_assignments[match][scout]
+            
+    #         # Secondary factor: familiarity with this team (lower score if familiar)
+    #         team_familiarity_score = 0 if team in self.team_familiarity[scout] else 1
+            
+    #         # Tertiary factor: total workload balancing (normalized to prevent dominating)
+    #         max_assignments = max(total_assignments.values()) if total_assignments.values() else 1
+    #         workload_balance = total_assignments[scout] / max_assignments if max_assignments > 0 else 0
+            
+    #         # Return a tuple for lexicographic ordering
+    #         return (current_match_load, workload_balance, team_familiarity_score)
+        
+    #     # Select the scout with the lowest overall score
+    #     selected_scout = min(candidates, key=scout_score)
+        
+    #     # Debugging: Print the selected scout and their score
+    #     print(f"Selected scout: {selected_scout}")
+    #     print(f"Current match load: {self.match_assignments[match][selected_scout]}")
+    #     print(f"Team familiarity: {team in self.team_familiarity[selected_scout]}")
+    #     print(f"Total assignments: {total_assignments[selected_scout]}")
+        
+    #     return selected_scout
     
     def select_scout_for_team(self, match: int, team: str, available_scouts: List[str]) -> str:
-        """
-        Select the best scout for a team on a given match.
+        """Enhanced selection with continuity incentives"""
+        # Filter out scouts needing rest
+        eligible = [s for s in available_scouts if not self.rest_needed[s]]
         
-        Args:
-            match: The current match
-            team: The team needing scouting
-            available_scouts: List of available scouts
+        # Get previous assignment for this team
+        prev_assigned = self.schedule.get(match-1, {}).get(team)
+        
+        # Calculate scores
+        scores = []
+        for scout in eligible:
+            # Base score components
+            current_load = self.match_assignments[match][scout]
+            total_assignments = len(self.scout_assignments[scout])
+            familiarity = 1 if team in self.team_familiarity[scout] else 0
             
-        Returns:
-            Name of selected scout
-        """
-        # Filter out scouts who should rest unless necessary
-        rested_scouts = [s for s in available_scouts if not self.should_rest(s)]
+            # Continuity bonus (2x weight if worked previous match for this team)
+            continuity = 2 if scout == prev_assigned else 0
+            
+            # Score components (lower is better)
+            score = (
+                current_load,          # Primary: avoid overloading in current match
+                -continuity,           # Negative because lower is better (prefer continuity)
+                total_assignments,     # Balance total workload across scouts
+                -familiarity           # Negative because lower is better (prefer familiarity)
+            )
+            scores.append((score, scout))
+            
+        print(f"Selected {scout} for {team} (Match {match})")
+        print(f"  Active streak: {self.active_streaks[scout]}")
+        print(f"  Rest needed: {self.rest_needed[scout]}")
+        print(f"  Last worked: {self.last_worked[scout]}")
         
-        # If no rested scouts are available, use all available scouts
-        candidates = rested_scouts if rested_scouts else available_scouts
-        
-        # First priority: scouts familiar with this team
-        familiar_candidates = [s for s in candidates if team in self.team_familiarity[s]]
-        if familiar_candidates:
-            # Among familiar candidates, prefer those with fewer assignments on this match
-            return min(familiar_candidates, key=lambda s: self.match_assignments[match][s])
-        
-        # Second priority: scouts with the fewest current team assignments overall
-        return min(candidates, key=lambda s: len(self.team_familiarity[s]))
+        # Select scout with best score
+        return min(scores)[1]
+   
     
-    def update_tracking(self, match: int, team: str, scout: str) -> None:
-        """
-        Update tracking information after assigning a scout.
+    # def update_tracking(self, match: int, team: str, scout: str) -> None:
+    #     """
+    #     Update tracking information after assigning a scout.
         
-        Args:
-            match: The current match
-            team: The assigned team
-            scout: The assigned scout
-        """
-        # Update schedule
-        self.schedule[match][team] = scout
+    #     Args:
+    #         match: The current match
+    #         team: The assigned team
+    #         scout: The assigned scout
+    #     """
+    #     # Update schedule
+    #     self.schedule[match][team] = scout
         
-        # Update scout assignments
-        self.scout_assignments[scout].append((match, team))
+    #     # Update scout assignments
+    #     self.scout_assignments[scout].append((match, team))
         
-        # Update match assignments count
-        self.match_assignments[match][scout] += 1
+    #     # Update match assignments count
+    #     self.match_assignments[match][scout] += 1
         
-        # Update team familiarity
-        self.team_familiarity[scout].add(team)
+    #     # Update team familiarity
+    #     self.team_familiarity[scout].add(team)
+                
+    #     # Update consecutive matches worked
+    #     self.consecutive_matches[scout] += 1
         
-        # Update consecutive matches worked
-        self.consecutive_matches[scout] += 1
+    #     # Reset matches since worked
+    #     self.matches_since_worked[scout] = 0
         
-        # Reset matches since worked
-        self.matches_since_worked[scout] = 0
-        
-        # For all other scouts, increment matches since worked
-        for other_scout in self.scout_names:
-            if other_scout != scout and match not in self.unavailability.get(other_scout, []):
-                if self.match_assignments[match][other_scout] == 0:  # Only increment if not working today
-                    self.matches_since_worked[other_scout] += 1
+    #     # For all other scouts, increment matches since worked
+    #     for other_scout in self.scout_names:
+    #         if other_scout != scout and match not in self.unavailability.get(other_scout, []):
+    #             if self.match_assignments[match][other_scout] == 0:  # Only increment if not working today
+    #                 self.matches_since_worked[other_scout] += 1
+    
+    def update_tracking_for_match(self, match: int) -> None:
+        """Enhanced tracking with true consecutive streak detection"""
+        for scout in self.scout_names:
+            # Check if scout worked this match
+            worked = any(self.schedule[match][team] == scout for team in self.teams_to_scout)
+            
+            if worked:
+                # Update consecutive streak
+                if self.last_worked[scout] == match - 1:
+                    self.active_streaks[scout] += 1
+                else:
+                    self.active_streaks[scout] = 1  # Reset streak if not consecutive
+                self.last_worked[scout] = match
+                
+                # Check for rest requirement
+                if self.active_streaks[scout] >= self.target_consecutive_matches:
+                    self.rest_needed[scout] = True
+            else:
+                # If scout was available but not working, count towards rest
+                if self.is_available(scout, match):
+                    if self.rest_needed[scout]:
+                        # Count rest days
+                        rest_days = match - self.last_worked[scout]
+                        if rest_days >= self.target_rest_matches:
+                            self.rest_needed[scout] = False
+                            self.active_streaks[scout] = 0
+        print(f"Match {match} - Rest status:")
+        for scout in self.scout_names:
+            status = "RESTING" if self.rest_needed[scout] else "AVAILABLE"
+            print(f"  {scout}: {status} | Streak: {self.active_streaks[scout]} | Last: {self.last_worked[scout]}")
     
     def reset_after_break(self) -> None:
         """Reset consecutive matches worked after a scheduled break."""
-        self.consecutive_matches = {name: 0 for name in self.scout_names}
+        # self.consecutive_matches = {name: 0 for name in self.scout_names}
+        self.rest_needed = {name: False for name in self.scout_names}  # Whether scout needs rest
+
+        
     
     def generate_schedule(self) -> None:
         """Generate the complete schedule using a sliding window approach."""
@@ -206,12 +344,23 @@ class ScoutScheduler:
                     # Select scout for this team
                     selected_scout = self.select_scout_for_team(match, team, available_scouts)
                     
-                    # Update tracking
-                    self.update_tracking(match, team, selected_scout)
+                    # Update schedule
+                    self.schedule[match][team] = selected_scout
+                    # Update scout assignments
+                    self.scout_assignments[selected_scout].append((match, team))
+                    
+                    # Update match assignments count
+                    self.match_assignments[match][selected_scout] += 1
+                    
+                    # Update team familiarity
+                    self.team_familiarity[selected_scout].add(team)
                     
                     # Remove from available if fully assigned for this match
                     if self.match_assignments[match][selected_scout] >= 1:  # Adjust if multiple assignments per match are allowed
                         available_scouts = [s for s in available_scouts if s != selected_scout]
+                        
+                # Update tracking for all scouts after all assignments for this match are made
+                self.update_tracking_for_match(match)
             
             # Reset consecutive matches worked after a break
             if segment_end in self.breaks:
@@ -406,6 +555,159 @@ class ScoutScheduler:
             'work_streaks': work_streaks,
             'team_assignments': team_assignments
         }
+        
+    def check_insufficient_rest(self, min_rest_period: int = None) -> Dict[str, List[Tuple[int, int, int]]]:
+        """
+        Check for scouts who have been reassigned without sufficient rest between assignments.
+        
+        This checks two conditions:
+        1. If a scout has worked target_consecutive_matches in a row, they need rest
+        2. If a scout is replaced for a team, they need rest before scouting again
+        
+        Args:
+            min_rest_period: Minimum required matches between assignments (defaults to self.target_rest_matches)
+                
+        Returns:
+            Dictionary mapping scout names to list of tuples (first_match, next_match, actual_rest_period, reason)
+            for instances where scouts didn't get enough rest
+        """
+        if min_rest_period is None:
+            min_rest_period = self.target_rest_matches
+        
+        # Dictionary to track results - will store (first_match, next_match, actual_rest_period, reason)
+        insufficient_rest = defaultdict(list)
+        
+        # Track when each scout last worked overall
+        last_worked_match = {name: 0 for name in self.scout_names}
+        
+        # Track when each scout last worked on each team
+        last_team_assignment = {name: {team: 0 for team in self.teams_to_scout} for name in self.scout_names}
+        
+        # Track consecutive matches worked for each scout
+        consecutive_worked = {name: 0 for name in self.scout_names}
+        
+        # Track if a scout needs rest (after working target_consecutive_matches or being replaced)
+        needs_rest = {name: False for name in self.scout_names}
+        
+        # Track when rest started for each scout
+        rest_started = {name: 0 for name in self.scout_names}
+        
+        # Process each match
+        for match in range(1, self.total_matches + 1):
+            # Find scouts working in this match and which teams they're assigned to
+            working_scouts = set()
+            team_assignments = {}  # Maps teams to scouts for this match
+            
+            for team in self.teams_to_scout:
+                scout = self.schedule[match][team]
+                if scout:
+                    working_scouts.add(scout)
+                    team_assignments[team] = scout
+                    
+                    # Check if a different scout is now assigned to a team
+                    for other_scout in self.scout_names:
+                        if other_scout != scout and last_team_assignment[other_scout][team] == match - 1:
+                            if not needs_rest[other_scout]:
+                                needs_rest[other_scout] = True
+                                rest_started[other_scout] = match
+            
+            # Check if any working scouts should be resting
+            for scout in working_scouts:
+                # Check if scout is supposed to be resting
+                if needs_rest[scout]:
+                    rest_period = match - rest_started[scout]
+                    if rest_period < min_rest_period:
+                        # Check if there was a scheduled break
+                        is_break_between = any(rest_started[scout] <= b < match for b in self.breaks)
+                        
+                        if not is_break_between:
+                            reason = "Replaced on a team" if consecutive_worked[scout] < self.target_consecutive_matches else "Exceeded consecutive matches"
+                            insufficient_rest[scout].append((rest_started[scout] - 1, match, rest_period, reason))
+                    
+                    # Reset the need for rest
+                    needs_rest[scout] = False
+                
+                # Update consecutive matches worked
+                if last_worked_match[scout] == match - 1:
+                    consecutive_worked[scout] += 1
+                else:
+                    consecutive_worked[scout] = 1
+                
+                # Check if scout has worked too many consecutive matches
+                if consecutive_worked[scout] >= self.target_consecutive_matches:
+                    needs_rest[scout] = True
+                    rest_started[scout] = match + 1  # Rest starts after this match
+                
+                # Update last worked match
+                last_worked_match[scout] = match
+                
+                # Update last team assignments
+                for team in self.teams_to_scout:
+                    if team_assignments.get(team) == scout:
+                        last_team_assignment[scout][team] = match
+            
+            # For scouts not working this match, check if they needed rest and got it
+            for scout in set(self.scout_names) - working_scouts:
+                # Reset consecutive matches counter for non-working scouts
+                consecutive_worked[scout] = 0
+                
+                # If scout was supposed to be resting, count this as a rest match
+                if needs_rest[scout] and match - rest_started[scout] >= min_rest_period:
+                    needs_rest[scout] = False
+        
+        return insufficient_rest
+
+    def print_insufficient_rest_report(self, min_rest_period: int = None) -> None:
+        """
+        Print a detailed report about scouts who didn't receive sufficient rest between assignments.
+        
+        Args:
+            min_rest_period: Minimum required matches between assignments (defaults to self.target_rest_matches)
+        """
+        if min_rest_period is None:
+            min_rest_period = self.target_rest_matches
+        
+        insufficient_rest = self.check_insufficient_rest(min_rest_period)
+        
+        print(f"\nScout Insufficient Rest Report (Minimum rest: {min_rest_period} matches):")
+        print("-" * 100)
+        
+        if not insufficient_rest:
+            print("All scouts received adequate rest periods between assignments.")
+            return
+        
+        print(f"{'Scout':<15} {'Last Match':<15} {'Next Match':<15} {'Rest Period':<15} {'Expected':<15} {'Reason':<25}")
+        print("-" * 100)
+        
+        total_violations = 0
+        
+        for scout, violations in sorted(insufficient_rest.items(), key=lambda x: len(x[1]), reverse=True):
+            for last_match, next_match, rest_period, reason in violations:
+                print(f"{scout:<15} {last_match:<15} {next_match:<15} {rest_period:<15} {min_rest_period:<15} {reason:<25}")
+                total_violations += 1
+            
+            # Add a separator line between scouts
+            if violations:
+                print("-" * 100)
+        
+        print(f"\nTotal insufficient rest violations: {total_violations}")
+        print(f"Scouts affected: {len(insufficient_rest)}/{len(self.scout_names)}")
+        
+        # Calculate the most common violations
+        if total_violations > 0:
+            violation_counts = Counter([v[2] for scout_list in insufficient_rest.values() for v in scout_list])
+            most_common = violation_counts.most_common(3)
+            
+            print("\nMost common insufficient rest periods:")
+            for rest_period, count in most_common:
+                print(f"  {rest_period} matches: {count} occurrences ({count/total_violations*100:.1f}%)")
+            
+            # Count violations by reason
+            reason_counts = Counter([v[3] for scout_list in insufficient_rest.values() for v in scout_list])
+            
+            print("\nViolations by reason:")
+            for reason, count in reason_counts.items():
+                print(f"  {reason}: {count} occurrences ({count/total_violations*100:.1f}%)")
 
 # Example usage
 def run_scout_scheduling():
@@ -445,6 +747,7 @@ def run_scout_scheduling():
     # Generate and optimize schedule
     scheduler.generate_schedule()
     scheduler.optimize_schedule(iterations=500)
+    # scheduler.print_insufficient_rest_report(min_rest_period=10)
     
     # Visualize the schedule
     scheduler.visualize_schedule(filename=fun + "scout_schedule.png")
@@ -488,102 +791,3 @@ if __name__ == "__main__":
     schedule.to_csv(fun+"scout_schedule.csv", index=False)
     print("\nFull schedule saved to "+fun+ "scout_schedule.csv")
     print("Visualization saved to "+fun+"scout_schedule.png")
-    
-# ------------------------------------------------------------
-def check_insufficient_rest(self, min_rest_period: int = None) -> Dict[str, List[Tuple[int, int, int]]]:
-    """
-    Check for scouts who have been reassigned without sufficient rest between assignments.
-    
-    Args:
-        min_rest_period: Minimum required matches between assignments (defaults to self.target_rest_matches)
-        
-    Returns:
-        Dictionary mapping scout names to list of tuples (first_match, next_match, actual_rest_period)
-        for instances where scouts didn't get enough rest
-    """
-    if min_rest_period is None:
-        min_rest_period = self.target_rest_matches
-    
-    # Dictionary to track results
-    insufficient_rest = defaultdict(list)
-    
-    # Dictionary to track when each scout last worked
-    last_worked = {name: 0 for name in self.scout_names}
-    
-    # Process each match
-    for match in range(1, self.total_matches + 1):
-        # Find scouts working in this match
-        working_scouts = set()
-        for team in self.teams_to_scout:
-            scout = self.schedule[match][team]
-            if scout:
-                working_scouts.add(scout)
-        
-        # Check if any working scouts didn't get enough rest
-        for scout in working_scouts:
-            # Skip if this is the first assignment
-            if last_worked[scout] == 0:
-                last_worked[scout] = match
-                continue
-            
-            # Calculate rest period
-            rest_period = match - last_worked[scout] - 1
-            
-            # Check if rest period is insufficient
-            if rest_period < min_rest_period:
-                # Account for scheduled breaks
-                is_break_between = any(last_worked[scout] <= b < match for b in self.breaks)
-                
-                # Only flag if there wasn't a scheduled break
-                if not is_break_between:
-                    insufficient_rest[scout].append((last_worked[scout], match, rest_period))
-            
-            # Update last worked match
-            last_worked[scout] = match
-    
-    return insufficient_rest
-
-def print_insufficient_rest_report(self, min_rest_period: int = None) -> None:
-    """
-    Print a detailed report about scouts who didn't receive sufficient rest between assignments.
-    
-    Args:
-        min_rest_period: Minimum required matches between assignments (defaults to self.target_rest_matches)
-    """
-    if min_rest_period is None:
-        min_rest_period = self.target_rest_matches
-    
-    insufficient_rest = self.check_insufficient_rest(min_rest_period)
-    
-    print(f"\nScout Insufficient Rest Report (Minimum rest: {min_rest_period} matches):")
-    print("-" * 80)
-    
-    if not insufficient_rest:
-        print("All scouts received adequate rest periods between assignments.")
-        return
-    
-    print(f"{'Scout':<15} {'First Match':<15} {'Next Match':<15} {'Rest Period':<15} {'Expected':<15}")
-    print("-" * 80)
-    
-    total_violations = 0
-    
-    for scout, violations in sorted(insufficient_rest.items(), key=lambda x: len(x[1]), reverse=True):
-        for first_match, next_match, rest_period in violations:
-            print(f"{scout:<15} {first_match:<15} {next_match:<15} {rest_period:<15} {min_rest_period:<15}")
-            total_violations += 1
-        
-        # Add a separator line between scouts
-        if violations:
-            print("-" * 80)
-    
-    print(f"\nTotal insufficient rest violations: {total_violations}")
-    print(f"Scouts affected: {len(insufficient_rest)}/{len(self.scout_names)}")
-    
-    # Calculate the most common violations
-    if total_violations > 0:
-        violation_counts = Counter([v[2] for scout_list in insufficient_rest.values() for v in scout_list])
-        most_common = violation_counts.most_common(3)
-        
-        print("\nMost common insufficient rest periods:")
-        for rest_period, count in most_common:
-            print(f"  {rest_period} matches: {count} occurrences ({count/total_violations*100:.1f}%)")
