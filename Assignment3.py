@@ -17,6 +17,7 @@ class ScoutScheduler:
     def __init__(
         self,
         scout_names: List[str],
+        lead_scout_names: List[str],
         total_matches: int,
         unavailability: Dict[str, List[int]],
         breaks: List[int],
@@ -39,6 +40,7 @@ class ScoutScheduler:
         self.scout_names = scout_names
         self.total_matches = total_matches
         self.unavailability = unavailability
+        self.lead_scout_names = lead_scout_names
         self.breaks = breaks
         self.teams_to_scout = teams_to_scout or [
             "R1", "R2", "R3", "B1", "B2", "B3"]
@@ -429,18 +431,61 @@ class ScoutScheduler:
                 self.scout_assignments[scout2] = [(m, t if t != team2 else team1)
                                                   for m, t in self.scout_assignments[scout2]]
 
+    # def to_dataframe(self) -> pd.DataFrame:
+    #     """
+    #     Convert schedule to a pandas DataFrame.
+
+    #     Returns:
+    #         DataFrame representation of the schedule
+    #     """
+    #     data = []        
+    #     for match in range(1, self.total_matches + 1):
+    #         row = {'Match': match}
+    #         for team in self.teams_to_scout:
+    #             row[team] = self.schedule[match][team]
+    #         data.append(row)
+                    
+    #     return pd.DataFrame(data)
+    
     def to_dataframe(self) -> pd.DataFrame:
         """
-        Convert schedule to a pandas DataFrame.
-
+        Convert schedule to a pandas DataFrame with lead scout assignments.
+        
+        Lead scouts are organized in pairs and rotated every 10 matches.
+        Each pair consists of one scout from leadscoutone and one from leadscouttwo.
+        
         Returns:
-            DataFrame representation of the schedule
+            DataFrame representation of the schedule with lead scout columns
         """
         data = []
+        
+        # Calculate number of pairs
+        num_pairs = len(self.lead_scout_names) // 2
+        
+        # Create two lists of lead scouts (even indices in one list, odd in another)
+        leadscoutone = []
+        leadscouttwo = []
+        for i in range(0, len(self.lead_scout_names), 2):
+            leadscoutone.append(self.lead_scout_names[i])
+            leadscouttwo.append(self.lead_scout_names[i + 1])
+        
+        # For each match, determine which lead scout pair to use based on rotation
         for match in range(1, self.total_matches + 1):
             row = {'Match': match}
+            
+            # Add regular scout assignments
             for team in self.teams_to_scout:
                 row[team] = self.schedule[match][team]
+            
+            # Calculate which lead scout pair to use based on match number
+            # Subtract 1 from match to get 0-indexed, divide by 10 to get which rotation we're on,
+            # then take modulo of number of pairs to cycle through them
+            pair_index = ((match - 1) // 10) % num_pairs
+            
+            # Add lead scout columns
+            row['Lead1'] = leadscoutone[pair_index]
+            row['Lead2'] = leadscouttwo[pair_index]
+            
             data.append(row)
 
         return pd.DataFrame(data)
@@ -760,6 +805,7 @@ def run_scout_scheduling():
                    'DanielFridman', 'YariMilakin',
                    'NikoMa']
     total_matches = 74
+    lead_scout_names = ['JosephBaca','MattinTasbihgoo','MaxYe','AndrewJo','ss','aa']
     unavailability = {
         # 'FeliciaDuan': [1, 2, 3],
         # 'VikramWright': [4, 5],
@@ -771,6 +817,7 @@ def run_scout_scheduling():
     # Create scheduler
     scheduler = ScoutScheduler(
         scout_names=scout_names,
+        lead_scout_names=lead_scout_names,
         total_matches=total_matches,
         unavailability=unavailability,
         breaks=breaks,
@@ -798,29 +845,29 @@ def run_scout_scheduling():
     print(f"Total scouts: {len(scout_names)}")
     print(f"Teams scouted: {scheduler.teams_to_scout}")
 
-    print("\nAssignment distribution:")
-    for scout, count in sorted(analysis['assignment_counts'].items(), key=lambda x: x[1], reverse=True):
-        print(f"  {scout}: {count} assignments")
+    # print("\nAssignment distribution:")
+    # for scout, count in sorted(analysis['assignment_counts'].items(), key=lambda x: x[1], reverse=True):
+    #     print(f"  {scout}: {count} assignments")
 
-    print("\nLongest work streaks:")
-    for scout, streaks in analysis['work_streaks'].items():
-        if streaks:
-            print(f"  {scout}: {max(streaks)} matches")
-        else:
-            print(f"  {scout}: 0 matches")
+    # print("\nLongest work streaks:")
+    # for scout, streaks in analysis['work_streaks'].items():
+    #     if streaks:
+    #         print(f"  {scout}: {max(streaks)} matches")
+    #     else:
+    #         print(f"  {scout}: 0 matches")
 
-    print("\nTeam familiarity (top assignments):")
-    for scout, assignments in analysis['team_assignments'].items():
-        top_team = max(assignments.items(), key=lambda x: x[1])
-        print(f"  {scout}: {top_team[0]} ({top_team[1]} matches)")
+    # print("\nTeam familiarity (top assignments):")
+    # for scout, assignments in analysis['team_assignments'].items():
+    #     top_team = max(assignments.items(), key=lambda x: x[1])
+    #     print(f"  {scout}: {top_team[0]} ({top_team[1]} matches)")
 
     return schedule_df
 
 
 if __name__ == "__main__":
     schedule = run_scout_scheduling()
-    print("\nFirst 10 matches of schedule:")
-    print(schedule.head(10))
+    # print("\nFirst 10 matches of schedule:")
+    # print(schedule.head(10))
 
     # Save to CSV
     schedule.to_csv(fun+"scout_schedule.csv", index=False)
