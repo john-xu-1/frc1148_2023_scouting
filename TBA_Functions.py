@@ -36,6 +36,14 @@ def TBA_MaxSeason ():
 
 #======================================Team Specific Methods======================================
 
+def getLastEvent(team):
+    status = TBA_AddressFetcher("team/frc"+team+"/events")
+    return status
+
+def getEventDivisionInfo(event):
+    status = TBA_AddressFetcher("event/"+event)
+    return status
+    
 def TBA_TeamEventStatus(team,event):
     return TBA_AddressFetcher("team/frc"+team+"/event/"+event+"/status")
 
